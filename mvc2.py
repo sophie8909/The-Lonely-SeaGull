@@ -27,23 +27,22 @@
 #
 import tkinter as tk
 
-# The StringVars are only used explicitly in the
-# definition of the widgets.
-#
-from tkinter import StringVar
-
 # ===============================================
 # Local imports
 #
 import Dictionary
 import WidgetFactory
-import functionObjects as fo
+import functionObjects as fO
+
+# The StringVars are only used explicitly in the
+# definition of the widgets.
+#
 
 # ===============================================
 # Global variables
 #
 local_dictionary = Dictionary.Dict()
-com = Dictionary.common()
+com = Dictionary.Common()
 
 # ===============================================
 # CLASS MODEL
@@ -74,8 +73,8 @@ class Model:
     # controller will use these use accessors (setters and getters).
     # The first function lets the controller retrieve the data from the database
     #
-    def get_data(self, key):
-        return self.data[key]
+    # def get_data(self, key):
+    #     return self.data[key]
 
     # @override
     # This version uses a fixed key, content.
@@ -87,8 +86,8 @@ class Model:
     # the database. It replaces the value for a key, alternatively
     # defines a new key:values pair.
     #
-    def set_data(self, key, new_data):
-        self.data[key] = new_data
+    # def set_data(self, key, new_data):
+    #     self.data[key] = new_data
 
     # @override
     # This version again uses a fixed key for the access of the data.
@@ -276,7 +275,7 @@ class Controller:
         # with the right functions. The controller class is currently just delegating
         # everything.
         #
-        self.funs = fo.Functions(self)
+        self.funs = fO.Functions(self)
 
         # Create the model and the view in the controller. This allows the
         # controller to have access to both parts directly. However, the
@@ -332,11 +331,11 @@ class Controller:
 
         # Get the data from the model.
         #
-        data = self.get_data()
+        self.get_data()
 
         # Update the view with the data from the model.
         #
-        self.update_view(data)
+        self.update_view()
 
     # The controller part of the get the entry of the view.
     #

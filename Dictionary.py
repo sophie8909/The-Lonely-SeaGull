@@ -53,7 +53,7 @@ class Dict:
     #
     def get_container(self, key):
         for p in self.string_containers:
-            if p[0] == key :
+            if p[0] == key:
                 return p[1]
         return ''
 
@@ -67,7 +67,7 @@ class Dict:
     #
     def set_language(self, lang):
         self.language = lang
-        self.update_strings();
+        self.update_strings()
 
     # Get the string for the key given as argument. The current language is taken from the
     # variable defined in the class.
@@ -77,7 +77,7 @@ class Dict:
         return d[key]
 
 # An unused class for storing other things than strings, such as image references, etc.
-class common:
+class Common:
 
     # Again we use a python dictionary.
     #

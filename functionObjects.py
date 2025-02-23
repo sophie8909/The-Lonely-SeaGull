@@ -148,8 +148,7 @@ class Functions :
     # of the system.
     #
     class QuitFunction :
-
-        def __init__(self, ctrl):
+        def __init__(self):
             quit(1)
 # =============================================================================
 # END of Functions.py

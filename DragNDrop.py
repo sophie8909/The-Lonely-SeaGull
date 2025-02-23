@@ -19,6 +19,7 @@ class DragDropApp(TkinterDnD.Tk):
     def __init__(self):
         super().__init__()
 
+        self._drag_data = None
         self.title("Drag and Drop Example")
         self.geometry("500x400")
 
@@ -61,7 +62,6 @@ class DragDropApp(TkinterDnD.Tk):
     # The function that defines what is going to happen in a drop event
     #
     def on_drop(self, event):
-
         self.drop_target.config(bg="lightgray")  # Reset the highlight of the drop zone
 
         # Check if the label is over the target

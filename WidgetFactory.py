@@ -6,7 +6,6 @@ from tkinter import StringVar
 # This file is only used by mvc2.
 #
 from mvc2 import local_dictionary
-import functionObjects as fo
 
 class WidgetFactory:
 

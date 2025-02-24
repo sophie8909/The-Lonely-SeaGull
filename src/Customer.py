@@ -62,26 +62,31 @@ class Customer:
         self.customer_window.destroy()
         sys.exit()
 
-    # main interface for customer
-    def open_customer_interface(self, ):
-        self.shopping_cart = tk.Listbox()
-        self.customer_window = tk.Toplevel()
-        self.customer_window.title("Customer Ordering Interface")
-        self.customer_window.geometry("600x400")
-        self.customer_window.protocol("WM_DELETE_WINDOW", self.close_customer_interface)
+    def selection_changed(self, event):
+        self.current_language = self.combo.get()
+        self.update_window()
         
-        tk.Label(self.customer_window, text="Beer Menu", font=("Arial", 16)).pack(pady=5)
-        
-        
-        menu_frame = tk.Frame(self.customer_window, width=300, relief=tk.SUNKEN, borderwidth=2)
-        menu_frame.pack(side=tk.LEFT, fill=tk.Y)
+    def update_window(self):
+        # Clear the window
+        for widget in self.customer_window.winfo_children():
+            if widget != self.combo:
+                widget.destroy()
 
-        tk.Label(menu_frame, text=self.language[self.current_language]["menu"], font=("Arial", 16)).pack(pady=5)
+        
+            
+
+        tk.Label(self.customer_window, text=self.language[self.current_language]["beer menu"], font=("Arial", 16)).pack(pady=5)
+        
+        
+        self.menu_frame = tk.Frame(self.customer_window, width=300, relief=tk.SUNKEN, borderwidth=2)
+        self.menu_frame.pack(side=tk.LEFT, fill=tk.Y)
+
+        tk.Label(self.menu_frame, text=self.language[self.current_language]["menu"], font=("Arial", 16)).pack(pady=5)
 
         for beer in self.fetch_beers():
-            beer_label = tk.Label(menu_frame, text=f"{beer['name']} - {beer['price']} SEK", relief=tk.RAISED, padx=5, pady=5)
-            beer_label.pack(pady=5)
-            beer_label.bind("<ButtonPress-1>", lambda e, b=beer: self.add_to_cart(b))
+            self.beer_label = tk.Label(self.menu_frame, text=f"{beer['name']} - {beer['price']} SEK", relief=tk.RAISED, padx=5, pady=5)
+            self.beer_label.pack(pady=5)
+            self.beer_label.bind("<ButtonPress-1>", lambda e, b=beer: self.add_to_cart(b))
 
         right_frame = tk.Frame(self.customer_window, relief=tk.SUNKEN, borderwidth=2)
         right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
@@ -95,5 +100,24 @@ class Customer:
 
         tk.Button(right_frame, text=self.language[self.current_language]["<--"], command=self.undo_last_action).pack()
         tk.Button(right_frame, text=self.language[self.current_language]["-->"], command=self.redo_last_action).pack()
+
+
+
+    # main interface for customer
+    def open_customer_interface(self, ):
+        self.shopping_cart = tk.Listbox()
+        self.customer_window = tk.Toplevel()
+        self.customer_window.title("Customer Ordering Interface")
+        self.customer_window.geometry("600x400")
+        self.customer_window.protocol("WM_DELETE_WINDOW", self.close_customer_interface)
+        
+        # Combo box for selecting different system language
+        self.combo = ttk.Combobox(self.customer_window, state="readonly", values=["English", "Swedish", "Chinese"], height=2, width=10)
+        self.combo.pack(padx=5)
+        self.combo.current(0)
+        self.combo.bind("<<ComboboxSelected>>", self.selection_changed)
+    
+        self.update_window()
+        
 
     #endregion

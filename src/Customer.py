@@ -1,78 +1,99 @@
 import tkinter as tk
-from tkinter import messagebox
-from tkinterdnd2 import DND_FILES, TkinterDnD
+from tkinter import messagebox, ttk
+import sys
 
 # Simulated beer data
+# Simulated beer data with detailed information
 SIMULATED_BEERS = [
-    (1, "Pale Ale", 49.99),
-    (2, "Stout", 59.99),
-    (3, "Lager", 39.99),
-    (4, "IPA", 54.99)
+    {"name": "Pale Ale", "brewery": "BrewCo", "country": "Sweden", "type": "Ale", "strength": "5.0%",
+     "serving_size": "Bottle", "price": 49.99},
+    {"name": "Stout", "brewery": "DarkBrew", "country": "Ireland", "type": "Stout", "strength": "6.5%",
+     "serving_size": "Tap", "price": 59.99},
+    {"name": "Lager", "brewery": "GoldenBrew", "country": "Germany", "type": "Lager", "strength": "4.7%",
+     "serving_size": "Bottle", "price": 39.99},
+    {"name": "IPA", "brewery": "HopHouse", "country": "USA", "type": "IPA", "strength": "7.2%", "serving_size": "Tap",
+     "price": 54.99}
 ]
 
-def fetch_beers():
-    return SIMULATED_BEERS
+class Customer:
+    def __init__(self, language, current_language):
+        self.shopping_cart = None
+        self.language = language
+        self.current_language = current_language
+        self.order_history = []
+        self.redo_stack = []
+        self.ordered_list = []
 
-def add_to_cart(beer):
-    shopping_cart.insert(tk.END, f"{beer[1]} - {beer[2]} SEK")
+    # Fetch beer data
+    def fetch_beers(self):
+        return SIMULATED_BEERS
 
-def order_food():
-    return "Your food has been ordered!"
+    # region Operations of Shopping Cart
+    # Add beer to shopping cart and clear redo stack
+    def add_to_cart(self, beer):
+        self.shopping_cart.insert(tk.END, f"{beer['name']} ({beer['brewery']}) - {beer['price']} SEK")
+        self.order_history.append(beer)
+        self.redo_stack.clear()
+   
+    # Undo the last action
+    def undo_last_action(self):
+        if self.order_history:
+            last_item = self.order_history.pop()
+            self.shopping_cart.delete(tk.END)
+            self.redo_stack.append(last_item)
 
-def order_drink():
-    return "Your drink has been ordered!"
+    # Redo the last action
+    def redo_last_action(self):
+        if self.redo_stack:
+            item = self.redo_stack.pop()
+            self.shopping_cart.insert(tk.END, f"{item['name']} ({item['brewery']}) - {item['price']} SEK")
+            self.order_history.append(item)
+    # endregion
 
-def order_vip_food():
-    return "Your VIP food has been ordered!"
 
-def view_account_balance():
-    return "Your balance is: $100"
-
-def pay_from_account():
-    return "Payment has been made from your account!"
-
-def get_customer_menu(user_role):
-    menu = {
-        "food": order_food,
-        "drink": order_drink,
-        "beers": fetch_beers
-    }
-    if user_role == "vip":
-        menu.update({
-            "vip_food": order_vip_food,
-            "balance": view_account_balance,
-            "pay": pay_from_account
-        })
-    return menu
-
-def open_customer_interface():
-    global shopping_cart
-    customer_window = tk.Toplevel()
-    customer_window.title("Customer Ordering Interface")
-    customer_window.geometry("600x400")
     
-    tk.Label(customer_window, text="Beer Menu", font=("Arial", 16)).pack(pady=5)
     
-    beer_frame = tk.Frame(customer_window)
-    beer_frame.pack(side=tk.LEFT, padx=10, pady=10)
-    
-    for beer in fetch_beers():
-        beer_label = tk.Label(beer_frame, text=f"{beer[1]} - {beer[2]} SEK", relief=tk.RAISED, padx=5, pady=5)
-        beer_label.pack(pady=2, fill=tk.X)
-        beer_label.bind("<ButtonPress-1>", lambda e, b=beer: start_drag(e, b))
-    
-    cart_frame = tk.Frame(customer_window, relief=tk.SUNKEN, borderwidth=2)
-    cart_frame.pack(side=tk.RIGHT, padx=10, pady=10)
-    
-    tk.Label(cart_frame, text="Shopping Cart", font=("Arial", 14)).pack()
-    shopping_cart = tk.Listbox(cart_frame, width=40, height=10)
-    shopping_cart.pack()
-    
-    customer_window.mainloop()
 
-def start_drag(event, beer):
-    event.widget.master.tk.call("tkdnd::drag", event.widget, "text/plain", beer)
+    
+    #region Customer Interface
 
-def on_drop(event):
-    item = event.data
-    shopping_cart.insert(tk.END, item)
+    # Close the customer interface
+    def close_customer_interface(self):
+        self.customer_window.destroy()
+        sys.exit()
+
+    # main interface for customer
+    def open_customer_interface(self, ):
+        self.shopping_cart = tk.Listbox()
+        self.customer_window = tk.Toplevel()
+        self.customer_window.title("Customer Ordering Interface")
+        self.customer_window.geometry("600x400")
+        self.customer_window.protocol("WM_DELETE_WINDOW", self.close_customer_interface)
+        
+        tk.Label(self.customer_window, text="Beer Menu", font=("Arial", 16)).pack(pady=5)
+        
+        
+        menu_frame = tk.Frame(self.customer_window, width=300, relief=tk.SUNKEN, borderwidth=2)
+        menu_frame.pack(side=tk.LEFT, fill=tk.Y)
+
+        tk.Label(menu_frame, text=self.language[self.current_language]["menu"], font=("Arial", 16)).pack(pady=5)
+
+        for beer in self.fetch_beers():
+            beer_label = tk.Label(menu_frame, text=f"{beer['name']} - {beer['price']} SEK", relief=tk.RAISED, padx=5, pady=5)
+            beer_label.pack(pady=5)
+            beer_label.bind("<ButtonPress-1>", lambda e, b=beer: self.add_to_cart(b))
+
+        right_frame = tk.Frame(self.customer_window, relief=tk.SUNKEN, borderwidth=2)
+        right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+
+        tk.Label(right_frame, text=self.language[self.current_language]["cart"], font=("Arial", 14)).pack()
+        self.shopping_cart = tk.Listbox(right_frame, width=50, height=20)
+        self.shopping_cart.pack()
+
+        tk.Button(right_frame, text=self.language[self.current_language]["checkout"], command=lambda: messagebox.showinfo("Order", "Order placed successfully!")) \
+            .pack(pady=10)
+
+        tk.Button(right_frame, text=self.language[self.current_language]["<--"], command=self.undo_last_action).pack()
+        tk.Button(right_frame, text=self.language[self.current_language]["-->"], command=self.redo_last_action).pack()
+
+    #endregion

@@ -108,7 +108,7 @@ if __name__ == "__main__":
     
     # Create instance for Customer, Owner, Bartender, and VIP
     global customer
-    customer = Customer.Customer()
+    customer = Customer.Customer(LANGUAGES, current_language)
     # owner = Owner.Owner()
     # bartender = Bartender.Bartender()
     # vip = VIP.VIP()

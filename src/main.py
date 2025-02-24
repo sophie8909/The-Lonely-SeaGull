@@ -22,40 +22,14 @@ USERS = {
     "customer": {"password": "password", "role": "customer"}
 }
 
-# Language options
-LANGUAGES = {
-    "English": {"login": "Log in", "logout": "Log out", "menu": "Menu", "cart": "Shopping Cart",
-                "checkout": "Checkout", '<--': "Undo", '-->': "Redo", 'username': 'Username', 'password': 'Password'},
-    "Swedish": {"login": "Logga in", "logout": "Logga ut", "menu": "Meny", "cart": "Kundvagn", "checkout": "Betala",
-                '<--': "Ångra", '-->': "Gör igen", 'username': 'Användarnamn', 'password': 'Lösenord'},
-    "Chinese": {"login": "登录", "logout": "登出", "menu": "菜单", "cart": "购物车", "checkout": "结账", '<--': "撤消",
-            '-->': "重做", 'username': '用户名', 'password': '密码'}
-}
 
+# Load language from JSON file
+def load_language():
+    global LANGUAGES
+    with open("language.json", "r", encoding="utf-8") as file:
+        LANGUAGES = json.load(file)
+    
 
-def login():
-    global user_role
-    user_role = "customer"
-    root.withdraw()
-
-    # if username_entry.get() in USERS:
-    #     if password_entry.get() == USERS[username_entry.get()]["password"]:
-    #         user_role = USERS[username_entry.get()]["role"]
-    #         messagebox.showinfo("Login", f"Welcome {username_entry.get()}!")
-    #     else:
-    #         messagebox.showerror("Login", "Invalid password!")
-    # else:
-    #     messagebox.showerror("Login", "Invalid username!")
-
-    # open the main window
-    if user_role == "customer":
-        customer.open_customer_interface()
-    # elif user_role == "owner":
-    #     Owner.open_owner_interface()
-    # elif user_role == "bartender":
-    #     Bartender.open_bartender_interface()
-    # elif user_role == "vip":
-    #     VIP.open_vip_interface()
 
 def close_application():
     root.destroy()
@@ -65,6 +39,31 @@ class LoginInterface:
     def __init__(self, root):
         self.root = root
         
+    def login(self):
+        global user_role
+        user_role = "customer"
+        root.withdraw()
+
+        # if username_entry.get() in USERS:
+        #     if password_entry.get() == USERS[username_entry.get()]["password"]:
+        #         user_role = USERS[username_entry.get()]["role"]
+        #         messagebox.showinfo("Login", f"Welcome {username_entry.get()}!")
+        #     else:
+        #         messagebox.showerror("Login", "Invalid password!")
+        # else:
+        #     messagebox.showerror("Login", "Invalid username!")
+
+        # open the main window
+        if user_role == "customer":
+            customer.open_customer_interface()
+        # elif user_role == "owner":
+        #     Owner.open_owner_interface()
+        # elif user_role == "bartender":
+        #     Bartender.open_bartender_interface()
+        # elif user_role == "vip":
+        #     VIP.open_vip_interface()
+
+
     def selection_changed(self, event):
         current_language = self.combo.get()
         self.button.config(text=LANGUAGES[current_language]["login"])
@@ -96,13 +95,14 @@ class LoginInterface:
         self.password_entry.pack(pady=5)
 
         # Login button
-        self.button = tk.Button(self.root, text=LANGUAGES[current_language]["login"], command=login)
+        self.button = tk.Button(self.root, text=LANGUAGES[current_language]["login"], command=self.login)
         self.button.pack(pady=20)
         self.button.config(text=LANGUAGES[current_language]["login"])
 
 
 
 if __name__ == "__main__":
+    load_language()
     # Create main application window
     root = TkinterDnD.Tk()
     

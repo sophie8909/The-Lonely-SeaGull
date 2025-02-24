@@ -1,0 +1,8 @@
+{
+    "English": {"login": "Log in", "logout": "Log out", "menu": "Menu", "cart": "Shopping Cart",
+                "checkout": "Checkout", "<--": "Undo", "-->": "Redo", "username": "Username", "password": "Password", "beer menu": "Beer Menu"},
+    "Swedish": {"login": "Logga in", "logout": "Logga ut", "menu": "Meny", "cart": "Kundvagn", "checkout": "Betala",
+                "<--": "Ångra", "-->": "Gör igen", "username": "Användarnamn", "password": "Lösenord", "beer menu": "Ölmeny"},
+    "Chinese": {"login": "登录", "logout": "登出", "menu": "菜单", "cart": "购物车", "checkout": "结账", "<--": "撤消",
+            "-->": "重做", "username": "用户名", "password": "密码", "beer menu": "酒单"}
+}

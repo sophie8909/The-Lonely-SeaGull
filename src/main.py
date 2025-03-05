@@ -62,8 +62,8 @@ class LoginInterface:
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
 
-        w = screen_width/1.5
-        h = screen_height/1.5
+        w = screen_width  * 0.5
+        h = screen_height * 0.5
         x = (screen_width/2) - (w/2)
         y = (screen_height/2) - (h/2)
 

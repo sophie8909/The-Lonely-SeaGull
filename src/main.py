@@ -13,6 +13,10 @@ user_role = None
 current_language = "English"
 order_history = []
 redo_stack = []
+w = 0
+h = 0
+x = 0
+y = 0
 
 # Simulated user data
 USERS = {
@@ -38,6 +42,37 @@ def close_application():
 class LoginInterface:
     def __init__(self, root):
         self.root = root
+
+    def change_res_27(self):
+        # global w,h,x,y
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+
+        w = screen_width * 0.9
+        h = screen_height * 0.9
+        x = (screen_width / 2) - (w / 2)
+        y = (screen_height / 2) - (h / 2)
+
+        self.root.geometry(str(int(w)) + "x" + str(int(h)) + "+" + str(int(x)) + "+" + str(int(y)))
+        print("screen_width:", w)
+        print("screen_height:", h)
+
+    def change_res_9(self):
+        # global w, h,x,y
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+
+        w = screen_width/1.5
+        h = screen_height/1.5
+        x = (screen_width/2) - (w/2)
+        y = (screen_height/2) - (h/2)
+
+        self.root.geometry(str(int(w)) + "x" + str(int(h)) + "+" + str(int(x)) + "+" + str(int(y)))
+
+        print("screen_width:", w)
+        print("screen_height:", h)
+        print("x:", x)
+        print("y:", y)
         
     def login(self):
         global user_role
@@ -73,7 +108,14 @@ class LoginInterface:
 
     def create_widgets(self):
         self.root.title("Login Interface")
-        self.root.geometry("300x200")
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        w = screen_width * 0.9
+        h = screen_height * 0.9
+        x = (screen_width / 2) - (w / 2)
+        y = (screen_height / 2) - (h / 2)
+
+        self.root.geometry(str(int(w)) + "x" + str(int(h)) + "+" + str(int(x)) + "+" + str(int(y)))
         self.root.protocol("WM_DELETE_WINDOW", close_application)
 
         # Combo box for selecting different system language
@@ -98,6 +140,14 @@ class LoginInterface:
         self.button = tk.Button(self.root, text=LANGUAGES[current_language]["login"], command=self.login)
         self.button.pack(pady=20)
         self.button.config(text=LANGUAGES[current_language]["login"])
+
+        # 27 inch display button
+        self.button1 = tk.Button(self.root, text="27 inch display", command=self.change_res_27)
+        self.button1.pack(pady=20)
+
+        # 9 inch display button
+        self.button2 = tk.Button(self.root, text="9 inch display", command=self.change_res_9)
+        self.button2.pack(pady=20)
 
 
 

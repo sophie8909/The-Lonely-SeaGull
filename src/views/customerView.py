@@ -7,6 +7,7 @@ class CustomerView(tk.Frame):
     def __init__(self, parent, current_language):
         super().__init__(parent)
         self.current_language = current_language
+
         self.shopping_cart = tk.Listbox()
         
 
@@ -15,30 +16,86 @@ class CustomerView(tk.Frame):
         self.combo.pack(padx=5)
         self.combo.current(0)
         # self.combo.bind("<<ComboboxSelected>>", self.selection_changed)
+
+        # Search bar
+        self.search_frame = tk.Frame(self)
+        self.search_frame.pack(fill="x", padx=10, pady=5)
+
+        self.search_entry = ttk.Entry(self.search_frame, width=40)
+        self.search_entry.pack(side="left", padx=5)
+
+        self.search_button = ttk.Button(self.search_frame, text=LANGUAGE[self.current_language]["search"])
+        self.search_button.pack(side="left")
+
+        # Select label (filter buttons)
+        self.filter_frame = tk.Frame(self)
+        self.filter_frame.pack(fill="x", padx=10)
+
+        # TODO: Add filter buttons
+        self.filters = ["magenta", "iced beer", "discount", "alcohol free"]
+        self.filter_buttons = []
+        for filter_name in self.filters:
+            btn = ttk.Button(self.filter_frame, text=filter_name)
+            btn.pack(side="left", padx=5)
+            self.filter_buttons.append(btn)
         
-        self.beer_menu_label = tk.Label(self, text=LANGUAGE[self.current_language]["beer menu"], font=("Arial", 16)).pack(pady=5)
+        # Main view area (menu display)
+        self.menu_frame = tk.Frame(self)
+        self.menu_frame.pack(fill="both", expand=True, padx=10, pady=5)
+
+        self.canvas = tk.Canvas(self.menu_frame)
+        self.scrollbar = ttk.Scrollbar(self.menu_frame, orient="vertical", command=self.canvas.yview)
+        self.scrollbar.pack(side="right", fill="y")
+        self.canvas.pack(side="left", fill="both", expand=True)
         
+        self.menu_container = tk.Frame(self.canvas)
+        self.canvas.create_window((0, 0), window=self.menu_container, anchor="nw")
+
+        # update the scroll region to the size of the frame
+        self.menu_container.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
+
+        # Right side buttons
+        self.side_frame = tk.Frame(self)
+        self.side_frame.pack(side="right", padx=20, fill="y")
         
-        self.beer_menu_frame = tk.Frame(self, width=300, relief=tk.SUNKEN, borderwidth=2)
-        self.beer_menu_frame.pack(side=tk.LEFT, fill=tk.Y)
 
-        self.menu_label = tk.Label(self.beer_menu_frame, text=LANGUAGE[self.current_language]["menu"], font=("Arial", 16)).pack(pady=5)
-        self.beers_list = []
+        self.add_friends_btn = ttk.Button(self.side_frame, text=LANGUAGE[self.current_language]["add friends"])
+        self.add_friends_btn.pack(pady=5)
+
+        self.confirm_btn = ttk.Button(self.side_frame, text=LANGUAGE[self.current_language]["confirm"])
+        self.confirm_btn.pack(pady=5)
+        
+        # self.undo_label = tk.Button(self.side_frame, text=LANGUAGE[self.current_language]["undo"]).pack()
+        # self.redo_label = tk.Button(self.side_frame, text=LANGUAGE[self.current_language]["redo"]).pack()
+    
 
 
-        right_frame = tk.Frame(self, relief=tk.SUNKEN, borderwidth=2)
-        right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+    def displat_menu_item(self, item, row, col):
+        item_frame = tk.Frame(self.menu_container, relief=tk.RAISED, borderwidth=1)
+        item_frame.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
 
-        self.cart_label = tk.Label(right_frame, text=LANGUAGE[self.current_language]["cart"], font=("Arial", 14)).pack()
-        self.shopping_cart = tk.Listbox(right_frame, width=50, height=20)
-        self.shopping_cart.pack()
+        item_label = tk.Label(item_frame, text=item["name"])
+        item_label.pack()
 
-        self.checkout_language_label = tk.Button(right_frame, text=LANGUAGE[self.current_language]["checkout"], command=lambda: messagebox.showinfo("Order", "Order placed successfully!")) \
-            .pack(pady=10)
+        item_price = tk.Label(item_frame, text=item["price"])
+        item_price.pack()
 
-        self.undo_label = tk.Button(right_frame, text=LANGUAGE[self.current_language]["undo"]).pack()
-        self.redo_label = tk.Button(right_frame, text=LANGUAGE[self.current_language]["redo"]).pack()
-    #     
+        item_button = tk.Button(item_frame, text="Add to Cart")
+        item_button.pack()
+
+    # def hide_widgets(self):
+    #     self.combo.pack_forget()
+    #     self.beer_menu_label.pack_forget()
+    #     self.beer_menu_frame.pack_forget()
+    #     self.menu_label.pack_forget()
+    #     for beer in self.beers_list:
+    #         beer.pack_forget()
+    #     self.cart_label.pack_forget()
+    #     self.shopping_cart.pack_forget()
+    #     self.checkout_language_label.pack_forget()
+    #     self.undo_label.pack_forget()
+    #     self.redo_label.pack_forget()
+        
 
     def update_beer_menu(self, beers):
         # for widget in self.beer_menu_frame.winfo_children():

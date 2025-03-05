@@ -4,20 +4,19 @@ from models.language import LANGUAGE
 
 
 class LoginView(tk.Frame):
-    def __init__(self, root, current_language):
-        super().__init__(root)
-        # self.title("Login Interface")
-        # self.geometry("300x200")
-        # self.protocol("WM_DELETE_WINDOW", close_application)
+    def __init__(self, parent, current_language):
+        super().__init__(parent)
 
+    # def create_widgets(self):
         # Combo box for selecting different system language
+        
         self.combo = ttk.Combobox(self, state="readonly", values=["English", "Swedish", "Chinese"], height=2, width=10)
         self.combo.pack(padx=5)
         self.combo.current(0)
         # self.combo.bind("<<ComboboxSelected>>", self.selection_changed)
 
         # Create a frame for the login form
-        self.frame = tk.Frame(root, bg="#d3d3d3")
+        self.frame = tk.Frame(self, bg="#d3d3d3")
         self.frame.place(relx=0.5, rely=0.5, anchor="center")
 
         # Username label and entry
@@ -40,3 +39,14 @@ class LoginView(tk.Frame):
 
         self.guest_button = ttk.Button(self.btn_frame, text="Continue as a Guest")
         self.guest_button.pack(side="left", padx=5)
+
+    def show_error_message(self, message):
+        messagebox.showerror("Error", message)
+
+    # def hide_widgets(self):
+    #     self.combo.pack_forget()
+    #     self.frame.place_forget()
+    #     self.btn_frame.grid_forget()
+    #     self.login_button.pack_forget()
+    #     self.guest_button.pack_forget()
+

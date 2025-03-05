@@ -1,9 +1,9 @@
 import tkinter as tk
-from controllers.controller import Controller
+from controllers.maincontroller import MainController
 
 def main():
     root = tk.Tk()
-    Controller(root, current_language="English")
+    MainController(root, current_language="English")
     root.mainloop()
 
 if __name__ == '__main__':

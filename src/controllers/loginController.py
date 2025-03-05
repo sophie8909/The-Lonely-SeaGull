@@ -1,12 +1,12 @@
-from src.models.services import UsersService
-from src.views.loginView import LoginView
-from src.controllers.base import BaseController
+# from models.services import UsersService
+from views.loginView import LoginView
+from controllers.base import BaseController
 
 class LoginController(BaseController):
-    def __init__(self):
-        super().__init__()
-        self.users = UsersService()
-        self.frame = [LoginView(self)]
+    def __init__(self, root, current_language):
+        super().__init__(root, current_language)
+        # self.users = UsersService()
+        self.frame = LoginView(root, current_language)
 
     def login(self, username, password):
         # Do something

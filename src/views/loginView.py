@@ -1,32 +1,42 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
-from src.models.language import LANGUAGES
+from models.language import LANGUAGE
 
-class LoginView:
-    def __init__(self, parent, language, current_language):
-        # self.root.title("Login Interface")
-        # self.root.geometry("300x200")
-        # self.root.protocol("WM_DELETE_WINDOW", close_application)
+
+class LoginView(tk.Frame):
+    def __init__(self, root, current_language):
+        super().__init__(root)
+        # self.title("Login Interface")
+        # self.geometry("300x200")
+        # self.protocol("WM_DELETE_WINDOW", close_application)
 
         # Combo box for selecting different system language
-        self.combo = ttk.Combobox(self.root, state="readonly", values=["English", "Swedish", "Chinese"], height=2, width=10)
+        self.combo = ttk.Combobox(self, state="readonly", values=["English", "Swedish", "Chinese"], height=2, width=10)
         self.combo.pack(padx=5)
         self.combo.current(0)
-        self.combo.bind("<<ComboboxSelected>>", self.selection_changed)
+        # self.combo.bind("<<ComboboxSelected>>", self.selection_changed)
+
+        # Create a frame for the login form
+        self.frame = tk.Frame(root, bg="#d3d3d3")
+        self.frame.place(relx=0.5, rely=0.5, anchor="center")
 
         # Username label and entry
-        self.label1 = tk.Label(self.root, text=LANGUAGES[current_language]["username"])
-        self.label1.pack(pady=5)
-        self.username_entry = tk.Entry(self.root)
-        self.username_entry.pack(pady=5)
+        self.username_label = tk.Label(self.frame, text="User name", bg="#d3d3d3").grid(row=0, column=0, padx=10, pady=10, sticky="e")
+        self.username_entry = ttk.Entry(self.frame, width=25)
+        self.username_entry.grid(row=0, column=1, padx=10, pady=10)
 
         # Password label and entry
-        self.label2 = tk.Label(self.root, text=LANGUAGES[current_language]["password"])
-        self.label2.pack(pady=5)
-        self.password_entry = tk.Entry(self.root, show="*")
-        self.password_entry.pack(pady=5)
+        self.password_label = tk.Label(self.frame, text="Password", bg="#d3d3d3").grid(row=1, column=0, padx=10, pady=10, sticky="e")
+        self.password_entry = ttk.Entry(self.frame, width=25, show="*")
+        self.password_entry.grid(row=1, column=1, padx=10, pady=10)
 
-        # Login button
-        self.button = tk.Button(self.root, text=LANGUAGES[current_language]["login"], command=self.login)
-        self.button.pack(pady=20)
-        self.button.config(text=LANGUAGES[current_language]["login"])
+        
+        # Buttons
+        self.btn_frame = tk.Frame(self.frame, bg="#d3d3d3")
+        self.btn_frame.grid(row=2, column=0, columnspan=2, pady=10)
+
+        self.login_button = ttk.Button(self.btn_frame, text="Login")
+        self.login_button.pack(side="left", padx=5)
+
+        self.guest_button = ttk.Button(self.btn_frame, text="Continue as a Guest")
+        self.guest_button.pack(side="left", padx=5)

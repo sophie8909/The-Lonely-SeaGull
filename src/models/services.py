@@ -1,5 +1,5 @@
 from typing import List, Optional
-from src.models import User, Beer, Order, OrderItem, Payment, VipCustomer, BeerSold
+from models import User, Beer, Order, OrderItem, Payment, VipCustomer, BeerSold
 
 # In-memory store simulation
 

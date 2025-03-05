@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
-from src.models.language import LANGUAGE
+from models.language import LANGUAGE
 
 
 class CustomerView(tk.Frame):
@@ -38,6 +38,7 @@ class CustomerView(tk.Frame):
 
         self.undo_label = tk.Button(right_frame, text=LANGUAGE[self.current_language]["undo"]).pack()
         self.redo_label = tk.Button(right_frame, text=LANGUAGE[self.current_language]["redo"]).pack()
+    #     
 
     def update_beer_menu(self, beers):
         # for widget in self.beer_menu_frame.winfo_children():
@@ -62,11 +63,11 @@ class CustomerView(tk.Frame):
         
 
         
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.title("Customer Ordering Interface")
-    root.geometry("1920x1280")
+# if __name__ == "__main__":
+#     root = tk.Tk()
+#     root.title("Customer Ordering Interface")
+#     root.geometry("1920x1280")
     
-    ui = CustomerView(root, LAGN, "English")
-    ui.pack()
-    root.mainloop()
+#     ui = CustomerView(root, LAGN, "English")
+#     ui.pack()
+#     root.mainloop()

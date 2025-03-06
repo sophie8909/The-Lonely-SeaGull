@@ -2,6 +2,9 @@ from models.services import UsersService
 from views.loginView import LoginView
 from controllers.base import BaseController
 
+from models.language import LANGUAGE
+from tkinter import messagebox
+
 class LoginController(BaseController):
     def __init__(self, tk_root, main_controller, current_language):
         super().__init__(tk_root, current_language)
@@ -15,7 +18,11 @@ class LoginController(BaseController):
         self.frame.pack(expand=True, fill='both')
 
     def hide_widgets(self):
-        self.frame.hide_widgets()
+        self.frame.combo.pack_forget()
+        self.frame.frame.place_forget()
+        self.frame.btn_frame.grid_forget()
+        self.frame.login_button.pack_forget()
+        self.frame.guest_button.pack_forget()
 
     def destroy_widgets(self):
         self.frame.destroy()
@@ -54,6 +61,17 @@ class LoginController(BaseController):
         print("x:", x)
         print("y:", y)
 
+    def show_error_message(self, message):
+        messagebox.showerror("Error", message)
+
+    def update_language(self, event):
+        self.current_language = self.frame.combo.get()
+        self.frame.username_label.config(text=LANGUAGE[self.current_language]["username"])
+        self.frame.password_label.config(text=LANGUAGE[self.current_language]["password"])
+        self.frame.login_button.config(text=LANGUAGE[self.current_language]["login"])
+        self.frame.guest_button.config(text=LANGUAGE[self.current_language]["guest_btn"])
+        self.frame.language_label.config(text=LANGUAGE[self.current_language]["language"])
+
         
     def set_up_bind(self):
         self.frame.login_button.bind("<Button-1>", self.login_button_click)
@@ -61,6 +79,7 @@ class LoginController(BaseController):
         self.frame.guest_button.bind("<Button-1>", self.guest_button_click)
         self.frame.button1.bind("<Button-1>", self.change_res_27)
         self.frame.button2.bind("<Button-1>", self.change_res_9)
+        self.frame.combo.bind("<<ComboboxSelected>>", self.update_language)
 
 
     def login_button_click(self, event):
@@ -69,7 +88,7 @@ class LoginController(BaseController):
         password = self.frame.password_entry.get()
         success, message = self.login(username, password)
         if not success:
-            self.frame.show_error_message(message)
+            self.show_error_message(message)
             return
         else:
             self.main_controller.switch_controller(self.main_controller.customer_controller)

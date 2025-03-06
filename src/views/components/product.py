@@ -227,11 +227,10 @@ class ProductCard(Dragable, tk.Frame):
         self.product_card.grid(row=row, column=col, padx=10, pady=10)
         self.product_card.pack_propagate(False)
 
-        # TODO: Add product image
-        # self.product_image = tk.PhotoImage(file="assets/beer.png")
-        # self.product_image = self.product_image.subsample(3)
-        self.product_image_label = tk.Label(self.product_card, bg=self.background_color) # image=self.product_image
-        # self.product_image_label.image = self.product_image
+        self.product_image = tk.PhotoImage(file="../assets/beer.png")
+        self.product_image = self.product_image.subsample(3)
+        self.product_image_label = tk.Label(self.product_card, image=self.product_image, bg=self.background_color)
+        self.product_image_label.image = self.product_image
         self.product_image_label.pack(pady=0)
 
         self.product_name = tk.Label(self.product_card, text=f"Product {row*3+col+1}", bg=self.background_color, font=self.default_font)
@@ -255,10 +254,10 @@ class ProductCard(Dragable, tk.Frame):
             root = root.master
         ghost = tk.Frame(root, bg=self.background_color, width=223, height=262, bd=1, relief="solid")
         ghost.pack_propagate(False)
-        # ghost_image = tk.PhotoImage(file="assets/beer.png")
-        # ghost_image = ghost_image.subsample(3)
-        ghost_image_label = tk.Label(ghost, bg=self.background_color) # image=ghost_image
-        # ghost_image_label.image = ghost_image
+        ghost_image = tk.PhotoImage(file="../assets/beer.png")
+        ghost_image = ghost_image.subsample(3)
+        ghost_image_label = tk.Label(ghost, image=ghost_image, bg=self.background_color)
+        ghost_image_label.image = ghost_image
         ghost_image_label.pack(pady=0)
         ghost_name = tk.Label(ghost, text=f"Product {self.row*3+self.col+1}", bg=self.background_color, font=self.default_font)
         ghost_name.pack(pady=(30,5))

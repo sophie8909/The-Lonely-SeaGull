@@ -14,8 +14,7 @@ class CustomerView(tk.Frame):
         # Combo box for selecting different system language
         self.combo = ttk.Combobox(self, state="readonly", values=["English", "Svenska", "中文"], height=2, width=10)
         self.combo.pack(padx=5)
-        self.combo.current(0)
-        # self.combo.bind("<<ComboboxSelected>>", self.selection_changed)
+        self.combo.bind("<<ComboboxSelected>>", self.update_language)
 
         # Search bar
         self.search_frame = tk.Frame(self)
@@ -32,7 +31,7 @@ class CustomerView(tk.Frame):
         self.filter_frame.pack(fill="x", padx=10)
 
         # TODO: Add filter buttons
-        self.filters = ["magenta", "iced beer", "discount", "alcohol free"]
+        self.filters = ["Beers", "Wine", "Cocktails/Drinks"]
         self.filter_buttons = []
         for filter_name in self.filters:
             btn = ttk.Button(self.filter_frame, text=filter_name)
@@ -110,13 +109,17 @@ class CustomerView(tk.Frame):
             self.beers_list.append(beer_label)
             # self.beer_label.bind("<ButtonPress-1>", lambda e, b=beer: self.add_to_cart(b))
 
-    def update_language(self):
-        self.beer_menu_label.config(text=LANGUAGE[self.current_language]["beer menu"])
-        self.menu_label.config(text=LANGUAGE[self.current_language]["menu"])
-        self.cart_label.config(text=LANGUAGE[self.current_language]["cart"])
-        self.checkout_language_label.config(text=LANGUAGE[self.current_language]["checkout"])
-        self.undo_label.config(text=LANGUAGE[self.current_language]["undo"])
-        self.redo_label.config(text=LANGUAGE[self.current_language]["redo"])
+    def update_language(self, event):
+        # self.beer_menu_label.config(text=LANGUAGE[self.current_language]["beer menu"])
+        # self.menu_label.config(text=LANGUAGE[self.current_language]["menu"])
+        # self.cart_label.config(text=LANGUAGE[self.current_language]["cart"])
+        # self.checkout_language_label.config(text=LANGUAGE[self.current_language]["checkout"])
+        # self.undo_label.config(text=LANGUAGE[self.current_language]["undo"])
+        # self.redo_label.config(text=LANGUAGE[self.current_language]["redo"])
+        self.current_language = self.combo.get()
+        self.add_friends_btn.config(text=LANGUAGE[self.current_language]["add friends"])
+        self.confirm_btn.config(text=LANGUAGE[self.current_language]["confirm"])
+        self.search_button.config(text=LANGUAGE[self.current_language]["search"])
         
 
         

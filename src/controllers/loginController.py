@@ -21,11 +21,46 @@ class LoginController(BaseController):
         self.frame.destroy()
         self.frame = None
 
+    def change_res_27(self, event):
+        # global w,h,x,y
+        screen_width = self.tk_root.winfo_screenwidth()
+        screen_height = self.tk_root.winfo_screenheight()
+
+        w = screen_width * 0.9
+        h = screen_height * 0.9
+        x = (screen_width / 2) - (w / 2)
+        y = (screen_height / 2) - (h / 2)
+
+        self.tk_root.geometry(str(int(w)) + "x" + str(int(h)) + "+" + str(int(x)) + "+" + str(int(y)))
+        print("screen_width:", w)
+        print("screen_height:", h)
+        print("x:", x)
+        print("y:", y)
+
+    def change_res_9(self, event):
+        # global w, h,x,y
+        screen_width = self.tk_root.winfo_screenwidth()
+        screen_height = self.tk_root.winfo_screenheight()
+
+        w = screen_width  * 0.5
+        h = screen_height * 0.5
+        x = (screen_width/2) - (w/2)
+        y = (screen_height/2) - (h/2)
+
+        self.tk_root.geometry(str(int(w)) + "x" + str(int(h)) + "+" + str(int(x)) + "+" + str(int(y)))
+
+        print("screen_width:", w)
+        print("screen_height:", h)
+        print("x:", x)
+        print("y:", y)
+
         
     def set_up_bind(self):
         self.frame.login_button.bind("<Button-1>", self.login_button_click)
         self.frame.password_entry.bind("<Return>", self.login_button_click)
         self.frame.guest_button.bind("<Button-1>", self.guest_button_click)
+        self.frame.button1.bind("<Button-1>", self.change_res_27)
+        self.frame.button2.bind("<Button-1>", self.change_res_9)
 
 
     def login_button_click(self, event):
@@ -46,11 +81,11 @@ class LoginController(BaseController):
     def login(self, username, password):
         user = self.users.get_user(username)
         if user is None:
-            return (False, "User not found")
+            return False, "User not found"
         if user.password != password:
-            return (False, "Incorrect password")
+            return False, "Incorrect password"
         self.main_controller.current_user = user
-        return (True, "Login success")
+        return True, "Login success"
 
     def logout(self):
         self.main_controller.current_user = None

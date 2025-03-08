@@ -23,6 +23,8 @@ class CustomerController(BaseController):
         self.frame.shopping_cart_widget.set_on_drop(self.add_cart_item)
         self.frame.shopping_cart_widget.add_friends_btn.config(command=self.add_person)
         self.frame.shopping_cart_widget.confirm_btn.config(command=self.confirm_order)
+        # self.frame.shopping_cart_widget.undo_btn.config(command=self.undo)
+        # self.frame.shopping_cart_widget.redo_btn.config(command=self.redo)
         self.add_person()
     
     def create_widgets(self):
@@ -65,9 +67,43 @@ class CustomerController(BaseController):
         self.shopping_cart[self.current_person].append({"name": item_name, "price": itme_price})
         self.frame.shopping_cart_widget.add_item(item_name, itme_price)
 
+    """Confirm the order and add it to the order history"""
     def confirm_order(self):
-        #TODO: Implement order confirmation
-        pass
+        # double check the order
+        self.frame.shopping_cart_widget.double_check_confirm()
+        self.frame.shopping_cart_widget.confirm_yes_btn.config(command=self.confirm_order_yes)
+        self.frame.shopping_cart_widget.confirm_no_btn.config(command=self.confirm_order_no)
+
+    def confirm_order_yes(self):
+        print("Confirming order")
+        order = []
+        # Add all items in the shopping cart to the order
+        for person in self.shopping_cart:
+            order.append(person)
+        self.order_history.append(order)
+
+        print("Order history:")
+        for order in self.order_history:
+            print(order)
+
+        # reset shopping cart
+        self.frame.shopping_cart_widget.clear_cart()
+        self.shopping_cart = []
+        self.person_count = 0
+        self.add_person()
+
+        # empty the undo stack
+        self.undo_stack = []
+        self.redo_stack = []
+
+
+        self.frame.shopping_cart_widget.confirm_window_close()
+
+        
+
+    def confirm_order_no(self):
+        print("Cancelling order")
+        self.frame.shopping_cart_widget.confirm_window_close()
 
 if __name__ == "__main__":
     import tkinter as tk

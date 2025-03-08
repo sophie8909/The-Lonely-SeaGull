@@ -114,17 +114,17 @@ class ShoppingCart(tk.Frame):
                                bg=self.light_gray, font=("Inter", 12))
         self.redo_btn.pack(side="right", padx=5)
         
-        # Confirm button (second from bottom)
+        # Add friends button (second from bottom)
+        self.add_friends_btn = tk.Button(self.bottom_frame, text="add friends",
+                                       bg=self.primary_color, fg="white", font=self.header_font,
+                                       bd=0, padx=16, pady=10)
+        self.add_friends_btn.pack(fill="x", pady=10)
+        # Confirm button (third from bottom)
         self.confirm_btn = tk.Button(self.bottom_frame, text="confirm",
                                    bg=self.primary_color, fg="white", font=self.header_font,
                                    bd=0, padx=16, pady=10)
         self.confirm_btn.pack(fill="x", pady=10)
         
-        # Add friends button (third from bottom)
-        self.add_friends_btn = tk.Button(self.bottom_frame, text="add friends",
-                                       bg=self.primary_color, fg="white", font=self.header_font,
-                                       bd=0, padx=16, pady=10)
-        self.add_friends_btn.pack(fill="x", pady=10)
 
 
         # test item
@@ -208,7 +208,55 @@ class ShoppingCart(tk.Frame):
         self.person_frame_top.on_drop = on_drop
         self.items_frame.on_drop = on_drop
         self.person_frame_bottom.on_drop = on_drop
+
+    def clear_cart(self):
+        for person in self.person_top:
+            person.destroy()
+        for person in self.person_bottom:
+            person.destroy()
+        for item in self.items:
+            for widget in item:
+                widget.destroy()
+        self.person_top = []
+        self.person_bottom = []
+        self.items = []
+        self.totals = []
+        self.current_person = 0
+        self.total_label.config(text="Total: 0 SEK")
+
+    # pop up window for confirm order
+    def double_check_confirm(self):
+        # pop up window in center for double check the order
+        self.confirm_window = tk.Toplevel(self)
+        self.confirm_window.title("Confirm Order")
+        self.confirm_window.geometry("300x200")
+        self.confirm_window.resizable(False, False)
+        # set the position of the pop up window
+        x = self.confirm_window.winfo_screenwidth() // 2 - 150
+        y = self.confirm_window.winfo_screenheight() // 2 - 100
+        self.confirm_window.geometry(f"+{x}+{y}")
+
+        # force the user to confirm the order
+        self.confirm_window.grab_set() # block the main window
+        self.confirm_window.focus_set() # focus on the pop up window
+        self.confirm_window.protocol("WM_DELETE_WINDOW", self.prevent_closing)
+
+        confirm_label = tk.Label(self.confirm_window, text="Are you sure to confirm the order?", font=("Inter", 12))
+        confirm_label.pack(pady=20)
+
+        self.confirm_yes_btn = tk.Button(self.confirm_window, text="Yes", bg=self.primary_color, fg="white", font=("Inter", 12))
+        self.confirm_yes_btn.pack(side="left", padx=20)
+
+        self.confirm_no_btn = tk.Button(self.confirm_window, text="No", bg=self.primary_color, fg="white", font=("Inter", 12))
+        self.confirm_no_btn.pack(side="right", padx=20)    
     
+    def confirm_window_close(self):
+        self.confirm_window.destroy()
+
+
+    def prevent_closing(self):
+        """ Prevent closing the confirmation window without an explicit choice """
+        pass  # Do nothing, forcing user interaction
 
 class ProductCard(Dragable, tk.Frame):
     drag_threshold = 20

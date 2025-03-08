@@ -27,15 +27,16 @@ class CustomerController(BaseController):
         # self.frame.shopping_cart_widget.undo_btn.config(command=self.undo)
         # self.frame.shopping_cart_widget.redo_btn.config(command=self.redo)
 
+        # fetch data from the database and update the view
+        self.load_filter()
+        self.frame.update_filter()
+    
         for filter_btn in self.frame.filter_buttons:
             filter_text = filter_btn.cget("text")  # 立即存下當前的文本
             filter_btn.config(command=lambda text=filter_text: self.filter_products(text))
-
-
-        # fetch products from the database
-        self.load_products()
+        self.load_beer()
         self.frame.update_menu()
-    
+
     def create_widgets(self):
         self.frame = CustomerView(self.tk_root, self.current_language)
         self.frame.pack(expand=True, fill='both')
@@ -112,7 +113,7 @@ class CustomerController(BaseController):
         print("Cancelling order")
         self.frame.shopping_cart_widget.confirm_window_close()
 
-    def load_products(self):
+    def load_beer(self):
         # TODO: fetch products from the database
         # type: magenta, iced beer, discount, alcohol-free
         self.frame.beers_list = [
@@ -133,10 +134,25 @@ class CustomerController(BaseController):
             {"name": "Beer 15", "price": "150 kr", "type": "discount"},
             {"name": "Beer 16", "price": "160 kr", "type": "alcohol-free"},
         ]
+    
+    def load_filter(self):
+        # TODO: fetch filters from the database
+        # TODO: Replace this with actual filter data
+        self.frame.filter_data = { 
+            "magenta":{"text": "magenta", "icon": "♥", "active": True}, 
+            "iced beer":{"text": "iced beer", "icon": "♥", "active": False},
+            "discount":{"text": "discount", "icon": "♥", "active": False},
+            "alcohol-free":{"text": "alcohol-free", "icon": "♥", "active": False}
+            }
 
 
     def filter_products(self, filter_text):
         self.frame.filter_products(filter_text)
+        self.frame.update_filter()
+        for filter_btn in self.frame.filter_buttons:
+            filter_text = filter_btn.cget("text")  # 立即存下當前的文本
+            filter_btn.config(command=lambda text=filter_text: self.filter_products(text))
+        self.frame.update_menu()
 
 
 if __name__ == "__main__":

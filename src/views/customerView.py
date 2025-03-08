@@ -17,6 +17,7 @@ class CustomerView(tk.Frame):
         self.current_language = current_language
         self.beers_list = []
         self.filter_beer_list = []
+        self.filter_data = {}
         
         # Define colors
         self.primary_color = "#035BAC"
@@ -61,36 +62,7 @@ class CustomerView(tk.Frame):
         self.filter_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
         self.filter_frame.pack(fill="x", pady=10)
         
-        # Filter buttons
-        self.filter_buttons = []
-        filter_data = [
-            {"text": "magenta", "icon": "♥", "active": True},
-            {"text": "iced beer", "icon": "♥", "active": False},
-            {"text": "discount", "icon": "♥", "active": False},
-            {"text": "alcohol-free", "icon": "♥", "active": False}
-        ]
         
-        for filter_info in filter_data:
-            btn_frame = tk.Frame(self.filter_frame)
-            btn_frame.pack(side="left", padx=5)
-            
-            if filter_info["active"]:
-                btn_bg = self.light_primary
-                btn_fg = self.primary_color
-                icon_color = self.primary_color
-            else:
-                btn_bg = "#FAFAFA"
-                btn_fg = self.dark_text
-                icon_color = self.light_icon
-            
-            icon_label = tk.Label(btn_frame, text=filter_info["icon"], fg=icon_color, bg=btn_bg)
-            icon_label.pack(side="left", padx=2)
-            
-            filter_button = tk.Button(btn_frame, text=filter_info["text"], 
-                                     bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
-                                     padx=10, pady=5, font=self.default_font)
-            filter_button.pack(side="left")
-            self.filter_buttons.append(filter_button)
         
         # Product grid
         self.product_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
@@ -146,7 +118,7 @@ class CustomerView(tk.Frame):
         col = 0
 
         for product in self.beers_list:
-            if product["type"] in self.filter_beer_list:
+            if self.filter_data[product["type"]]["active"]:
                 product_widget = ProductCard(self.product_frame, row, col, self.background_color, self.primary_color, self.default_font, product)
                 self.products_widget.append(product_widget)
                 col += 1
@@ -154,17 +126,45 @@ class CustomerView(tk.Frame):
                     col = 0
                     row += 1
 
+    def update_filter(self):
+        """Update the filter buttons based on the filter data"""
+        # Clear existing filter buttons
+        for widget in self.filter_frame.winfo_children():
+            widget.destroy()
 
+        # Filter buttons
+        self.filter_buttons = []
+        
+        print(self.filter_data)
+        print(list(self.filter_data))
+        for filter_name in list(self.filter_data):
+            btn_frame = tk.Frame(self.filter_frame)
+            btn_frame.pack(side="left", padx=5)
+            
+            if self.filter_data[filter_name]["active"]:
+                btn_bg = self.light_primary
+                btn_fg = self.primary_color
+                icon_color = self.primary_color
+            else:
+                btn_bg = "#FAFAFA"
+                btn_fg = self.dark_text
+                icon_color = self.light_icon
+            
+            icon_label = tk.Label(btn_frame, text=self.filter_data[filter_name]["icon"], fg=icon_color, bg=btn_bg)
+            icon_label.pack(side="left", padx=2)
+            
+            filter_button = tk.Button(btn_frame, text=self.filter_data[filter_name]["text"], 
+                                     bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
+                                     padx=10, pady=5, font=self.default_font)
+            filter_button.pack(side="left")
+            self.filter_buttons.append(filter_button)
 
 
     def filter_products(self, filter_type):
         """Filter products based on the selected filter"""
         print(f"Filtering products by {filter_type}")
-        if filter_type in self.filter_beer_list:
-            self.filter_beer_list.remove(filter_type)
-        else:
-            self.filter_beer_list.append(filter_type)
-        self.update_menu()
+        self.filter_data[filter_type]["active"] = not self.filter_data[filter_type]["active"]
+        
 
 
 if __name__ == "__main__":

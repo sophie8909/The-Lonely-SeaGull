@@ -2,25 +2,35 @@ if __name__ == "__main__":
     import sys
     sys.path.append(sys.path[0] + "/../")
 
+from dataclasses import dataclass
+from typing import List, Dict
+from copy import deepcopy
+
 from controllers.base import BaseController
 from views.customerView import CustomerView
 
 from models.food import food_menu
 from models.beverages import beers, wines, cocktails
 
+@dataclass
+class CustomerControllerData:
+    person_count: int
+    current_person: int
+    shopping_cart: List[List[dict]]
+    def __str__(self):
+        return f"Person count: {self.person_count}, Current person: {self.current_person}, Shopping cart: {self.shopping_cart}"
+    
+    def __repr__(self):
+        return self.__str__()
+
 
 class CustomerController(BaseController):
     def __init__(self, tk_root, main_controller, current_language):
         super().__init__(tk_root, current_language)
         self.frame = None
-        self.person_count = 0
-        self.current_person = 0
-
-        self.shopping_cart = []
-        self.order_history = []
-        self.undo_stack = []
-        self.redo_stack = []
-        self.ordered_list = []
+        self.data = CustomerControllerData(person_count=1, current_person=0, shopping_cart=[[]])
+        self.undo_stack: List[CustomerControllerData] = []
+        self.redo_stack: List[CustomerControllerData] = []
         self.beverage_filter_data = { 
             "Beers":{"text": "Beers", "icon": "🍺", "active": True}, 
             "Wine":{"text": "Wine", "icon": "🍷", "active": True},
@@ -43,17 +53,19 @@ class CustomerController(BaseController):
 
     def customer_view_setup(self):
         self.frame.shopping_cart_widget.set_on_drop(self.add_cart_item)
+        self.frame.shopping_cart_widget.set_current_person_command(self.set_current_person)
+        self.frame.shopping_cart_widget.set_remove_person_command(self.remove_person)
         self.frame.shopping_cart_widget.add_friends_btn.config(command=self.add_person)
         self.frame.shopping_cart_widget.confirm_btn.config(command=self.confirm_order)
-        self.add_person()
-        # self.frame.shopping_cart_widget.undo_btn.config(command=self.undo)
-        # self.frame.shopping_cart_widget.redo_btn.config(command=self.redo)
+        self.frame.shopping_cart_widget.undo_btn.config(command=self.undo)
+        self.frame.shopping_cart_widget.redo_btn.config(command=self.redo)
 
         self.frame.food_button.config(command=lambda: self.switch_menu("Food"))
         self.frame.beverages_button.config(command=lambda: self.switch_menu("Beverages"))
         # fetch data from the database and update the view
         self.load_menu()
         self.update_menu()
+        self.update_cart()
         for filter_btn in self.frame.filter_buttons:
             filter_text = filter_btn.cget("text")  # 立即存下當前的文本
             filter_btn.config(command=lambda text=filter_text: self.switch_filter(text))
@@ -67,36 +79,70 @@ class CustomerController(BaseController):
         self.frame.destroy()
         self.frame = None
 
+    def update_cart(self):
+        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart)
+
+    def set_current_person(self, person):
+        self.data.current_person = person
+        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart)
+
     def add_person(self):
-        self.person_count += 1
-        self.shopping_cart.append([])
-        self.undo_stack.append('add_person')
-        self.frame.add_person(remove_command=self.remove_person)
-        self.current_person = self.person_count - 1
-        self.frame.set_person(self.current_person)
+        self.make_operation()
+        self.data.person_count += 1
+        self.data.shopping_cart.append([])
+        self.data.current_person = self.data.person_count - 1
+        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart)
+
 
     def remove_person(self, i):
-        if isinstance(i, tk.Label):
-            i = int(i.cget("text").split(" ")[1]) - 1
-        print(i, self.person_count)
-        self.person_count -= 1
-            
-        self.shopping_cart.pop(i)
-        self.undo_stack.append('remove_person')
-        self.frame.remove_person(i)
-        if self.person_count == 0:
+        self.make_operation()
+        self.data.person_count -= 1
+        self.data.shopping_cart.pop(i)
+        if self.data.person_count == 0:
             self.add_person()
-        elif self.current_person == self.person_count:
-            self.current_person -= 1
-            print(self.current_person, self.person_count, self.frame.shopping_cart_widget.items)
-        self.frame.set_person(self.current_person)
+        elif self.data.current_person == self.data.person_count:
+            self.data.current_person -= 1
+        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart)
+
     def add_cart_item(self, product_widget):
         """Add an item to the shopping cart"""
-        print("Adding item to cart")
+        self.make_operation()
         item_name = product_widget.product_name.cget("text")
         itme_price = product_widget.product_price.cget("text").split(" ")[0]
-        self.shopping_cart[self.current_person].append({"name": item_name, "price": itme_price})
-        self.frame.shopping_cart_widget.add_item(item_name, itme_price)
+        print(f"Adding {item_name} to the Person {self.data.current_person}'s cart")
+        item_list = [item["name"] for item in self.data.shopping_cart[self.data.current_person]]
+        if item_name in item_list:
+            self.data.shopping_cart[self.data.current_person][item_list.index(item_name)]["amount"] += 1
+        else:
+            self.data.shopping_cart[self.data.current_person].append({"name": item_name, "price": float(itme_price), "amount": 1})
+        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart)
+
+    def make_operation(self):
+        data = deepcopy(self.data)
+        self.undo_stack.append(data)
+        self.redo_stack.clear()
+        print(self.data)
+
+    def undo(self):
+        print("Undoing")
+        print(self.undo_stack)
+        if len(self.undo_stack) == 0:
+            return
+        data = deepcopy(self.data)
+        self.redo_stack.append(data)
+        self.data = self.undo_stack.pop()
+        self.update_cart()
+
+    def redo(self):
+        print("Redoing")
+        print(self.redo_stack)
+        if len(self.redo_stack) == 0:
+            return
+        data = deepcopy(self.data)
+        self.undo_stack.append(data)
+        self.data = self.redo_stack.pop()
+        self.update_cart()
+
 
     """Confirm the order and add it to the order history"""
     def confirm_order(self):
@@ -109,7 +155,7 @@ class CustomerController(BaseController):
         print("Confirming order")
         order = []
         # Add all items in the shopping cart to the order
-        for person in self.shopping_cart:
+        for person in self.data.shopping_cart:
             order.append(person)
         self.order_history.append(order)
 
@@ -119,8 +165,8 @@ class CustomerController(BaseController):
 
         # reset shopping cart
         self.frame.shopping_cart_widget.clear_cart()
-        self.shopping_cart = []
-        self.person_count = 0
+        self.data.shopping_cart = []
+        self.data.person_count = 0
         self.add_person()
 
         # empty the undo stack

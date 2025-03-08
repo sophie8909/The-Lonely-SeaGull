@@ -11,7 +11,7 @@ class MainController(BaseController):
     def __init__(self, tk_root, current_language):
         super().__init__(tk_root, current_language)
         self.tk_root.title("Customer Ordering Interface")
-        self.tk_root.geometry("1920x1280")
+        self.tk_root.geometry("1920x1080")
         self.customer_controller = CustomerController(tk_root, self, current_language)
         self.login_controller = LoginController(tk_root, self, current_language)
         self.vip_controller = VIPController(tk_root, self, current_language)

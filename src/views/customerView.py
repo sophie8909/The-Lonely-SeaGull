@@ -86,19 +86,20 @@ class CustomerView(tk.Frame):
         self.shopping_cart_widget = ShoppingCart(self.main_frame, self.background_color, self.primary_color, self.default_font)
         self.shopping_cart_widget.pack(side="right", fill="both", expand=True, pady=10)
 
+    def update_cart(self, current_person, person_count, shopping_cart):
+        self.shopping_cart_widget.update_cart(current_person, person_count, shopping_cart)
 
+    # def add_person(self, remove_command=None):
+    #     self.shopping_cart_widget.add_person(remove_command)
 
-    def add_person(self, remove_command=None):
-        self.shopping_cart_widget.add_person(remove_command)
-
-    def add_item(self, item_name, price, amount=1):
-        self.shopping_cart_widget.add_item(item_name, price, amount)
+    # def add_item(self, item_name, price, amount=1):
+    #     self.shopping_cart_widget.add_item(item_name, price, amount)
     
-    def set_person(self, current_person):
-        self.shopping_cart_widget.set_person(current_person)
+    # def set_person(self, current_person):
+    #     self.shopping_cart_widget.set_person(current_person)
 
-    def remove_person(self, i):
-        self.shopping_cart_widget.remove_person(i)
+    # def remove_person(self, i):
+    #     self.shopping_cart_widget.remove_person(i)
 
         
     def display_menu_item(self, item, row, col):

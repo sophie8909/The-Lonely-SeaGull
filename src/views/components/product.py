@@ -61,7 +61,6 @@ class ShoppingCart(tk.Frame):
         self.background_color = background_color
         self.primary_color = primary_color
         self.default_font = default_font
-        self.current_person = 0
 
         # Define colors
         self.primary_color = "#035BAC"
@@ -70,6 +69,12 @@ class ShoppingCart(tk.Frame):
         self.light_gray = "#D9D9D9"
         self.dark_text = "#5A5A5A"  # Approximation of rgba(0, 0, 0, 0.65)
         self.light_icon = "#BEBDBD"  # Approximation of rgba(151, 148, 148, 0.5)
+
+        # define person x button command
+        self.remove_person_command = None
+
+        # define person label click command
+        self.current_person_command = None
         
         # Try to set up fonts (if not available, fallback to system fonts)
         try:
@@ -96,7 +101,6 @@ class ShoppingCart(tk.Frame):
         self.person_top = []
         self.person_bottom = []
         self.items = []
-        self.totals = []
         
 
         self.total_label = tk.Label(self.bottom_frame, text="Total: 0 SEK", bg=self.background_color, font=self.header_font)
@@ -133,81 +137,32 @@ class ShoppingCart(tk.Frame):
         # self.add_item("Test item2", 10.99, 1)
 
 
-    def add_person(self, remove_command=None):
-        person_container = tk.Frame(self.person_frame_top, bg=self.light_gray, pady=5, padx=10)
+    def _add_person(self, person_frame, person_id, total=0):
+        person_container = tk.Frame(person_frame, bg=self.light_gray, pady=5, padx=10)
         person_container.pack(fill="x", pady=10)
         
-        person_label = tk.Label(person_container, text=f"Person {len(self.person_top)+1}", bg=self.light_gray, font=("Inter", 12))
+        person_label = tk.Label(person_container, text=f"Person {person_id+1}", bg=self.light_gray, font=("Inter", 12))
         person_label.pack(side="left")
-        remove_btn = tk.Button(person_container, text="✕", bg=self.light_gray, bd=1, command=lambda person_label=person_label: remove_command(person_label))
+        remove_btn = tk.Button(person_container, text="✕", bg=self.light_gray, bd=1, command=lambda: self.remove_person_command(person_id))
         remove_btn.pack(side="right")
-        total_label = tk.Label(person_container, text="0 SEK", bg=self.light_gray, font=("Inter", 12), padx=10)
+        
+        total_text = f"{total:.2f} SEK"
+        total_label = tk.Label(person_container, text=total_text, bg=self.light_gray, font=("Inter", 12), padx=10)
         total_label.pack(side="right")
+        person_container.bind("<Button-1>", lambda event: self.current_person_command(person_id))
+        person_label.bind("<Button-1>", lambda event: self.current_person_command(person_id))
+        total_label.bind("<Button-1>", lambda event: self.current_person_command(person_id))
         self.person_top.append(person_container)
 
-        person_container = tk.Frame(self.person_frame_bottom, bg=self.light_gray, pady=5, padx=10)
-        # person_container.pack(fill="x", pady=10)
-        
-        person_label = tk.Label(person_container, text=f"Person {len(self.person_bottom)+1}", bg=self.light_gray, font=("Inter", 12))
-        person_label.pack(side="left")
-        total_label = tk.Label(person_container, text="0 SEK", bg=self.light_gray, font=("Inter", 12))
-        total_label.pack(side="right")
-        remove_btn = tk.Button(person_container, text="✕", bg=self.light_gray, bd=0)
-        remove_btn.pack(side="right")
-        self.person_bottom.append(person_container)
-        self.items.append([])
-        self.totals.append(0)
-
-    def add_item(self, item_name, price, amount=1):
+    def _add_item(self, item_name, price, amount=1):
         item_frame = tk.Frame(self.items_frame, bg=self.background_color, pady=0, padx=0)
         item_frame.pack(fill="x", side="top")
         item_name_label = tk.Label(item_frame, text=item_name, bg=self.background_color, font=("Inter", 12))
         item_name_label.pack(side="left")
         item_price_label = tk.Label(item_frame, text=f"{amount}x {price} = {amount*price} SEK", bg=self.background_color, font=("Inter", 12))
         item_price_label.pack(side="right")
-        self.items[self.current_person].append(item_frame)
-        self.totals[self.current_person] += float(price) * int(amount)
-        self.person_top[self.current_person].children["!label2"].config(text=f"{self.totals[self.current_person]} SEK")
-        self.person_bottom[self.current_person].children["!label2"].config(text=f"{self.totals[self.current_person]} SEK")
-        self.total_label.config(text=f"Total: {sum(self.totals)} SEK")
+        self.items.append(item_frame)
 
-    def set_person(self, current_person):
-        for i in range(len(self.person_top)):
-            if i <= current_person:
-                self.person_top[i].pack(fill="x", pady=10)
-                self.person_bottom[i].pack_forget()
-            else:
-                self.person_top[i].pack_forget()
-                self.person_bottom[i].pack(fill="x", pady=10)
-        if self.current_person < len(self.items):
-            for item in self.items[self.current_person]:
-                print(item.children['!label'].cget("text"))
-                item.pack_forget()
-        self.current_person = current_person
-        for item in self.items[self.current_person]:
-            item.pack(fill="x", side="top")
-
-    def remove_person(self, i):
-        self.person_top[i].destroy()
-        self.person_top.pop(i)
-        for i, person in enumerate(self.person_top):
-            person.children["!label"].config(text=f"Person {i+1}")
-        self.person_bottom[i].destroy()
-        self.person_bottom.pop(i)
-        for i, person in enumerate(self.person_bottom):
-            person.children["!label"].config(text=f"Person {i+1}")
-        for item in self.items[i]:
-            item.destroy()
-        self.items.pop(i)
-        self.totals.pop(i)
-        
-    
-    def set_on_drop(self, on_drop):
-        self.on_drop = on_drop
-        self.cart_frame.on_drop = on_drop
-        self.person_frame_top.on_drop = on_drop
-        self.items_frame.on_drop = on_drop
-        self.person_frame_bottom.on_drop = on_drop
 
     def clear_cart(self):
         for person in self.person_top:
@@ -215,14 +170,76 @@ class ShoppingCart(tk.Frame):
         for person in self.person_bottom:
             person.destroy()
         for item in self.items:
-            for widget in item:
-                widget.destroy()
+            item.destroy()
         self.person_top = []
         self.person_bottom = []
         self.items = []
-        self.totals = []
-        self.current_person = 0
         self.total_label.config(text="Total: 0 SEK")
+        
+    def update_cart(self, current_person, person_count, shopping_cart):
+        self.clear_cart()
+        final_total = 0
+        for i in range(person_count):
+            total = sum([item["price"]*item["amount"] for item in shopping_cart[i]])
+            final_total += total
+            if i <= current_person:
+                self._add_person(self.person_frame_top, i, total)
+            else:
+                self._add_person(self.person_frame_bottom, i, total)
+        for item in shopping_cart[current_person]:
+            self._add_item(item["name"], item["price"], item["amount"])
+        self.total_label.config(text=f"Total: {final_total} SEK")
+
+
+
+
+
+
+
+    # def set_person(self, current_person):
+    #     for i in range(len(self.person_top)):
+    #         if i <= current_person:
+    #             self.person_top[i].pack(fill="x", pady=10)
+    #             self.person_bottom[i].pack_forget()
+    #         else:
+    #             self.person_top[i].pack_forget()
+    #             self.person_bottom[i].pack(fill="x", pady=10)
+    #     if self.current_person < len(self.items):
+    #         for item in self.items[self.current_person]:
+    #             print(item.children['!label'].cget("text"))
+    #             item.pack_forget()
+    #     self.current_person = current_person
+    #     for item in self.items[self.current_person]:
+    #         item.pack(fill="x", side="top")
+
+    # def remove_person(self, i):
+    #     self.person_top[i].destroy()
+    #     self.person_top.pop(i)
+    #     for i, person in enumerate(self.person_top):
+    #         person.children["!label"].config(text=f"Person {i+1}")
+    #     self.person_bottom[i].destroy()
+    #     self.person_bottom.pop(i)
+    #     for i, person in enumerate(self.person_bottom):
+    #         person.children["!label"].config(text=f"Person {i+1}")
+    #     for item in self.items[i]:
+    #         item.destroy()
+    #     self.items.pop(i)
+    #     self.totals.pop(i)
+
+    def set_current_person_command(self, set_person_command):
+        self.current_person_command = set_person_command
+        
+    def set_remove_person_command(self, remove_person_command):
+        self.remove_person_command = remove_person_command
+
+    def set_on_drop(self, on_drop):
+        self.on_drop = on_drop
+        self.cart_frame.on_drop = on_drop
+        self.person_frame_top.on_drop = on_drop
+        self.items_frame.on_drop = on_drop
+        self.person_frame_bottom.on_drop = on_drop
+
+
 
     # pop up window for confirm order
     def double_check_confirm(self):

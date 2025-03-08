@@ -28,7 +28,8 @@ class CustomerController(BaseController):
         # self.frame.shopping_cart_widget.redo_btn.config(command=self.redo)
 
         for filter_btn in self.frame.filter_buttons:
-            filter_btn.config(command=lambda: self.filter_products(filter_btn.cget("text")))
+            filter_text = filter_btn.cget("text")  # 立即存下當前的文本
+            filter_btn.config(command=lambda text=filter_text: self.filter_products(text))
 
 
         # fetch products from the database
@@ -113,27 +114,24 @@ class CustomerController(BaseController):
 
     def load_products(self):
         # TODO: fetch products from the database
+        # type: magenta, iced beer, discount, alcohol-free
         self.frame.beers_list = [
-            {"name": "Beer 1", "price": "10 kr"},
-            {"name": "Beer 2", "price": "20 kr"},
-            {"name": "Beer 3", "price": "30 kr"},
-            {"name": "Beer 4", "price": "40 kr"},
-            {"name": "Beer 5", "price": "50 kr"},
-            {"name": "Beer 6", "price": "60 kr"},
-            {"name": "Beer 7", "price": "70 kr"},
-            {"name": "Beer 8", "price": "80 kr"},
-            {"name": "Beer 9", "price": "90 kr"},
-            {"name": "Beer 10", "price": "100 kr"},
-            {"name": "Beer 11", "price": "110 kr"},
-            {"name": "Beer 12", "price": "120 kr"},
-            {"name": "Beer 13", "price": "130 kr"},
-            {"name": "Beer 14", "price": "140 kr"},
-            {"name": "Beer 15", "price": "150 kr"},
-            {"name": "Beer 16", "price": "160 kr"},
-            {"name": "Beer 17", "price": "170 kr"},
-            {"name": "Beer 18", "price": "180 kr"},
-            {"name": "Beer 19", "price": "190 kr"},
-            {"name": "Beer 20", "price": "200 kr"},
+            {"name": "Beer 1", "price": "10 kr", "type": "magenta"},
+            {"name": "Beer 2", "price": "20 kr", "type": "iced beer"},
+            {"name": "Beer 3", "price": "30 kr", "type": "discount"},
+            {"name": "Beer 4", "price": "40 kr", "type": "alcohol-free"},
+            {"name": "Beer 5", "price": "50 kr", "type": "magenta"},
+            {"name": "Beer 6", "price": "60 kr", "type": "iced beer"},
+            {"name": "Beer 7", "price": "70 kr", "type": "discount"},
+            {"name": "Beer 8", "price": "80 kr", "type": "alcohol-free"},
+            {"name": "Beer 9", "price": "90 kr", "type": "magenta"},
+            {"name": "Beer 10", "price": "100 kr", "type": "iced beer"},
+            {"name": "Beer 11", "price": "110 kr", "type": "discount"},
+            {"name": "Beer 12", "price": "120 kr", "type": "alcohol-free"},
+            {"name": "Beer 13", "price": "130 kr", "type": "magenta"},
+            {"name": "Beer 14", "price": "140 kr", "type": "iced beer"},
+            {"name": "Beer 15", "price": "150 kr", "type": "discount"},
+            {"name": "Beer 16", "price": "160 kr", "type": "alcohol-free"},
         ]
 
 

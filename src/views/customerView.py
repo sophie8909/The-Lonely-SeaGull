@@ -16,6 +16,7 @@ class CustomerView(tk.Frame):
         super().__init__(parent, bg="#FFFFFF")
         self.current_language = current_language
         self.beers_list = []
+        self.filter_beer_list = []
         
         # Define colors
         self.primary_color = "#035BAC"
@@ -137,18 +138,21 @@ class CustomerView(tk.Frame):
 
     def update_menu(self):
         self.products_widget=[]
+        for widget in self.product_frame.winfo_children():
+            widget.destroy()
         
         # Create a grid of product items 
         row = 0
         col = 0
 
         for product in self.beers_list:
-            product_widget = ProductCard(self.product_frame, row, col, self.background_color, self.primary_color, self.default_font, product)
-            self.products_widget.append(product_widget)
-            col += 1
-            if col >= 3:
-                col = 0
-                row += 1
+            if product["type"] in self.filter_beer_list:
+                product_widget = ProductCard(self.product_frame, row, col, self.background_color, self.primary_color, self.default_font, product)
+                self.products_widget.append(product_widget)
+                col += 1
+                if col >= 3:
+                    col = 0
+                    row += 1
 
 
 
@@ -156,6 +160,10 @@ class CustomerView(tk.Frame):
     def filter_products(self, filter_type):
         """Filter products based on the selected filter"""
         print(f"Filtering products by {filter_type}")
+        if filter_type in self.filter_beer_list:
+            self.filter_beer_list.remove(filter_type)
+        else:
+            self.filter_beer_list.append(filter_type)
         self.update_menu()
 
 

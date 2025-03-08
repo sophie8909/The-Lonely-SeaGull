@@ -16,38 +16,43 @@ class User:
 @dataclass
 class Beer:
     beer_id: int
-    nr: Optional[str] = None
-    articleid: Optional[str] = None
-    articletype: Optional[str] = None
-    name: str = ""
-    name2: Optional[str] = None
-    priceinclvat: float = 0.0
-    volumeml: Optional[int] = None
-    priceperlitre: Optional[float] = None
-    introduced: Optional[date] = None
-    finaldelivery: Optional[date] = None
-    category: Optional[str] = None
-    packaging: Optional[str] = None
-    captype: Optional[str] = None
-    countryoforigin: Optional[str] = None
-    countryoforiginlandname: Optional[str] = None
-    producer: Optional[str] = None
-    provider: Optional[str] = None
-    productionyear: Optional[str] = None
-    testedproductionyear: Optional[str] = None
-    alcoholstrength: Optional[float] = None
-    module: Optional[str] = None
-    assortment: Optional[str] = None
-    organic: bool = False
-    kosher: bool = False
-    order_items: List = field(default_factory=list)
-    beers_sold: List = field(default_factory=list)
+    name: str
+    producer: str
+    country: str
+    beer_type: str
+    strength: float
+    serving_size: str = "tap" # values: tap, bottle
+    price: float = 0.0
+    picture: Optional[str] = None
 
 @dataclass
-class BeerSold:
+class Product:
+    product_id: int
+    name: str
+    price: float = 0.0
+    picture: Optional[str] = None
+
+@dataclass
+class Wine(Product):
+    year: int = 0
+    producer: str = ""
+    grape: str = ""
+    serving_size: str = "glass" # values: glass, bottle
+
+@dataclass
+class Cocktail(Product):
+    strength: float = 0.0
+    contents: List[str] = field(default_factory=list)
+
+@dataclass
+class Food(Product):
+    ingredients: List[str] = field(default_factory=list)
+
+@dataclass
+class ProductSold:
     transaction_id: int
     user_id: int
-    beer_id: int
+    product_id: int
     timestamp: datetime = field(default_factory=datetime.utcnow)
 
 @dataclass
@@ -59,8 +64,7 @@ class Payment:
     timestamp: datetime = field(default_factory=datetime.utcnow)
 
 @dataclass
-class VipCustomer:
-    user_id: int
+class VipCustomer(User):
     credit_limit: float = 0.0
 
 @dataclass
@@ -75,7 +79,7 @@ class Order:
 class OrderItem:
     order_item_id: int
     order_id: int
-    beer_id: int
+    product_id: int
     quantity: int = 0
     price: float = 0.0
 

@@ -281,10 +281,10 @@ class ProductCard(Dragable, tk.Frame):
         self.product_image_label.image = self.product_image
         self.product_image_label.pack(pady=0)
 
-        self.product_name = tk.Label(self.product_card, text=product['name'], bg=self.background_color, font=self.default_font)
+        self.product_name = tk.Label(self.product_card, text=product['Name'], bg=self.background_color, font=self.default_font)
         self.product_name.pack(pady=(30, 5))
         
-        self.product_price = tk.Label(self.product_card, text=product['price'], bg=self.background_color, font=self.default_font)
+        self.product_price = tk.Label(self.product_card, text=product['Price'], bg=self.background_color, font=self.default_font)
         self.product_price.pack(pady=5)
 
         for widget in [self.product_card, self.product_image_label, self.product_name, self.product_price]:

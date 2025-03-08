@@ -10,13 +10,18 @@ import os
 
 
 
-
 class CustomerView(tk.Frame):
     def __init__(self, parent, current_language):
         super().__init__(parent, bg="#FFFFFF")
         self.current_language = current_language
-        self.beverages_list = []
-        self.filter_data = {}
+        self.beer_list = []
+        self.wine_list = []
+        self.cocktail_list = []
+        self.filter_data = { 
+            "Beers":{"text": "Beers", "icon": "♥", "active": True}, 
+            "Wine":{"text": "Wine", "icon": "♥", "active": True},
+            "Cocktails":{"text": "Cocktails", "icon": "♥", "active": True},
+        }
         self.food_list = []
         self.current_menu = "Beverages"
         
@@ -149,14 +154,31 @@ class CustomerView(tk.Frame):
                     col = 0
                     row += 1
         else:
-            for product in self.beverages_list:
-                if self.filter_data[product["type"]]["active"]:
+            if self.filter_data["Beers"]["active"]:
+                for product in self.beer_list:
                     product_widget = ProductCard(self.product_frame, row, col, self.background_color, self.primary_color, self.default_font, product)
                     self.products_widget.append(product_widget)
                     col += 1
                     if col >= 3:
                         col = 0
                         row += 1
+            if self.filter_data["Wine"]["active"]:
+                for product in self.wine_list:
+                    product_widget = ProductCard(self.product_frame, row, col, self.background_color, self.primary_color, self.default_font, product)
+                    self.products_widget.append(product_widget)
+                    col += 1
+                    if col >= 3:
+                        col = 0
+                        row += 1
+            if self.filter_data["Cocktails"]["active"]:
+                for product in self.cocktail_list:
+                    product_widget = ProductCard(self.product_frame, row, col, self.background_color, self.primary_color, self.default_font, product)
+                    self.products_widget.append(product_widget)
+                    col += 1
+                    if col >= 3:
+                        col = 0
+                        row += 1
+            
     
 
 
@@ -169,8 +191,6 @@ class CustomerView(tk.Frame):
         # Filter buttons
         self.filter_buttons = []
         
-        print(self.filter_data)
-        print(list(self.filter_data))
         for filter_name in list(self.filter_data):
             btn_frame = tk.Frame(self.filter_frame)
             btn_frame.pack(side="left", padx=5)

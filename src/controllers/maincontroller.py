@@ -4,6 +4,7 @@ import models.language
 from controllers.base import BaseController
 from controllers.custormerController import CustomerController
 from controllers.loginController import LoginController
+from controllers.vipController import VIPController
 from time import sleep
 
 class MainController(BaseController):
@@ -13,6 +14,7 @@ class MainController(BaseController):
         self.tk_root.geometry("1920x1280")
         self.customer_controller = CustomerController(tk_root, self, current_language)
         self.login_controller = LoginController(tk_root, self, current_language)
+        self.vip_controller = VIPController(tk_root, self, current_language)
         self.current_controller = self.login_controller
         self.current_controller.create_widgets()
 

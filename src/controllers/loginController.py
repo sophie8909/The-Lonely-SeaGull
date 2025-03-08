@@ -37,7 +37,7 @@ class LoginController(BaseController):
             self.frame.show_error_message(message)
             return
         else:
-            self.main_controller.switch_controller(self.main_controller.customer_controller)
+            self.main_controller.switch_controller(self.main_controller.vip_controller)
 
     def guest_button_click(self, event):
         print("Continue as a guest button")

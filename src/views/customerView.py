@@ -15,9 +15,10 @@ class CustomerView(tk.Frame):
     def __init__(self, parent, current_language):
         super().__init__(parent, bg="#FFFFFF")
         self.current_language = current_language
-        self.beers_list = []
-        self.filter_beer_list = []
+        self.beverages_list = []
         self.filter_data = {}
+        self.food_list = []
+        self.current_menu = "Beverages"
         
         # Define colors
         self.primary_color = "#035BAC"
@@ -58,10 +59,26 @@ class CustomerView(tk.Frame):
                                        font=self.default_font, activebackground="#034d91")
         self.search_button.pack(side="right", ipady=6)
         
+        
+    
+        # switch menu button food and beer
+        self.switch_menu_frame = tk.Frame(self.content_frame, bg=self.background_color)
+        self.switch_menu_frame.pack(fill="x", pady=10)
+
+        # two buttons split the frame in half
+        self.beverages_button = tk.Button(self.switch_menu_frame, text="Beverages", bg=self.primary_color, fg="white", bd=1,
+                                        font=self.default_font, activebackground="#034d91")
+        self.beverages_button.pack(side="left", expand=True, fill="both", ipady=6)
+        self.food_button = tk.Button(self.switch_menu_frame, text="Food", bg=self.primary_color, fg="white", bd=1,
+                                       font=self.default_font, activebackground="#034d91")
+        self.food_button.pack(side="right", expand=True, fill="both", ipady=6) 
+    
+
+
+
         # Filter buttons frame
         self.filter_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
         self.filter_frame.pack(fill="x", pady=10)
-        
         
         
         # Product grid
@@ -113,18 +130,35 @@ class CustomerView(tk.Frame):
         for widget in self.product_frame.winfo_children():
             widget.destroy()
         
+
+        if self.current_menu == "Beverages":
+            self.update_filter()
+        else:
+            for widget in self.filter_frame.winfo_children():
+                widget.destroy()
+
         # Create a grid of product items 
         row = 0
         col = 0
-
-        for product in self.beers_list:
-            if self.filter_data[product["type"]]["active"]:
+        if self.current_menu == "Food":
+            for product in self.food_list:
                 product_widget = ProductCard(self.product_frame, row, col, self.background_color, self.primary_color, self.default_font, product)
                 self.products_widget.append(product_widget)
                 col += 1
                 if col >= 3:
                     col = 0
                     row += 1
+        else:
+            for product in self.beverages_list:
+                if self.filter_data[product["type"]]["active"]:
+                    product_widget = ProductCard(self.product_frame, row, col, self.background_color, self.primary_color, self.default_font, product)
+                    self.products_widget.append(product_widget)
+                    col += 1
+                    if col >= 3:
+                        col = 0
+                        row += 1
+    
+
 
     def update_filter(self):
         """Update the filter buttons based on the filter data"""
@@ -158,6 +192,7 @@ class CustomerView(tk.Frame):
                                      padx=10, pady=5, font=self.default_font)
             filter_button.pack(side="left")
             self.filter_buttons.append(filter_button)
+        
 
 
     def filter_products(self, filter_type):

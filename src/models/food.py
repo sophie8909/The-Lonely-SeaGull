@@ -1,27 +1,32 @@
 food_menu = [
     {
-        "Name": "Cheeseburger",
-        "Ingredients": "Beef patty, cheddar cheese, lettuce, tomato, onion, pickles, burger bun, mayonnaise, ketchup, mustard",
-        "Price": "95 SEK"
+        "Name": "Swedish Meatballs",
+        "Ingredients": "Beef, Pork, Onion, Breadcrumbs, Egg, Cream, Salt, Pepper, Lingonberry Sauce, Mashed Potatoes",
+        "Price": "145 SEK",
+        "Allergens": ["Gluten", "Egg", "Lactose"]
     },
     {
-        "Name": "Margherita Pizza",
-        "Ingredients": "Tomato sauce, mozzarella cheese, basil, olive oil, pizza dough",
-        "Price": "112 SEK"
+        "Name": "Vegan Falafel Bowl",
+        "Ingredients": "Falafel, Hummus, Quinoa, Tomato, Cucumber, Red Onion, Tahini Sauce, Lettuce",
+        "Price": "125 SEK",
+        "Allergens": ["Sesame"]
     },
     {
-        "Name": "Caesar Salad",
-        "Ingredients": "Romaine lettuce, croutons, parmesan cheese, Caesar dressing, chicken (optional)",
-        "Price": "78 SEK"
+        "Name": "Grilled Salmon with Asparagus",
+        "Ingredients": "Salmon, Asparagus, Lemon Butter Sauce, Garlic, Olive Oil, Salt, Pepper",
+        "Price": "180 SEK",
+        "Allergens": ["Fish", "Lactose"]
     },
     {
-        "Name": "Fish and Chips",
-        "Ingredients": "Cod fillet, batter, French fries, tartar sauce, lemon wedge, salt, vinegar",
-        "Price": "135 SEK"
+        "Name": "BBQ Ribs with Coleslaw",
+        "Ingredients": "Pork Ribs, BBQ Sauce, Coleslaw (Cabbage, Carrot, Mayonnaise, Vinegar, Sugar)",
+        "Price": "195 SEK",
+        "Allergens": ["Egg"]
     },
     {
-        "Name": "Spaghetti Carbonara",
-        "Ingredients": "Spaghetti, eggs, pancetta, parmesan cheese, black pepper, salt",
-        "Price": "129 SEK"
+        "Name": "Mushroom Risotto",
+        "Ingredients": "Arborio Rice, Mushrooms, Parmesan Cheese, White Wine, Butter, Garlic, Onion, Salt, Pepper",
+        "Price": "160 SEK",
+        "Allergens": ["Lactose"]
     }
 ]

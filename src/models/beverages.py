@@ -6,7 +6,10 @@ beers = [
         "Type": "IPA",
         "Strength": "5.6%",
         "Serving size": "Bottle",
-        "Price": "55 SEK"
+        "Price": "55 SEK",
+        "Allergens": ["Gluten"],
+        "Alcohol Content": "5.6%",
+        "Tannins": "None"
     },
     {
         "Name": "Heineken",
@@ -15,7 +18,10 @@ beers = [
         "Type": "Lager",
         "Strength": "5.0%",
         "Serving size": "Tap",
-        "Price": "50 SEK"
+        "Price": "50 SEK",
+        "Allergens": ["Gluten"],
+        "Alcohol Content": "5.0%",
+        "Tannins": "None"
     },
     {
         "Name": "Guinness Draught",
@@ -24,7 +30,10 @@ beers = [
         "Type": "Stout",
         "Strength": "4.2%",
         "Serving size": "Tap",
-        "Price": "60 SEK"
+        "Price": "60 SEK",
+        "Allergens": ["Gluten", "Lactose"],
+        "Alcohol Content": "4.2%",
+        "Tannins": "None"
     },
     {
         "Name": "Carlsberg",
@@ -33,7 +42,10 @@ beers = [
         "Type": "Pilsner",
         "Strength": "5.0%",
         "Serving size": "Bottle",
-        "Price": "48 SEK"
+        "Price": "48 SEK",
+        "Allergens": ["Gluten"],
+        "Alcohol Content": "5.0%",
+        "Tannins": "None"
     },
     {
         "Name": "Sierra Nevada Pale Ale",
@@ -42,7 +54,10 @@ beers = [
         "Type": "Pale Ale",
         "Strength": "5.6%",
         "Serving size": "Bottle",
-        "Price": "65 SEK"
+        "Price": "65 SEK",
+        "Allergens": ["Gluten"],
+        "Alcohol Content": "5.6%",
+        "Tannins": "None"
     }
 ]
 
@@ -54,7 +69,10 @@ wines = [
         "Type": "Red",
         "Grape": "Cabernet Sauvignon",
         "Serving size": "Bottle",
-        "Price": "2500 SEK"
+        "Price": "2500 SEK",
+        "Allergens": [],
+        "Alcohol Content": "13.5%",
+        "Tannins": "High"
     },
     {
         "Name": "Dom Pérignon",
@@ -63,7 +81,10 @@ wines = [
         "Type": "Champagne",
         "Grape": "Chardonnay, Pinot Noir",
         "Serving size": "Bottle",
-        "Price": "2000 SEK"
+        "Price": "2000 SEK",
+        "Allergens": [],
+        "Alcohol Content": "12.5%",
+        "Tannins": "Low"
     },
     {
         "Name": "Cloudy Bay Sauvignon Blanc",
@@ -72,7 +93,10 @@ wines = [
         "Type": "White",
         "Grape": "Sauvignon Blanc",
         "Serving size": "Glass",
-        "Price": "150 SEK"
+        "Price": "150 SEK",
+        "Allergens": [],
+        "Alcohol Content": "12.0%",
+        "Tannins": "Low"
     },
     {
         "Name": "Barolo",
@@ -81,7 +105,10 @@ wines = [
         "Type": "Red",
         "Grape": "Nebbiolo",
         "Serving size": "Bottle",
-        "Price": "1800 SEK"
+        "Price": "1800 SEK",
+        "Allergens": [],
+        "Alcohol Content": "14.0%",
+        "Tannins": "High"
     },
     {
         "Name": "Riesling Kabinett",
@@ -90,7 +117,10 @@ wines = [
         "Type": "White",
         "Grape": "Riesling",
         "Serving size": "Glass",
-        "Price": "130 SEK"
+        "Price": "130 SEK",
+        "Allergens": [],
+        "Alcohol Content": "11.5%",
+        "Tannins": "Medium"
     }
 ]
 
@@ -100,34 +130,49 @@ cocktails = [
         "Strength": "Strong",
         "Contents/Recipe": "Tequila, Triple Sec, Lime Juice, Salt",
         "Serving size": "Glass",
-        "Price": "120 SEK"
+        "Price": "120 SEK",
+        "Allergens": ["None"],
+        "Alcohol Content": "40%",
+        "Tannins": "None"
     },
     {
         "Name": "Mojito",
         "Strength": "Medium",
         "Contents/Recipe": "White Rum, Lime, Mint, Sugar, Soda Water",
         "Serving size": "Glass",
-        "Price": "110 SEK"
+        "Price": "110 SEK",
+        "Allergens": ["None"],
+        "Alcohol Content": "25%",
+        "Tannins": "None"
     },
     {
         "Name": "Old Fashioned",
         "Strength": "Strong",
         "Contents/Recipe": "Bourbon, Sugar, Angostura Bitters, Orange Peel",
         "Serving size": "Glass",
-        "Price": "130 SEK"
+        "Price": "130 SEK",
+        "Allergens": ["None"],
+        "Alcohol Content": "35%",
+        "Tannins": "None"
     },
     {
         "Name": "Negroni",
         "Strength": "Strong",
         "Contents/Recipe": "Gin, Campari, Sweet Vermouth",
         "Serving size": "Glass",
-        "Price": "125 SEK"
+        "Price": "125 SEK",
+        "Allergens": ["None"],
+        "Alcohol Content": "30%",
+        "Tannins": "None"
     },
     {
         "Name": "Piña Colada",
         "Strength": "Medium",
         "Contents/Recipe": "White Rum, Coconut Cream, Pineapple Juice",
         "Serving size": "Glass",
-        "Price": "115 SEK"
+        "Price": "115 SEK",
+        "Allergens": ["Coconut"],
+        "Alcohol Content": "20%",
+        "Tannins": "None"
     }
 ]

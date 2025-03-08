@@ -260,7 +260,7 @@ class ShoppingCart(tk.Frame):
 
 class ProductCard(Dragable, tk.Frame):
     drag_threshold = 20
-    def __init__(self, master, row, col, background_color, primary_color, default_font, click_callback=None):
+    def __init__(self, master, row, col, background_color, primary_color, default_font, product, click_callback=None):
         tk.Frame.__init__(self, master)
         Dragable.__init__(self, self)
         self.product_frame = master
@@ -281,10 +281,10 @@ class ProductCard(Dragable, tk.Frame):
         self.product_image_label.image = self.product_image
         self.product_image_label.pack(pady=0)
 
-        self.product_name = tk.Label(self.product_card, text=f"Product {row*3+col+1}", bg=self.background_color, font=self.default_font)
+        self.product_name = tk.Label(self.product_card, text=product['name'], bg=self.background_color, font=self.default_font)
         self.product_name.pack(pady=(30, 5))
         
-        self.product_price = tk.Label(self.product_card, text="50 SEK", bg=self.background_color, font=self.default_font)
+        self.product_price = tk.Label(self.product_card, text=product['price'], bg=self.background_color, font=self.default_font)
         self.product_price.pack(pady=5)
 
         for widget in [self.product_card, self.product_image_label, self.product_name, self.product_price]:

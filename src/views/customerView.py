@@ -95,14 +95,6 @@ class CustomerView(tk.Frame):
         self.product_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
         self.product_frame.pack(fill="both", expand=True, pady=10)
 
-        self.products_widget=[]
-        
-        # Create a grid of product items (3x2 grid)
-        for row in range(2):
-            for col in range(3):
-                product = ProductCard(self.product_frame, row, col, self.background_color, self.primary_color, self.default_font)
-                self.products_widget.append(product)
-
         
         self.shopping_cart_widget = ShoppingCart(self.main_frame, self.background_color, self.primary_color, self.default_font)
         self.shopping_cart_widget.pack(side="right", fill="both", expand=True, pady=10)
@@ -142,6 +134,29 @@ class CustomerView(tk.Frame):
         self.confirm_btn.config(text=LANGUAGE[self.current_language]["confirm"])
         self.undo_btn.config(text=LANGUAGE[self.current_language]["undo"])
         self.redo_btn.config(text=LANGUAGE[self.current_language]["redo"])
+
+    def update_menu(self):
+        self.products_widget=[]
+        
+        # Create a grid of product items 
+        row = 0
+        col = 0
+
+        for product in self.beers_list:
+            product_widget = ProductCard(self.product_frame, row, col, self.background_color, self.primary_color, self.default_font, product)
+            self.products_widget.append(product_widget)
+            col += 1
+            if col >= 3:
+                col = 0
+                row += 1
+
+
+
+
+    def filter_products(self, filter_type):
+        """Filter products based on the selected filter"""
+        print(f"Filtering products by {filter_type}")
+        self.update_menu()
 
 
 if __name__ == "__main__":

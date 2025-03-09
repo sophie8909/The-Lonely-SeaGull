@@ -28,13 +28,16 @@ class LoginController(BaseController):
         self.frame.destroy()
         self.frame = None
 
-    def change_res_27(self, event):
-        # global w,h,x,y
+    def change_res(self, event):
+        res_type = self.frame.res_combo.get()
         screen_width = self.tk_root.winfo_screenwidth()
         screen_height = self.tk_root.winfo_screenheight()
-
-        w = screen_width * 0.9
-        h = screen_height * 0.9
+        if res_type == "27\"":
+            w = screen_width * 0.9
+            h = screen_height * 0.9
+        else:
+            w = screen_width * 0.5
+            h = screen_height * 0.5
         x = (screen_width / 2) - (w / 2)
         y = (screen_height / 2) - (h / 2)
 
@@ -44,43 +47,24 @@ class LoginController(BaseController):
         print("x:", x)
         print("y:", y)
 
-    def change_res_9(self, event):
-        # global w, h,x,y
-        screen_width = self.tk_root.winfo_screenwidth()
-        screen_height = self.tk_root.winfo_screenheight()
-
-        w = screen_width  * 0.5
-        h = screen_height * 0.5
-        x = (screen_width/2) - (w/2)
-        y = (screen_height/2) - (h/2)
-
-        self.tk_root.geometry(str(int(w)) + "x" + str(int(h)) + "+" + str(int(x)) + "+" + str(int(y)))
-
-        print("screen_width:", w)
-        print("screen_height:", h)
-        print("x:", x)
-        print("y:", y)
-
     def show_error_message(self, message):
         messagebox.showerror("Error", message)
 
     def update_language(self, event):
-        self.current_language = self.frame.combo.get()
+        self.current_language = self.frame.login_combo.get()
         self.frame.username_label.config(text=LANGUAGE[self.current_language]["username"])
         self.frame.password_label.config(text=LANGUAGE[self.current_language]["password"])
         self.frame.login_button.config(text=LANGUAGE[self.current_language]["login"])
         self.frame.guest_button.config(text=LANGUAGE[self.current_language]["guest_btn"])
         self.frame.language_label.config(text=LANGUAGE[self.current_language]["language"])
+        self.frame.res_label.config(text=LANGUAGE[self.current_language]["resolution"])
 
-        
     def set_up_bind(self):
         self.frame.login_button.bind("<Button-1>", self.login_button_click)
         self.frame.password_entry.bind("<Return>", self.login_button_click)
         self.frame.guest_button.bind("<Button-1>", self.guest_button_click)
-        self.frame.button1.bind("<Button-1>", self.change_res_27)
-        self.frame.button2.bind("<Button-1>", self.change_res_9)
-        self.frame.combo.bind("<<ComboboxSelected>>", self.update_language)
-
+        self.frame.login_combo.bind("<<ComboboxSelected>>", self.update_language)
+        self.frame.res_combo.bind("<<ComboboxSelected>>", self.change_res)
 
     def login_button_click(self, event):
         print("Login button clicked")
@@ -106,6 +90,4 @@ class LoginController(BaseController):
         self.main_controller.current_user = user
         return True, "Login success"
 
-    def logout(self):
-        self.main_controller.current_user = None
-        return True
+

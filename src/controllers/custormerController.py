@@ -12,6 +12,7 @@ class CustomerController(BaseController):
         self.frame = None
         self.person_count = 0
         self.current_person = 0
+        self.main_controller = main_controller
 
         self.shopping_cart = []
         self.order_history = []
@@ -23,6 +24,7 @@ class CustomerController(BaseController):
         self.frame.shopping_cart_widget.set_on_drop(self.add_cart_item)
         self.frame.shopping_cart_widget.add_friends_btn.config(command=self.add_person)
         self.frame.shopping_cart_widget.confirm_btn.config(command=self.confirm_order)
+        self.frame.logout_button.bind("<Button-1>", self.logout_button_click)
         self.add_person()
     
     def create_widgets(self):
@@ -68,6 +70,10 @@ class CustomerController(BaseController):
     def confirm_order(self):
         #TODO: Implement order confirmation
         pass
+
+    def logout_button_click(self, event):
+        print("Successfully logged out")
+        self.main_controller.switch_controller(self.main_controller.login_controller)
 
 if __name__ == "__main__":
     import tkinter as tk

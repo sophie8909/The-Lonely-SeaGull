@@ -36,10 +36,15 @@ class CustomerView(tk.Frame):
         # Create the main container frame
         self.main_frame = tk.Frame(self, bg=self.background_color)
         self.main_frame.pack(fill="both", expand=True)
+
+
         
         # Container for products and filters
         self.content_frame = tk.Frame(self.main_frame, bg="#D9D9D9", padx=10, pady=10)
         self.content_frame.pack(side="left", fill="both", expand=True)
+
+        self.logout_button = ttk.Button(self.main_frame, text="Log out")
+        self.logout_button.pack(side="left", pady=20)
         
         # Create search bar
         self.search_frame = tk.Frame(self.content_frame, bg=self.background_color, height=45)

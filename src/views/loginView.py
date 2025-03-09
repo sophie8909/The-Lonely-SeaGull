@@ -13,8 +13,15 @@ class LoginView(tk.Frame):
         self.language_label = tk.Label(self, text=LANGUAGE[self.current_language]["language"], bg="#d3d3d3")
         self.language_label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
 
-        self.combo = ttk.Combobox(self, state="readonly", values=["English", "Română", "中文"], height=2, width=10)
-        self.combo.grid(row=0, column=1, padx=10, pady=10)
+        self.login_combo = ttk.Combobox(self, state="readonly", values=["English", "Română", "中文"], height=2, width=10)
+        self.login_combo.grid(row=0, column=1, padx=10, pady=10)
+
+        # Combo bos for different display resolution sizes
+        self.res_label = tk.Label(self, text=LANGUAGE[self.current_language]["resolution"], bg="#d3d3d3")
+        self.res_label.grid(row=0, column=2, padx=10, pady=10, sticky="e")
+
+        self.res_combo = ttk.Combobox(self, state="readonly", values=["27\"", "9\""], height=2, width=10)
+        self.res_combo.grid(row=0, column=3, padx=10, pady=10)
 
         # Create a frame for the login form
         self.frame = tk.Frame(self, bg="#d3d3d3")
@@ -32,7 +39,6 @@ class LoginView(tk.Frame):
         self.password_entry = ttk.Entry(self.frame, width=25, show="*")
         self.password_entry.grid(row=1, column=1, padx=10, pady=10)
 
-        
         # Buttons
         self.btn_frame = tk.Frame(self.frame, bg="#d3d3d3")
         self.btn_frame.grid(row=2, column=0, columnspan=2, pady=10)
@@ -42,11 +48,3 @@ class LoginView(tk.Frame):
 
         self.guest_button = ttk.Button(self.btn_frame, text=LANGUAGE[self.current_language]["guest_btn"])
         self.guest_button.pack(side="left", padx=5)
-
-        # 27 inch display button
-        self.button1 = tk.Button(self.btn_frame, text="27 inch display")
-        self.button1.pack(pady=20)
-
-        # 9 inch display button
-        self.button2 = tk.Button(self.btn_frame, text="9 inch display")
-        self.button2.pack(pady=20)

@@ -15,7 +15,8 @@ LANGUAGE = {
         "search": "Search",
         "add friends": "Add Friends",
         "confirm": "Confirm",
-        "language": "Language"
+        "language": "Language",
+        "resolution": "Display Resolution"
     },
     "Română": {
         "login": "Logare",
@@ -33,7 +34,8 @@ LANGUAGE = {
         "search": "Caută",
         "add friends": "Adaugă prieteni",
         "confirm": "Confirmă",
-        "language": "Limbă"
+        "language": "Limbă",
+        "resolution": "Rezoluție ecran"
     },
     "中文": {
         "login": "登录",
@@ -51,6 +53,7 @@ LANGUAGE = {
         "search": "搜索",
         "add friends": "添加朋友",
         "confirm": "确认",
-        "language": "语言"
+        "language": "语言",
+        "resolution": "显示分辨率"
     }
 }

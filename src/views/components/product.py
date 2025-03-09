@@ -61,7 +61,6 @@ class ShoppingCart(tk.Frame):
         self.background_color = background_color
         self.primary_color = primary_color
         self.default_font = default_font
-        self.current_person = 0
 
         # Define colors
         self.primary_color = "#035BAC"
@@ -70,6 +69,12 @@ class ShoppingCart(tk.Frame):
         self.light_gray = "#D9D9D9"
         self.dark_text = "#5A5A5A"  # Approximation of rgba(0, 0, 0, 0.65)
         self.light_icon = "#BEBDBD"  # Approximation of rgba(151, 148, 148, 0.5)
+
+        # define person x button command
+        self.remove_person_command = None
+
+        # define person label click command
+        self.current_person_command = None
         
         # Try to set up fonts (if not available, fallback to system fonts)
         try:
@@ -96,7 +101,6 @@ class ShoppingCart(tk.Frame):
         self.person_top = []
         self.person_bottom = []
         self.items = []
-        self.totals = []
         
 
         self.total_label = tk.Label(self.bottom_frame, text="Total: 0 SEK", bg=self.background_color, font=self.header_font)
@@ -114,17 +118,17 @@ class ShoppingCart(tk.Frame):
                                bg=self.light_gray, font=("Inter", 12))
         self.redo_btn.pack(side="right", padx=5)
         
-        # Confirm button (second from bottom)
+        # Add friends button (second from bottom)
+        self.add_friends_btn = tk.Button(self.bottom_frame, text="add friends",
+                                       bg=self.primary_color, fg="white", font=self.header_font,
+                                       bd=0, padx=16, pady=10)
+        self.add_friends_btn.pack(fill="x", pady=10)
+        # Confirm button (third from bottom)
         self.confirm_btn = tk.Button(self.bottom_frame, text="confirm",
                                    bg=self.primary_color, fg="white", font=self.header_font,
                                    bd=0, padx=16, pady=10)
         self.confirm_btn.pack(fill="x", pady=10)
         
-        # Add friends button (third from bottom)
-        self.add_friends_btn = tk.Button(self.bottom_frame, text="add friends",
-                                       bg=self.primary_color, fg="white", font=self.header_font,
-                                       bd=0, padx=16, pady=10)
-        self.add_friends_btn.pack(fill="x", pady=10)
 
 
         # test item
@@ -133,86 +137,147 @@ class ShoppingCart(tk.Frame):
         # self.add_item("Test item2", 10.99, 1)
 
 
-    def add_person(self, remove_command=None):
-        person_container = tk.Frame(self.person_frame_top, bg=self.light_gray, pady=5, padx=10)
+    def _add_person(self, person_frame, person_id, total=0):
+        person_container = tk.Frame(person_frame, bg=self.light_gray, pady=5, padx=10)
         person_container.pack(fill="x", pady=10)
         
-        person_label = tk.Label(person_container, text=f"Person {len(self.person_top)+1}", bg=self.light_gray, font=("Inter", 12))
+        person_label = tk.Label(person_container, text=f"Person {person_id+1}", bg=self.light_gray, font=("Inter", 12))
         person_label.pack(side="left")
-        remove_btn = tk.Button(person_container, text="✕", bg=self.light_gray, bd=1, command=lambda person_label=person_label: remove_command(person_label))
+        remove_btn = tk.Button(person_container, text="✕", bg=self.light_gray, bd=1, command=lambda: self.remove_person_command(person_id))
         remove_btn.pack(side="right")
-        total_label = tk.Label(person_container, text="0 SEK", bg=self.light_gray, font=("Inter", 12), padx=10)
+        
+        total_text = f"{total:.2f} SEK"
+        total_label = tk.Label(person_container, text=total_text, bg=self.light_gray, font=("Inter", 12), padx=10)
         total_label.pack(side="right")
+        person_container.bind("<Button-1>", lambda event: self.current_person_command(person_id))
+        person_label.bind("<Button-1>", lambda event: self.current_person_command(person_id))
+        total_label.bind("<Button-1>", lambda event: self.current_person_command(person_id))
         self.person_top.append(person_container)
 
-        person_container = tk.Frame(self.person_frame_bottom, bg=self.light_gray, pady=5, padx=10)
-        # person_container.pack(fill="x", pady=10)
-        
-        person_label = tk.Label(person_container, text=f"Person {len(self.person_bottom)+1}", bg=self.light_gray, font=("Inter", 12))
-        person_label.pack(side="left")
-        total_label = tk.Label(person_container, text="0 SEK", bg=self.light_gray, font=("Inter", 12))
-        total_label.pack(side="right")
-        remove_btn = tk.Button(person_container, text="✕", bg=self.light_gray, bd=0)
-        remove_btn.pack(side="right")
-        self.person_bottom.append(person_container)
-        self.items.append([])
-        self.totals.append(0)
-
-    def add_item(self, item_name, price, amount=1):
+    def _add_item(self, item_name, price, amount=1):
         item_frame = tk.Frame(self.items_frame, bg=self.background_color, pady=0, padx=0)
         item_frame.pack(fill="x", side="top")
         item_name_label = tk.Label(item_frame, text=item_name, bg=self.background_color, font=("Inter", 12))
         item_name_label.pack(side="left")
         item_price_label = tk.Label(item_frame, text=f"{amount}x {price} = {amount*price} SEK", bg=self.background_color, font=("Inter", 12))
         item_price_label.pack(side="right")
-        self.items[self.current_person].append(item_frame)
-        self.totals[self.current_person] += float(price) * int(amount)
-        self.person_top[self.current_person].children["!label2"].config(text=f"{self.totals[self.current_person]} SEK")
-        self.person_bottom[self.current_person].children["!label2"].config(text=f"{self.totals[self.current_person]} SEK")
-        self.total_label.config(text=f"Total: {sum(self.totals)} SEK")
+        self.items.append(item_frame)
 
-    def set_person(self, current_person):
-        for i in range(len(self.person_top)):
-            if i <= current_person:
-                self.person_top[i].pack(fill="x", pady=10)
-                self.person_bottom[i].pack_forget()
-            else:
-                self.person_top[i].pack_forget()
-                self.person_bottom[i].pack(fill="x", pady=10)
-        if self.current_person < len(self.items):
-            for item in self.items[self.current_person]:
-                print(item.children['!label'].cget("text"))
-                item.pack_forget()
-        self.current_person = current_person
-        for item in self.items[self.current_person]:
-            item.pack(fill="x", side="top")
 
-    def remove_person(self, i):
-        self.person_top[i].destroy()
-        self.person_top.pop(i)
-        for i, person in enumerate(self.person_top):
-            person.children["!label"].config(text=f"Person {i+1}")
-        self.person_bottom[i].destroy()
-        self.person_bottom.pop(i)
-        for i, person in enumerate(self.person_bottom):
-            person.children["!label"].config(text=f"Person {i+1}")
-        for item in self.items[i]:
+    def clear_cart(self):
+        for person in self.person_top:
+            person.destroy()
+        for person in self.person_bottom:
+            person.destroy()
+        for item in self.items:
             item.destroy()
-        self.items.pop(i)
-        self.totals.pop(i)
+        self.person_top = []
+        self.person_bottom = []
+        self.items = []
+        self.total_label.config(text="Total: 0 SEK")
         
-    
+    def update_cart(self, current_person, person_count, shopping_cart):
+        self.clear_cart()
+        final_total = 0
+        for i in range(person_count):
+            total = sum([item["price"]*item["amount"] for item in shopping_cart[i]])
+            final_total += total
+            if i <= current_person:
+                self._add_person(self.person_frame_top, i, total)
+            else:
+                self._add_person(self.person_frame_bottom, i, total)
+        for item in shopping_cart[current_person]:
+            self._add_item(item["name"], item["price"], item["amount"])
+        self.total_label.config(text=f"Total: {final_total} SEK")
+
+
+
+
+
+
+
+    # def set_person(self, current_person):
+    #     for i in range(len(self.person_top)):
+    #         if i <= current_person:
+    #             self.person_top[i].pack(fill="x", pady=10)
+    #             self.person_bottom[i].pack_forget()
+    #         else:
+    #             self.person_top[i].pack_forget()
+    #             self.person_bottom[i].pack(fill="x", pady=10)
+    #     if self.current_person < len(self.items):
+    #         for item in self.items[self.current_person]:
+    #             print(item.children['!label'].cget("text"))
+    #             item.pack_forget()
+    #     self.current_person = current_person
+    #     for item in self.items[self.current_person]:
+    #         item.pack(fill="x", side="top")
+
+    # def remove_person(self, i):
+    #     self.person_top[i].destroy()
+    #     self.person_top.pop(i)
+    #     for i, person in enumerate(self.person_top):
+    #         person.children["!label"].config(text=f"Person {i+1}")
+    #     self.person_bottom[i].destroy()
+    #     self.person_bottom.pop(i)
+    #     for i, person in enumerate(self.person_bottom):
+    #         person.children["!label"].config(text=f"Person {i+1}")
+    #     for item in self.items[i]:
+    #         item.destroy()
+    #     self.items.pop(i)
+    #     self.totals.pop(i)
+
+    def set_current_person_command(self, set_person_command):
+        self.current_person_command = set_person_command
+        
+    def set_remove_person_command(self, remove_person_command):
+        self.remove_person_command = remove_person_command
+
     def set_on_drop(self, on_drop):
         self.on_drop = on_drop
         self.cart_frame.on_drop = on_drop
         self.person_frame_top.on_drop = on_drop
         self.items_frame.on_drop = on_drop
         self.person_frame_bottom.on_drop = on_drop
+
+
+
+    # pop up window for confirm order
+    def double_check_confirm(self):
+        # pop up window in center for double check the order
+        self.confirm_window = tk.Toplevel(self)
+        self.confirm_window.title("Confirm Order")
+        self.confirm_window.geometry("300x200")
+        self.confirm_window.resizable(False, False)
+        # set the position of the pop up window
+        x = self.confirm_window.winfo_screenwidth() // 2 - 150
+        y = self.confirm_window.winfo_screenheight() // 2 - 100
+        self.confirm_window.geometry(f"+{x}+{y}")
+
+        # force the user to confirm the order
+        self.confirm_window.grab_set() # block the main window
+        self.confirm_window.focus_set() # focus on the pop up window
+        self.confirm_window.protocol("WM_DELETE_WINDOW", self.prevent_closing)
+
+        confirm_label = tk.Label(self.confirm_window, text="Are you sure to confirm the order?", font=("Inter", 12))
+        confirm_label.pack(pady=20)
+
+        self.confirm_yes_btn = tk.Button(self.confirm_window, text="Yes", bg=self.primary_color, fg="white", font=("Inter", 12))
+        self.confirm_yes_btn.pack(side="left", padx=20)
+
+        self.confirm_no_btn = tk.Button(self.confirm_window, text="No", bg=self.primary_color, fg="white", font=("Inter", 12))
+        self.confirm_no_btn.pack(side="right", padx=20)    
     
+    def confirm_window_close(self):
+        self.confirm_window.destroy()
+
+
+    def prevent_closing(self):
+        """ Prevent closing the confirmation window without an explicit choice """
+        pass  # Do nothing, forcing user interaction
 
 class ProductCard(Dragable, tk.Frame):
     drag_threshold = 20
-    def __init__(self, master, row, col, background_color, primary_color, default_font, click_callback=None):
+    def __init__(self, master, row, col, background_color, primary_color, default_font, product, click_callback=None):
         tk.Frame.__init__(self, master)
         Dragable.__init__(self, self)
         self.product_frame = master
@@ -233,10 +298,10 @@ class ProductCard(Dragable, tk.Frame):
         self.product_image_label.image = self.product_image
         self.product_image_label.pack(pady=0)
 
-        self.product_name = tk.Label(self.product_card, text=f"Product {row*3+col+1}", bg=self.background_color, font=self.default_font)
+        self.product_name = tk.Label(self.product_card, text=product['Name'], bg=self.background_color, font=self.default_font)
         self.product_name.pack(pady=(30, 5))
         
-        self.product_price = tk.Label(self.product_card, text="50 SEK", bg=self.background_color, font=self.default_font)
+        self.product_price = tk.Label(self.product_card, text=product['Price'], bg=self.background_color, font=self.default_font)
         self.product_price.pack(pady=5)
 
         for widget in [self.product_card, self.product_image_label, self.product_name, self.product_price]:

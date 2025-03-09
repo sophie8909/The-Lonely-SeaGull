@@ -10,12 +10,12 @@ import os
 
 
 
-
 class CustomerView(tk.Frame):
     def __init__(self, parent, current_language):
         super().__init__(parent, bg="#FFFFFF")
         self.current_language = current_language
-        self.beers_list = []
+        
+        
         
         # Define colors
         self.primary_color = "#035BAC"
@@ -61,70 +61,50 @@ class CustomerView(tk.Frame):
                                        font=self.default_font, activebackground="#034d91")
         self.search_button.pack(side="right", ipady=6)
         
+        
+    
+        # switch menu button food and beer
+        self.switch_menu_frame = tk.Frame(self.content_frame, bg=self.background_color)
+        self.switch_menu_frame.pack(fill="x", pady=10)
+
+        # two buttons split the frame in half
+        self.beverages_button = tk.Button(self.switch_menu_frame, text="Beverages", bg=self.primary_color, fg="white", bd=1,
+                                        font=self.default_font, activebackground="#034d91")
+        self.beverages_button.pack(side="left", expand=True, fill="both", ipady=6)
+        self.food_button = tk.Button(self.switch_menu_frame, text="Food", bg=self.primary_color, fg="white", bd=1,
+                                       font=self.default_font, activebackground="#034d91")
+        self.food_button.pack(side="right", expand=True, fill="both", ipady=6) 
+    
+
+
+
         # Filter buttons frame
         self.filter_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
         self.filter_frame.pack(fill="x", pady=10)
         
-        # Filter buttons
-        self.filter_buttons = []
-        filter_data = [
-            {"text": "magenta", "icon": "♥", "active": True},
-            {"text": "iced beer", "icon": "♥", "active": False},
-            {"text": "discount", "icon": "♥", "active": False},
-            {"text": "alcohol-free", "icon": "♥", "active": False}
-        ]
-        
-        for filter_info in filter_data:
-            btn_frame = tk.Frame(self.filter_frame)
-            btn_frame.pack(side="left", padx=5)
-            
-            if filter_info["active"]:
-                btn_bg = self.light_primary
-                btn_fg = self.primary_color
-                icon_color = self.primary_color
-            else:
-                btn_bg = "#FAFAFA"
-                btn_fg = self.dark_text
-                icon_color = self.light_icon
-            
-            icon_label = tk.Label(btn_frame, text=filter_info["icon"], fg=icon_color, bg=btn_bg)
-            icon_label.pack(side="left", padx=2)
-            
-            filter_button = tk.Button(btn_frame, text=filter_info["text"], 
-                                     bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
-                                     padx=10, pady=5, font=self.default_font)
-            filter_button.pack(side="left")
-            self.filter_buttons.append(filter_button)
         
         # Product grid
         self.product_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
         self.product_frame.pack(fill="both", expand=True, pady=10)
 
-        self.products_widget=[]
-        
-        # Create a grid of product items (3x2 grid)
-        for row in range(2):
-            for col in range(3):
-                product = ProductCard(self.product_frame, row, col, self.background_color, self.primary_color, self.default_font)
-                self.products_widget.append(product)
-
         
         self.shopping_cart_widget = ShoppingCart(self.main_frame, self.background_color, self.primary_color, self.default_font)
         self.shopping_cart_widget.pack(side="right", fill="both", expand=True, pady=10)
 
+    def update_cart(self, current_person, person_count, shopping_cart):
+        self.shopping_cart_widget.update_cart(current_person, person_count, shopping_cart)
 
+    # def add_person(self, remove_command=None):
+    #     self.shopping_cart_widget.add_person(remove_command)
 
-    def add_person(self, remove_command=None):
-        self.shopping_cart_widget.add_person(remove_command)
-
-    def add_item(self, item_name, price, amount=1):
-        self.shopping_cart_widget.add_item(item_name, price, amount)
+    # def add_item(self, item_name, price, amount=1):
+    #     self.shopping_cart_widget.add_item(item_name, price, amount)
     
-    def set_person(self, current_person):
-        self.shopping_cart_widget.set_person(current_person)
+    # def set_person(self, current_person):
+    #     self.shopping_cart_widget.set_person(current_person)
 
-    def remove_person(self, i):
-        self.shopping_cart_widget.remove_person(i)
+    # def remove_person(self, i):
+    #     self.shopping_cart_widget.remove_person(i)
 
         
     def display_menu_item(self, item, row, col):
@@ -147,6 +127,59 @@ class CustomerView(tk.Frame):
         self.confirm_btn.config(text=LANGUAGE[self.current_language]["confirm"])
         self.undo_btn.config(text=LANGUAGE[self.current_language]["undo"])
         self.redo_btn.config(text=LANGUAGE[self.current_language]["redo"])
+
+    def update_menu(self, products):
+        self.products_widget=[]
+        for widget in self.product_frame.winfo_children():
+            widget.destroy()
+        
+
+
+        # Create a grid of product items 
+        row = 0
+        col = 0
+        for product in products:
+            product_widget = ProductCard(self.product_frame, row, col, self.background_color, self.primary_color, self.default_font, product)
+            self.products_widget.append(product_widget)
+            col += 1
+            if col >= 3:
+                col = 0
+                row += 1
+            
+    
+
+
+    def update_filter(self, filter_data):
+        """Update the filter buttons based on the filter data"""
+        # Clear existing filter buttons
+        for widget in self.filter_frame.winfo_children():
+            widget.destroy()
+
+        # Filter buttons
+        self.filter_buttons = []
+        
+        for filter_name in list(filter_data):
+            btn_frame = tk.Frame(self.filter_frame)
+            btn_frame.pack(side="left", padx=5)
+            
+            if filter_data[filter_name]["active"]:
+                btn_bg = self.light_primary
+                btn_fg = self.primary_color
+                icon_color = self.primary_color
+            else:
+                btn_bg = "#FAFAFA"
+                btn_fg = self.dark_text
+                icon_color = self.light_icon
+            
+            icon_label = tk.Label(btn_frame, text=filter_data[filter_name]["icon"], fg=icon_color, bg=btn_bg)
+            icon_label.pack(side="left", padx=2)
+            
+            filter_button = tk.Button(btn_frame, text=filter_data[filter_name]["text"], 
+                                     bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
+                                     padx=10, pady=5, font=self.default_font)
+            filter_button.pack(side="left")
+            self.filter_buttons.append(filter_button)
+        
 
 
 if __name__ == "__main__":

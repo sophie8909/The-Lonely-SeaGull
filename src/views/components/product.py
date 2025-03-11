@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import messagebox, ttk, font
 import types
 
+from models.language import LANGUAGE
+
+
 class Dragable:
     _drag_threshold = 20
     def __init__(self, widget):
@@ -56,11 +59,12 @@ class Dragable:
 
 
 class ShoppingCart(tk.Frame):
-    def __init__(self, master, background_color, primary_color, default_font):
+    def __init__(self, master, background_color, primary_color, default_font, current_language):
         tk.Frame.__init__(self, master)
         self.background_color = background_color
         self.primary_color = primary_color
         self.default_font = default_font
+        self.current_language = current_language
 
         # Define colors
         self.primary_color = "#035BAC"
@@ -85,7 +89,7 @@ class ShoppingCart(tk.Frame):
             self.header_font = font.Font(family="Arial", size=24, weight="normal")
         # Create a frame for the bottom elements
         self.bottom_frame = tk.Frame(self, bg=self.background_color)
-        self.bottom_frame.pack(fill="x", pady=0, side="bottom")
+        self.bottom_frame.pack(fill="x", pady=2, side="bottom")
 
         # Person selection area (at the top)
         self.cart_frame = tk.Frame(self, bg=self.background_color)
@@ -101,47 +105,46 @@ class ShoppingCart(tk.Frame):
         self.person_top = []
         self.person_bottom = []
         self.items = []
-        
 
-        self.total_label = tk.Label(self.bottom_frame, text="Total: 0 SEK", bg=self.background_color, font=self.header_font)
-        self.total_label.pack(fill="x", pady=0, side="bottom")
-        
         # Undo/Redo section (at the bottom)
         self.action_frame = tk.Frame(self.bottom_frame, bg=self.background_color)
         self.action_frame.pack(fill="x", pady=10)
         
-        self.undo_btn = tk.Button(self.action_frame, text="undo", 
+        self.undo_btn = tk.Button(self.action_frame, text=LANGUAGE[self.current_language]["undo"],
                                bg=self.light_gray, font=("Inter", 12))
         self.undo_btn.pack(side="left", padx=5)
         
-        self.redo_btn = tk.Button(self.action_frame, text="redo", 
+        self.redo_btn = tk.Button(self.action_frame, text=LANGUAGE[self.current_language]["undo"],
                                bg=self.light_gray, font=("Inter", 12))
         self.redo_btn.pack(side="right", padx=5)
         
         # Add friends button (second from bottom)
-        self.add_friends_btn = tk.Button(self.bottom_frame, text="add friends",
+        self.add_friends_btn = tk.Button(self.bottom_frame, text=LANGUAGE[self.current_language]["add friends"],
                                        bg=self.primary_color, fg="white", font=self.header_font,
                                        bd=0, padx=16, pady=10)
         self.add_friends_btn.pack(fill="x", pady=10)
         # Confirm button (third from bottom)
-        self.confirm_btn = tk.Button(self.bottom_frame, text="confirm",
+        self.confirm_btn = tk.Button(self.bottom_frame, text=LANGUAGE[self.current_language]["confirm"],
                                    bg=self.primary_color, fg="white", font=self.header_font,
                                    bd=0, padx=16, pady=10)
         self.confirm_btn.pack(fill="x", pady=10)
-        
 
+        self.total_frame = tk.Frame(self.bottom_frame, bg=self.background_color)
+        self.total_frame.pack(fill="x", pady=10)
 
-        # test item
-        # self.add_person()
-        # self.add_item("Test item1", 50, 2)
-        # self.add_item("Test item2", 10.99, 1)
+        self.total_text_label = tk.Label(self.total_frame, text=f"{LANGUAGE[self.current_language]["total"]}",
+                                         bg=self.background_color, font=self.header_font)
+        self.total_text_label.pack(fill="x", pady=0, side="left", anchor="center")
+
+        self.total_price_label = tk.Label(self.total_frame, text="", bg=self.background_color, font=self.header_font)
+        self.total_price_label.pack(fill="x", pady=0, side="right", anchor="center")
 
 
     def _add_person(self, person_frame, person_id, total=0):
         person_container = tk.Frame(person_frame, bg=self.light_gray, pady=5, padx=10)
         person_container.pack(fill="x", pady=10)
         
-        person_label = tk.Label(person_container, text=f"Person {person_id+1}", bg=self.light_gray, font=("Inter", 12))
+        person_label = tk.Label(person_container, text=f"{person_id+1}", bg=self.light_gray, font=("Inter", 12))
         person_label.pack(side="left")
         remove_btn = tk.Button(person_container, text="✕", bg=self.light_gray, bd=1, command=lambda: self.remove_person_command(person_id))
         remove_btn.pack(side="right")
@@ -174,8 +177,7 @@ class ShoppingCart(tk.Frame):
         self.person_top = []
         self.person_bottom = []
         self.items = []
-        self.total_label.config(text="Total: 0 SEK")
-        
+
     def update_cart(self, current_person, person_count, shopping_cart):
         self.clear_cart()
         final_total = 0
@@ -188,7 +190,7 @@ class ShoppingCart(tk.Frame):
                 self._add_person(self.person_frame_bottom, i, total)
         for item in shopping_cart[current_person]:
             self._add_item(item["name"], item["price"], item["amount"])
-        self.total_label.config(text=f"Total: {final_total} SEK")
+        self.total_price_label.config(text=f" {final_total} SEK")
 
 
 
@@ -258,13 +260,13 @@ class ShoppingCart(tk.Frame):
         self.confirm_window.focus_set() # focus on the pop up window
         self.confirm_window.protocol("WM_DELETE_WINDOW", self.prevent_closing)
 
-        confirm_label = tk.Label(self.confirm_window, text="Are you sure to confirm the order?", font=("Inter", 12))
-        confirm_label.pack(pady=20)
+        self.confirm_label = tk.Label(self.confirm_window, text=LANGUAGE[self.current_language]["confirm_order"], font=("Inter", 12))
+        self.confirm_label.pack(pady=20)
 
-        self.confirm_yes_btn = tk.Button(self.confirm_window, text="Yes", bg=self.primary_color, fg="white", font=("Inter", 12))
+        self.confirm_yes_btn = tk.Button(self.confirm_window, text=LANGUAGE[self.current_language]["yes"], bg=self.primary_color, fg="white", font=("Inter", 12))
         self.confirm_yes_btn.pack(side="left", padx=20)
 
-        self.confirm_no_btn = tk.Button(self.confirm_window, text="No", bg=self.primary_color, fg="white", font=("Inter", 12))
+        self.confirm_no_btn = tk.Button(self.confirm_window, text=LANGUAGE[self.current_language]["no"], bg=self.primary_color, fg="white", font=("Inter", 12))
         self.confirm_no_btn.pack(side="right", padx=20)    
     
     def confirm_window_close(self):
@@ -310,6 +312,7 @@ class ProductCard(Dragable, tk.Frame):
             widget.bind("<ButtonRelease-1>", self.stop_drag)
 
         self.set_anchor_widget(self.product_card)
+
     def click(self):
         print(f"Product {self.row*3+self.col+1} clicked")
         

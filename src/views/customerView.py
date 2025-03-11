@@ -6,15 +6,22 @@ import tkinter as tk
 from tkinter import messagebox, ttk, font
 from models.language import LANGUAGE
 from views.components.product import ProductCard, ShoppingCart
+from views.loginView import LoginView
 import os
 
 
 
 class CustomerView(tk.Frame):
-    def __init__(self, parent, current_language):
+    def __init__(self, parent, current_language, current_resolution):
         super().__init__(parent, bg="#FFFFFF")
+        self.logout_button = None
+        self.res_combo = None
+        self.res_label = None
+        self.login_combo = None
+        self.language_label = None
         self.current_language = current_language
-        
+        self.current_resolution = current_resolution
+
         
         
         # Define colors
@@ -42,9 +49,6 @@ class CustomerView(tk.Frame):
         # Container for products and filters
         self.content_frame = tk.Frame(self.main_frame, bg="#D9D9D9", padx=10, pady=10)
         self.content_frame.pack(side="left", fill="both", expand=True)
-
-        self.logout_button = ttk.Button(self.main_frame, text="Log out")
-        self.logout_button.pack(side="left", pady=20)
         
         # Create search bar
         self.search_frame = tk.Frame(self.content_frame, bg=self.background_color, height=45)
@@ -88,7 +92,7 @@ class CustomerView(tk.Frame):
         self.product_frame.pack(fill="both", expand=True, pady=10)
 
         
-        self.shopping_cart_widget = ShoppingCart(self.main_frame, self.background_color, self.primary_color, self.default_font)
+        self.shopping_cart_widget = ShoppingCart(self.main_frame, self.background_color, self.primary_color, self.default_font, self.current_language)
         self.shopping_cart_widget.pack(side="right", fill="both", expand=True, pady=10)
 
     def update_cart(self, current_person, person_count, shopping_cart):
@@ -109,7 +113,7 @@ class CustomerView(tk.Frame):
         
     def display_menu_item(self, item, row, col):
         """Display a menu item in the product grid"""
-        item_frame = tk.Frame(self.menu_container, relief=tk.RAISED, borderwidth=1)
+        item_frame = tk.Frame(self, relief=tk.RAISED, borderwidth=1)
         item_frame.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
 
         item_label = tk.Label(item_frame, text=item["name"])
@@ -121,12 +125,12 @@ class CustomerView(tk.Frame):
         item_button = tk.Button(item_frame, text="Add to Cart")
         item_button.pack()
         
-    def update_language(self):
-        """Update UI text based on selected language"""
-        self.add_friends_btn.config(text=LANGUAGE[self.current_language]["add friends"])
-        self.confirm_btn.config(text=LANGUAGE[self.current_language]["confirm"])
-        self.undo_btn.config(text=LANGUAGE[self.current_language]["undo"])
-        self.redo_btn.config(text=LANGUAGE[self.current_language]["redo"])
+    # def update_language(self):
+    #     """Update UI text based on selected language"""
+    #     self.add_friends_btn.config(text=LANGUAGE[self.current_language]["add friends"])
+    #     self.confirm_btn.config(text=LANGUAGE[self.current_language]["confirm"])
+    #     self.undo_btn.config(text=LANGUAGE[self.current_language]["undo"])
+    #     self.redo_btn.config(text=LANGUAGE[self.current_language]["redo"])
 
     def update_menu(self, products):
         self.products_widget=[]
@@ -146,7 +150,7 @@ class CustomerView(tk.Frame):
                 col = 0
                 row += 1
             
-    
+
 
 
     def update_filter(self, filter_data):
@@ -179,7 +183,32 @@ class CustomerView(tk.Frame):
                                      padx=10, pady=5, font=self.default_font)
             filter_button.pack(side="left")
             self.filter_buttons.append(filter_button)
-        
+
+    def settings_customer_view(self):
+        settings_frame = tk.Frame(self.shopping_cart_widget.person_frame_top, bg= self.primary_color)
+        settings_frame.pack(side="top", anchor="e")
+
+        # Combo box for selecting different system language
+        self.language_label = tk.Label(settings_frame, text=LANGUAGE[self.current_language]["language"], bg="#d3d3d3")
+        self.language_label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
+
+        self.login_combo = ttk.Combobox(settings_frame, state="readonly", values=["English", "Română", "中文"], height=2, width=8)
+        self.login_combo.grid(row=0, column=1, padx=10, pady=10)
+        self.login_combo.current(int(LANGUAGE[self.current_language]["index"]))
+
+        # Combo box for different display resolution sizes
+        self.res_label = tk.Label(settings_frame, text=LANGUAGE[self.current_language]["resolution"], bg="#d3d3d3")
+        self.res_label.grid(row=0, column=2, padx=10, pady=10, sticky="e")
+
+        self.res_combo = ttk.Combobox(settings_frame, state="readonly", values=["27\"", "9\""], height=2, width=3)
+        self.res_combo.grid(row=0, column=3, padx=10, pady=10)
+        self.res_combo.current(self.current_resolution)
+
+        self.logout_button = ttk.Button(settings_frame, text=LANGUAGE[self.current_language]["logout"])
+        self.logout_button.grid(row=0, column=4, padx=10, pady=10)
+
+
+
 
 
 if __name__ == "__main__":

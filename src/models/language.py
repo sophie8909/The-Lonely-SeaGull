@@ -1,5 +1,6 @@
 LANGUAGE = {
     "English": {
+        "index": "0",
         "login": "Log in",
         "logout": "Log out",
         "menu": "Menu",
@@ -16,9 +17,15 @@ LANGUAGE = {
         "add friends": "Add Friends",
         "confirm": "Confirm",
         "language": "Language",
-        "resolution": "Display Resolution"
+        "resolution": "Display Resolution",
+        "total": "Total payment",
+        "person": "Person",
+        "confirm_order": "Confirm the order?",
+        "yes": "Yes",
+        "no": "No",
     },
     "Română": {
+        "index": "1",
         "login": "Logare",
         "logout": "Delogare",
         "menu": "Meniu",
@@ -35,9 +42,15 @@ LANGUAGE = {
         "add friends": "Adaugă prieteni",
         "confirm": "Confirmă",
         "language": "Limbă",
-        "resolution": "Rezoluție ecran"
+        "resolution": "Rezoluție ecran",
+        "total": "Total de plată",
+        "person": "Persoană",
+        "confirm_order": "Confirmi comanda?",
+        "yes": "Da",
+        "no": "Nu",
     },
     "中文": {
+        "index": "2",
         "login": "登录",
         "logout": "登出",
         "menu": "菜单",
@@ -54,6 +67,11 @@ LANGUAGE = {
         "add friends": "添加朋友",
         "confirm": "确认",
         "language": "语言",
-        "resolution": "显示分辨率"
+        "resolution": "显示分辨率",
+        "total": "总付款",
+        "person": "人",
+        "confirm_order": "确认订单？",
+        "yes": "是的",
+        "no": "不",
     }
 }

@@ -2,69 +2,42 @@ from models.services import UsersService
 from views.loginView import LoginView
 from controllers.base import BaseController
 
-from models.language import LANGUAGE
 from tkinter import messagebox
 
+def show_error_message(message):
+    messagebox.showerror("Error", message)
+
+
 class LoginController(BaseController):
-    def __init__(self, tk_root, main_controller, current_language):
-        super().__init__(tk_root, current_language)
+    def __init__(self, tk_root, main_controller, current_language, current_resolution):
+        super().__init__(tk_root, current_language, current_resolution)
+
+        self.tk_root.title("The Flying Dutchman Pub")
+        self.tk_root.geometry("%dx%d" % (tk_root.winfo_screenwidth(), tk_root.winfo_screenheight()))
+
         self.users = UsersService('data/sample_users.json')
         self.frame = None
         self.main_controller = main_controller
 
-    def create_widgets(self):
-        self.frame = LoginView(self.tk_root, self.current_language)
-        self.set_up_bind()
+    def create_login_widgets(self, current_language, current_resolution):
+        self.frame = LoginView(self.tk_root, current_language, current_resolution)
         self.frame.pack(expand=True, fill='both')
+        self.frame.settings_login_view()
+        self.set_up_bind()
 
-    def hide_widgets(self):
-        self.frame.combo.pack_forget()
-        self.frame.frame.place_forget()
-        self.frame.btn_frame.grid_forget()
-        self.frame.login_button.pack_forget()
-        self.frame.guest_button.pack_forget()
+    def hide_login_widgets(self):
+        self.frame.logout_button.grid_forget()
 
     def destroy_widgets(self):
         self.frame.destroy()
         self.frame = None
 
-    def change_res(self, event):
-        res_type = self.frame.res_combo.get()
-        screen_width = self.tk_root.winfo_screenwidth()
-        screen_height = self.tk_root.winfo_screenheight()
-        if res_type == "27\"":
-            w = screen_width * 0.9
-            h = screen_height * 0.9
-        else:
-            w = screen_width * 0.5
-            h = screen_height * 0.5
-        x = (screen_width / 2) - (w / 2)
-        y = (screen_height / 2) - (h / 2)
-
-        self.tk_root.geometry(str(int(w)) + "x" + str(int(h)) + "+" + str(int(x)) + "+" + str(int(y)))
-        print("screen_width:", w)
-        print("screen_height:", h)
-        print("x:", x)
-        print("y:", y)
-
-    def show_error_message(self, message):
-        messagebox.showerror("Error", message)
-
-    def update_language(self, event):
-        self.current_language = self.frame.login_combo.get()
-        self.frame.username_label.config(text=LANGUAGE[self.current_language]["username"])
-        self.frame.password_label.config(text=LANGUAGE[self.current_language]["password"])
-        self.frame.login_button.config(text=LANGUAGE[self.current_language]["login"])
-        self.frame.guest_button.config(text=LANGUAGE[self.current_language]["guest_btn"])
-        self.frame.language_label.config(text=LANGUAGE[self.current_language]["language"])
-        self.frame.res_label.config(text=LANGUAGE[self.current_language]["resolution"])
-
     def set_up_bind(self):
         self.frame.login_button.bind("<Button-1>", self.login_button_click)
         self.frame.password_entry.bind("<Return>", self.login_button_click)
         self.frame.guest_button.bind("<Button-1>", self.guest_button_click)
-        self.frame.login_combo.bind("<<ComboboxSelected>>", self.update_language)
-        self.frame.res_combo.bind("<<ComboboxSelected>>", self.change_res)
+        self.frame.login_combo.bind("<<ComboboxSelected>>", self.main_controller.update_language)
+        self.frame.res_combo.bind("<<ComboboxSelected>>", self.main_controller.change_res)
 
     def login_button_click(self, event):
         print("Login button clicked")
@@ -72,7 +45,7 @@ class LoginController(BaseController):
         password = self.frame.password_entry.get()
         success, message = self.login(username, password)
         if not success:
-            self.show_error_message(message)
+            show_error_message(message)
             return
         else:
             self.main_controller.switch_controller(self.main_controller.vip_controller)

@@ -1,3 +1,4 @@
+import tkinter as tk
 from views.customerView import CustomerView
 
 class VIPView(CustomerView):

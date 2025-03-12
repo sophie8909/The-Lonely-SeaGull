@@ -81,9 +81,9 @@ class CustomerView(tk.Frame):
         self.customer_info_frame = tk.Frame(self.left_frame, bg=self.background_color, padx=10, pady=10)
         self.customer_info_frame.pack(fill="both", expand=True)
         
-        
-        self.shopping_cart_widget = ShoppingCart(self.left_frame, self.background_color, self.primary_color, self.default_font)
-        self.shopping_cart_widget.pack( fill="both", expand=True, pady=10)
+        # needs also to have the current_language as parameter
+        self.shopping_cart_widget = ShoppingCart(self.left_frame, self.background_color, self.primary_color, self.default_font, self.current_language)
+        self.shopping_cart_widget.pack(fill="both", expand=True, pady=10)
 
 
         # Added the view for language and display size settings

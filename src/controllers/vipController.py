@@ -1,6 +1,3 @@
-from controllers.base import BaseController
-from views.customerView import CustomerView
-from views.vipView import VIPView
 from controllers.custormerController import CustomerController
 
 class VIPController(CustomerController):

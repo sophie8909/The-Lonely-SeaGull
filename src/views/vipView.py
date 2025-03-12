@@ -1,7 +1,3 @@
-import tkinter as tk
-from tkinter import messagebox, ttk, font
-from models.language import LANGUAGE
-from views.components.product import ProductCard, ShoppingCart
 from views.customerView import CustomerView
 
 class VIPView(CustomerView):

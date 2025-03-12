@@ -1,18 +1,23 @@
 import tkinter as tk
-from tkinter import messagebox, ttk, font
-import types
+from tkinter import font, ttk
+
+from models.language import LANGUAGE
+
 
 
 class Dragable:
     _drag_threshold = 20
+
     def __init__(self, widget):
         self.widget = widget
         self.widgets = []
         self.ghost = None
         self._drag_data = {"x": 0, "y": 0}
 
+
     def set_anchor_widget(self, widget):
         self.anchor_widget = widget
+
 
     def add_draggable(self, widgets):
         for widget in widgets:
@@ -21,12 +26,14 @@ class Dragable:
             widget.bind("<ButtonRelease-1>", self.stop_drag)
             self.widgets.append(widget)
 
+
     def start_drag(self, event):
         self._drag_data["x"] = event.x_root
         self._drag_data["y"] = event.y_root
         if hasattr(self, "create_ghost_card"):
             self.ghost = self.create_ghost_card()
             self.ghost.place(x=self.anchor_widget.winfo_rootx(), y=self.anchor_widget.winfo_rooty())
+
 
     def do_drag(self, event):
         if self.ghost:
@@ -42,6 +49,7 @@ class Dragable:
             new_y = self.anchor_widget.winfo_rooty() + dy
             self.ghost.place(x=new_x, y=new_y)
 
+
     def stop_drag(self, event):
         if self.ghost:
             self.ghost.destroy()
@@ -55,13 +63,58 @@ class Dragable:
                 
             below_widget.on_drop(self.widget)
 
-
-class ShoppingCart(tk.Frame):
-    def __init__(self, master, background_color, primary_color, default_font):
+# Class used for the language and display size settings, to change between them
+class Settings(tk.Frame):
+    def __init__(self, master, background_color, primary_color, default_font, current_language, current_resolution):
         tk.Frame.__init__(self, master)
         self.background_color = background_color
         self.primary_color = primary_color
         self.default_font = default_font
+        self.current_language = current_language
+        self.current_resolution = current_resolution
+
+        # Define colors
+        self.primary_color = "#035BAC"
+        self.light_primary = "#D5E5F5"  # Approximation of rgba(3, 91, 172, 0.27)
+        self.background_color = "#FFFFFF"
+        self.light_gray = "#D9D9D9"
+        self.dark_text = "#5A5A5A"  # Approximation of rgba(0, 0, 0, 0.65)
+        self.light_icon = "#BEBDBD"  # Approximation of rgba(151, 148, 148, 0.5)
+
+        # Try to set up fonts (if not available, fallback to system fonts)
+        try:
+            self.default_font = font.Font(family="Roboto", size=14)
+            self.header_font = font.Font(family="Roboto", size=24, weight="normal")
+        except:
+            self.default_font = font.Font(family="Arial", size=14)
+            self.header_font = font.Font(family="Arial", size=24, weight="normal")
+
+        # Combo box for selecting different system language
+        self.language_label = tk.Label(self, text=LANGUAGE[self.current_language]["language"], bg="#d3d3d3")
+        self.language_label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
+
+        self.login_combo = ttk.Combobox(self, state="readonly", values=["English", "Română", "中文"], height=2, width=8)
+        self.login_combo.grid(row=0, column=1, padx=10, pady=10)
+        self.login_combo.current(int(LANGUAGE[self.current_language]["index"]))
+
+        # Combo box for different display resolution sizes
+        self.res_label = tk.Label(self, text=LANGUAGE[self.current_language]["resolution"], bg="#d3d3d3")
+        self.res_label.grid(row=0, column=2, padx=10, pady=10, sticky="e")
+
+        self.res_combo = ttk.Combobox(self, state="readonly", values=["27\"", "9\""], height=2, width=3)
+        self.res_combo.grid(row=0, column=3, padx=10, pady=10)
+        self.res_combo.current(self.current_resolution)
+
+        self.logout_button = ttk.Button(self, text=LANGUAGE[self.current_language]["logout"])
+        self.logout_button.grid(row=0, column=4, padx=10, pady=10)
+
+class ShoppingCart(tk.Frame):
+    def __init__(self, master, background_color, primary_color, default_font, current_language):
+        tk.Frame.__init__(self, master)
+        self.background_color = background_color
+        self.primary_color = primary_color
+        self.default_font = default_font
+        self.current_language = current_language
 
         # Define colors
         self.primary_color = "#035BAC"
@@ -86,7 +139,7 @@ class ShoppingCart(tk.Frame):
             self.header_font = font.Font(family="Arial", size=24, weight="normal")
         # Create a frame for the bottom elements
         self.bottom_frame = tk.Frame(self, bg=self.background_color)
-        self.bottom_frame.pack(fill="x", pady=0, side="bottom")
+        self.bottom_frame.pack(fill="x", pady=2, side="bottom")
 
         # Person selection area (at the top)
         self.cart_frame = tk.Frame(self, bg=self.background_color)
@@ -102,47 +155,46 @@ class ShoppingCart(tk.Frame):
         self.person_top = []
         self.person_bottom = []
         self.items = []
-        
 
-        self.total_label = tk.Label(self.bottom_frame, text="Total: 0 SEK", bg=self.background_color, font=self.header_font)
-        self.total_label.pack(fill="x", pady=0, side="bottom")
-        
         # Undo/Redo section (at the bottom)
         self.action_frame = tk.Frame(self.bottom_frame, bg=self.background_color)
         self.action_frame.pack(fill="x", pady=10)
         
-        self.undo_btn = tk.Button(self.action_frame, text="undo", 
+        self.undo_btn = tk.Button(self.action_frame, text=LANGUAGE[self.current_language]["undo"],
                                bg=self.light_gray, font=("Inter", 12))
         self.undo_btn.pack(side="left", padx=5)
         
-        self.redo_btn = tk.Button(self.action_frame, text="redo", 
+        self.redo_btn = tk.Button(self.action_frame, text=LANGUAGE[self.current_language]["undo"],
                                bg=self.light_gray, font=("Inter", 12))
         self.redo_btn.pack(side="right", padx=5)
         
         # Add friends button (second from bottom)
-        self.add_friends_btn = tk.Button(self.bottom_frame, text="add friends",
+        self.add_friends_btn = tk.Button(self.bottom_frame, text=LANGUAGE[self.current_language]["add friends"],
                                        bg=self.primary_color, fg="white", font=self.header_font,
                                        bd=0, padx=16, pady=10)
         self.add_friends_btn.pack(fill="x", pady=10)
         # Confirm button (third from bottom)
-        self.confirm_btn = tk.Button(self.bottom_frame, text="confirm",
+        self.confirm_btn = tk.Button(self.bottom_frame, text=LANGUAGE[self.current_language]["confirm"],
                                    bg=self.primary_color, fg="white", font=self.header_font,
                                    bd=0, padx=16, pady=10)
         self.confirm_btn.pack(fill="x", pady=10)
-        
 
+        self.total_frame = tk.Frame(self.bottom_frame, bg=self.background_color)
+        self.total_frame.pack(fill="x", pady=10)
 
-        # test item
-        # self.add_person()
-        # self.add_item("Test item1", 50, 2)
-        # self.add_item("Test item2", 10.99, 1)
+        self.total_text_label = tk.Label(self.total_frame, text=f"{LANGUAGE[self.current_language]["total"]}",
+                                         bg=self.background_color, font=self.header_font)
+        self.total_text_label.pack(fill="x", pady=0, side="left", anchor="center")
+
+        self.total_price_label = tk.Label(self.total_frame, text="", bg=self.background_color, font=self.header_font)
+        self.total_price_label.pack(fill="x", pady=0, side="right", anchor="center")
 
 
     def _add_person(self, person_frame, person_id, total=0):
         person_container = tk.Frame(person_frame, bg=self.light_gray, pady=5, padx=10)
         person_container.pack(fill="x", pady=10)
         
-        person_label = tk.Label(person_container, text=f"Person {person_id+1}", bg=self.light_gray, font=("Inter", 12))
+        person_label = tk.Label(person_container, text=f"{person_id+1}", bg=self.light_gray, font=("Inter", 12))
         person_label.pack(side="left")
         remove_btn = tk.Button(person_container, text="✕", bg=self.light_gray, bd=1, command=lambda: self.remove_person_command(person_id))
         remove_btn.pack(side="right")
@@ -154,6 +206,7 @@ class ShoppingCart(tk.Frame):
         person_label.bind("<Button-1>", lambda event: self.current_person_command(person_id))
         total_label.bind("<Button-1>", lambda event: self.current_person_command(person_id))
         self.person_top.append(person_container)
+
 
     def _add_item(self, item_name, price, amount=1):
         item_frame = tk.Frame(self.items_frame, bg=self.background_color, pady=0, padx=0)
@@ -175,8 +228,8 @@ class ShoppingCart(tk.Frame):
         self.person_top = []
         self.person_bottom = []
         self.items = []
-        self.total_label.config(text="Total: 0 SEK")
-        
+
+
     def update_cart(self, current_person, person_count, shopping_cart):
         self.clear_cart()
         final_total = 0
@@ -189,12 +242,7 @@ class ShoppingCart(tk.Frame):
                 self._add_person(self.person_frame_bottom, i, total)
         for item in shopping_cart[current_person]:
             self._add_item(item["name"], item["price"], item["amount"])
-        self.total_label.config(text=f"Total: {final_total} SEK")
-
-
-
-
-
+        self.total_price_label.config(text=f" {final_total} SEK")
 
     # def set_person(self, current_person):
     #     for i in range(len(self.person_top)):
@@ -226,11 +274,14 @@ class ShoppingCart(tk.Frame):
     #     self.items.pop(i)
     #     self.totals.pop(i)
 
+
     def set_current_person_command(self, set_person_command):
         self.current_person_command = set_person_command
-        
+
+
     def set_remove_person_command(self, remove_person_command):
         self.remove_person_command = remove_person_command
+
 
     def set_on_drop(self, on_drop):
         self.on_drop = on_drop
@@ -238,7 +289,6 @@ class ShoppingCart(tk.Frame):
         self.person_frame_top.on_drop = on_drop
         self.items_frame.on_drop = on_drop
         self.person_frame_bottom.on_drop = on_drop
-
 
 
     # pop up window for confirm order
@@ -258,15 +308,16 @@ class ShoppingCart(tk.Frame):
         self.confirm_window.focus_set() # focus on the pop up window
         self.confirm_window.protocol("WM_DELETE_WINDOW", self.prevent_closing)
 
-        confirm_label = tk.Label(self.confirm_window, text="Are you sure to confirm the order?", font=("Inter", 12))
-        confirm_label.pack(pady=20)
+        self.confirm_label = tk.Label(self.confirm_window, text=LANGUAGE[self.current_language]["confirm_order"], font=("Inter", 12))
+        self.confirm_label.pack(pady=20)
 
-        self.confirm_yes_btn = tk.Button(self.confirm_window, text="Yes", bg=self.primary_color, fg="white", font=("Inter", 12))
+        self.confirm_yes_btn = tk.Button(self.confirm_window, text=LANGUAGE[self.current_language]["yes"], bg=self.primary_color, fg="white", font=("Inter", 12))
         self.confirm_yes_btn.pack(side="left", padx=20)
 
-        self.confirm_no_btn = tk.Button(self.confirm_window, text="No", bg=self.primary_color, fg="white", font=("Inter", 12))
+        self.confirm_no_btn = tk.Button(self.confirm_window, text=LANGUAGE[self.current_language]["no"], bg=self.primary_color, fg="white", font=("Inter", 12))
         self.confirm_no_btn.pack(side="right", padx=20)    
-    
+
+
     def confirm_window_close(self):
         self.confirm_window.destroy()
 
@@ -275,8 +326,10 @@ class ShoppingCart(tk.Frame):
         """ Prevent closing the confirmation window without an explicit choice """
         pass  # Do nothing, forcing user interaction
 
+
 class ProductCard(Dragable, tk.Frame):
     drag_threshold = 20
+
     def __init__(self, master, row, col, background_color, primary_color, default_font, product, click_callback=None):
         tk.Frame.__init__(self, master)
         Dragable.__init__(self, self)
@@ -329,15 +382,18 @@ class ProductCard(Dragable, tk.Frame):
         print(self.product)
         self.popup_item_detail(self.product)
 
-        
+       
     def create_ghost_card(self):
         root = self.master
+
         while not isinstance(root, tk.Tk):
             root = root.master
+
         ghost = tk.Frame(root, bg=self.background_color, width=223, height=262, bd=1, relief="solid")
         ghost.pack_propagate(False)
         ghost_image = tk.PhotoImage(file="../assets/beer.png")
         ghost_image = ghost_image.subsample(3)
+
         ghost_image_label = tk.Label(ghost, image=ghost_image, bg=self.background_color)
         ghost_image_label.image = ghost_image
         ghost_image_label.pack(pady=0)
@@ -347,6 +403,7 @@ class ProductCard(Dragable, tk.Frame):
         ghost_price.pack(pady=5)
         ghost_button = tk.Button(ghost, text="Add to Cart", bg=self.primary_color, fg="white", padx=10, pady=5)
         ghost_button.pack(pady=20)
+
         return ghost
 
     def popup_item_detail(self, item_info):

@@ -3,20 +3,17 @@ if __name__ == "__main__":
     sys.path.append(sys.path[0] + "/../")
 
 import tkinter as tk
-from tkinter import messagebox, ttk, font
+from tkinter import ttk, font
 from models.language import LANGUAGE
-from views.components.product import ProductCard, ShoppingCart
-import os
-
+from views.components.product import ProductCard, ShoppingCart, Settings
 
 
 class CustomerView(tk.Frame):
-    def __init__(self, parent, current_language):
+    def __init__(self, parent, current_language, current_resolution):
         super().__init__(parent, bg="#FFFFFF")
         self.current_language = current_language
-        
-        
-        
+        self.current_resolution = current_resolution
+
         # Define colors
         self.primary_color = "#035BAC"
         self.light_primary = "#D5E5F5"  # Approximation of rgba(3, 91, 172, 0.27)
@@ -36,7 +33,7 @@ class CustomerView(tk.Frame):
         # Create the main container frame
         self.main_frame = tk.Frame(self, bg=self.background_color)
         self.main_frame.pack(fill="both", expand=True)
-        
+
         # Container for products and filters
         self.content_frame = tk.Frame(self.main_frame, bg="#D9D9D9", padx=10, pady=10)
         self.content_frame.pack(side="left", fill="both", expand=True)
@@ -47,37 +44,31 @@ class CustomerView(tk.Frame):
         
         self.search_entry = tk.Entry(self.search_frame, font=self.default_font, bd=1, relief="solid")
         self.search_entry.pack(side="left", fill="x", expand=True, ipady=6)
-        self.search_entry.insert(0, "Search...")
-        self.search_entry.bind("<FocusIn>", lambda event: self.search_entry.delete(0, "end") if self.search_entry.get() == "Search..." else None)
-        self.search_entry.bind("<FocusOut>", lambda event: self.search_entry.insert(0, "Search...") if self.search_entry.get() == "" else None)
+        self.search_entry.insert(0, LANGUAGE[self.current_language]["search"])
+        self.search_entry.bind("<FocusIn>", lambda event: self.search_entry.delete(0, "end") if self.search_entry.get() == LANGUAGE[self.current_language]["search"] else None)
+        self.search_entry.bind("<FocusOut>", lambda event: self.search_entry.insert(0, LANGUAGE[self.current_language]["search"]) if self.search_entry.get() == "" else None)
         
         # Search button
         self.search_button = tk.Button(self.search_frame, text="🔍", bg=self.primary_color, fg="white", bd=0, padx=16, 
                                        font=self.default_font, activebackground="#034d91")
         self.search_button.pack(side="right", ipady=6)
-        
-        
     
         # switch menu button food and beer
         self.switch_menu_frame = tk.Frame(self.content_frame, bg=self.background_color)
         self.switch_menu_frame.pack(fill="x", pady=10)
 
         # two buttons split the frame in half
-        self.beverages_button = tk.Button(self.switch_menu_frame, text="Beverages", bg=self.primary_color, fg="white", bd=1,
+        self.beverages_button = tk.Button(self.switch_menu_frame, text=LANGUAGE[self.current_language]["beverages"], bg=self.primary_color, fg="white", bd=1,
                                         font=self.default_font, activebackground="#034d91")
         self.beverages_button.pack(side="left", expand=True, fill="both", ipady=6)
-        self.food_button = tk.Button(self.switch_menu_frame, text="Food", bg=self.primary_color, fg="white", bd=1,
+        self.food_button = tk.Button(self.switch_menu_frame, text=LANGUAGE[self.current_language]["food"], bg=self.primary_color, fg="white", bd=1,
                                        font=self.default_font, activebackground="#034d91")
         self.food_button.pack(side="right", expand=True, fill="both", ipady=6) 
-    
-
-
 
         # Filter buttons frame
         self.filter_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
         self.filter_frame.pack(fill="x", pady=10)
-        
-        
+
         # Product grid
         self.product_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
         self.product_frame.pack(fill="both", expand=True, pady=10)
@@ -95,8 +86,14 @@ class CustomerView(tk.Frame):
         self.shopping_cart_widget.pack( fill="both", expand=True, pady=10)
 
 
+        # Added the view for language and display size settings
+        self.settings_widget = Settings(self.shopping_cart_widget.person_frame_top, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
+        self.settings_widget.pack(side="top", anchor="e")
+
+
     def update_cart(self, current_person, person_count, shopping_cart):
         self.shopping_cart_widget.update_cart(current_person, person_count, shopping_cart)
+
 
     # def add_person(self, remove_command=None):
     #     self.shopping_cart_widget.add_person(remove_command)
@@ -110,10 +107,10 @@ class CustomerView(tk.Frame):
     # def remove_person(self, i):
     #     self.shopping_cart_widget.remove_person(i)
 
-        
+
     def display_menu_item(self, item, row, col):
         """Display a menu item in the product grid"""
-        item_frame = tk.Frame(self.menu_container, relief=tk.RAISED, borderwidth=1)
+        item_frame = tk.Frame(self, relief=tk.RAISED, borderwidth=1)
         item_frame.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
 
         item_label = tk.Label(item_frame, text=item["name"])
@@ -124,20 +121,20 @@ class CustomerView(tk.Frame):
 
         item_button = tk.Button(item_frame, text="Add to Cart")
         item_button.pack()
-        
-    def update_language(self):
-        """Update UI text based on selected language"""
-        self.add_friends_btn.config(text=LANGUAGE[self.current_language]["add friends"])
-        self.confirm_btn.config(text=LANGUAGE[self.current_language]["confirm"])
-        self.undo_btn.config(text=LANGUAGE[self.current_language]["undo"])
-        self.redo_btn.config(text=LANGUAGE[self.current_language]["redo"])
+
+
+    # def update_language(self):
+    #     """Update UI text based on selected language"""
+    #     self.add_friends_btn.config(text=LANGUAGE[self.current_language]["add friends"])
+    #     self.confirm_btn.config(text=LANGUAGE[self.current_language]["confirm"])
+    #     self.undo_btn.config(text=LANGUAGE[self.current_language]["undo"])
+    #     self.redo_btn.config(text=LANGUAGE[self.current_language]["redo"])
+
 
     def update_menu(self, products):
         self.products_widget=[]
         for widget in self.product_frame.winfo_children():
             widget.destroy()
-        
-
 
         # Create a grid of product items 
         row = 0
@@ -149,8 +146,6 @@ class CustomerView(tk.Frame):
             if col >= 3:
                 col = 0
                 row += 1
-            
-    
 
 
     def update_filter(self, filter_data):
@@ -183,8 +178,6 @@ class CustomerView(tk.Frame):
                                      padx=10, pady=5, font=self.default_font)
             filter_button.pack(side="left")
             self.filter_buttons.append(filter_button)
-        
-    
 
 
 if __name__ == "__main__":

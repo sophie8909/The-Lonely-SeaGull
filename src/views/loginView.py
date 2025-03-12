@@ -1,19 +1,31 @@
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import ttk, font
 
 from models.language import LANGUAGE
+from views.components.product import Settings
 
 
 class LoginView(tk.Frame):
     def __init__(self, parent, current_language, current_resolution):
         super().__init__(parent)
-        self.res_label = None
-        self.language_label = None
-        self.logout_button = None
-        self.res_combo = None
-        self.login_combo = None
         self.current_language = current_language
         self.current_resolution = current_resolution
+
+        # Define colors
+        self.primary_color = "#035BAC"
+        self.light_primary = "#D5E5F5"  # Approximation of rgba(3, 91, 172, 0.27)
+        self.background_color = "#FFFFFF"
+        self.light_gray = "#D9D9D9"
+        self.dark_text = "#5A5A5A"  # Approximation of rgba(0, 0, 0, 0.65)
+        self.light_icon = "#BEBDBD"  # Approximation of rgba(151, 148, 148, 0.5)
+
+        # Try to set up fonts (if not available, fallback to system fonts)
+        try:
+            self.default_font = font.Font(family="Roboto", size=14)
+            self.header_font = font.Font(family="Roboto", size=24, weight="normal")
+        except:
+            self.default_font = font.Font(family="Arial", size=14)
+            self.header_font = font.Font(family="Arial", size=24, weight="normal")
 
         # Create a frame for the login form
         self.frame = tk.Frame(self, bg="#d3d3d3")
@@ -41,25 +53,7 @@ class LoginView(tk.Frame):
         self.guest_button = ttk.Button(self.btn_frame, text=LANGUAGE[self.current_language]["guest_btn"])
         self.guest_button.pack(side="left", padx=5)
 
-    def settings_login_view(self):
-        settings_frame = tk.Frame(self, bg="#035BAC")
-        settings_frame.pack(side="top", anchor="e")
+        # Added the view for language and display size settings
+        self.settings_widget = Settings(self, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
+        self.settings_widget.pack(side="top", anchor="e")
 
-        # Combo box for selecting different system language
-        self.language_label = tk.Label(settings_frame, text=LANGUAGE[self.current_language]["language"], bg="#d3d3d3")
-        self.language_label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
-
-        self.login_combo = ttk.Combobox(settings_frame, state="readonly", values=["English", "Română", "中文"], height=2, width=8)
-        self.login_combo.grid(row=0, column=1, padx=10, pady=10)
-        self.login_combo.current(int(LANGUAGE[self.current_language]["index"]))
-
-        # Combo box for different display resolution sizes
-        self.res_label = tk.Label(settings_frame, text=LANGUAGE[self.current_language]["resolution"], bg="#d3d3d3")
-        self.res_label.grid(row=0, column=2, padx=10, pady=10, sticky="e")
-
-        self.res_combo = ttk.Combobox(settings_frame, state="readonly", values=["27\"", "9\""], height=2, width=3)
-        self.res_combo.grid(row=0, column=3, padx=10, pady=10)
-        self.res_combo.current(self.current_resolution)
-
-        self.logout_button = ttk.Button(settings_frame, text=LANGUAGE[self.current_language]["logout"])
-        self.logout_button.grid(row=0, column=4, padx=10, pady=10)

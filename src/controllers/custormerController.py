@@ -117,6 +117,7 @@ class CustomerController(BaseController):
             self.data.shopping_cart[self.data.current_person].append({"name": item_name, "price": float(itme_price), "amount": 1})
         self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart)
 
+
     def make_operation(self):
         data = deepcopy(self.data)
         self.undo_stack.append(data)

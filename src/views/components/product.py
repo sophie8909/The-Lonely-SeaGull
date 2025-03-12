@@ -195,7 +195,6 @@ class ShoppingCart(tk.Frame):
 
 
 
-
     # def set_person(self, current_person):
     #     for i in range(len(self.person_top)):
     #         if i <= current_person:
@@ -287,6 +286,7 @@ class ProductCard(Dragable, tk.Frame):
         self.row = row
         self.col = col
         self._is_dragging = False
+        self.product = product
 
         self.product_card = tk.Frame(self.product_frame, bg=self.background_color, width=223, height=262, bd=1, relief="solid")
         self.product_card.grid(row=row, column=col, padx=10, pady=10)
@@ -298,10 +298,10 @@ class ProductCard(Dragable, tk.Frame):
         self.product_image_label.image = self.product_image
         self.product_image_label.pack(pady=0)
 
-        self.product_name = tk.Label(self.product_card, text=product['Name'], bg=self.background_color, font=self.default_font)
+        self.product_name = tk.Label(self.product_card, text=self.product['Name'], bg=self.background_color, font=self.default_font)
         self.product_name.pack(pady=(30, 5))
         
-        self.product_price = tk.Label(self.product_card, text=product['Price'], bg=self.background_color, font=self.default_font)
+        self.product_price = tk.Label(self.product_card, text=self.product['Price'], bg=self.background_color, font=self.default_font)
         self.product_price.pack(pady=5)
 
         for widget in [self.product_card, self.product_image_label, self.product_name, self.product_price]:
@@ -324,9 +324,9 @@ class ProductCard(Dragable, tk.Frame):
         ghost_image_label = tk.Label(ghost, image=ghost_image, bg=self.background_color)
         ghost_image_label.image = ghost_image
         ghost_image_label.pack(pady=0)
-        ghost_name = tk.Label(ghost, text=f"Product {self.row*3+self.col+1}", bg=self.background_color, font=self.default_font)
+        ghost_name = tk.Label(ghost, text=self.product["Name"], bg=self.background_color, font=self.default_font)
         ghost_name.pack(pady=(30,5))
-        ghost_price = tk.Label(ghost, text="50 SEK", bg=self.background_color, font=self.default_font)
+        ghost_price = tk.Label(ghost, text=self.product["Price"], bg=self.background_color, font=self.default_font)
         ghost_price.pack(pady=5)
         ghost_button = tk.Button(ghost, text="Add to Cart", bg=self.primary_color, fg="white", padx=10, pady=5)
         ghost_button.pack(pady=20)

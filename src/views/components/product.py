@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk, font
 import types
 
+
 class Dragable:
     _drag_threshold = 20
     def __init__(self, widget):
@@ -301,17 +302,33 @@ class ProductCard(Dragable, tk.Frame):
         self.product_name = tk.Label(self.product_card, text=self.product['Name'], bg=self.background_color, font=self.default_font)
         self.product_name.pack(pady=(30, 5))
         
-        self.product_price = tk.Label(self.product_card, text=self.product['Price'], bg=self.background_color, font=self.default_font)
-        self.product_price.pack(pady=5)
+
+        price_info_frame = tk.Frame(self.product_card, bg=self.background_color)
+        price_info_frame.pack(pady=5)
+
+        # price
+        self.product_price = tk.Label(price_info_frame, text=self.product['Price'], bg=self.background_color, font=self.default_font)
+        self.product_price.pack(side="left")
+
+        # info button
+        self.info_btn = tk.Button(price_info_frame, text="ℹ️", bg=self.primary_color, fg="white", padx=10, pady=5)
+        self.info_btn.pack(side="left", padx=(10, 0))  # 左邊留 10px 間距，讓價格與按鈕之間有空隙
+        self.info_btn.bind("<Button-1>", self.info_click)
+
 
         for widget in [self.product_card, self.product_image_label, self.product_name, self.product_price]:
             widget.bind("<Button-1>", self.start_drag)
             widget.bind("<B1-Motion>", self.do_drag)
             widget.bind("<ButtonRelease-1>", self.stop_drag)
 
+
         self.set_anchor_widget(self.product_card)
-    def click(self):
-        print(f"Product {self.row*3+self.col+1} clicked")
+    
+
+    def info_click(self, event):
+        print(self.product)
+        self.popup_item_detail(self.product)
+
         
     def create_ghost_card(self):
         root = self.master
@@ -331,6 +348,30 @@ class ProductCard(Dragable, tk.Frame):
         ghost_button = tk.Button(ghost, text="Add to Cart", bg=self.primary_color, fg="white", padx=10, pady=5)
         ghost_button.pack(pady=20)
         return ghost
+
+    def popup_item_detail(self, item_info):
+        """Display a popup window with detailed information about a product"""
+        popup = tk.Toplevel(self)
+        popup.title(item_info["Name"])
+        popup.geometry("400x400")
+        # show the popup window in the center of the screen
+        x = popup.winfo_screenwidth() // 2 - 200
+        y = popup.winfo_screenheight() // 2 - 200
+        
+        
+        item_label = tk.Label(popup, text=item_info["Name"])
+        item_label.pack()
+        
+        item_price = tk.Label(popup, text=item_info["Price"])
+        item_price.pack()
+        
+        for info in item_info:
+            if info not in ["Name", "Price"]:
+                info_label = tk.Label(popup, text=f"{info}: {item_info[info]}")
+                info_label.pack()
+        
+        close_button = tk.Button(popup, text="Close", command=popup.destroy)
+        close_button.pack()
 
 if __name__ == "__main__":
     root = tk.Tk()

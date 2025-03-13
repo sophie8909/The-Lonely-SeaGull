@@ -170,7 +170,8 @@ class CustomerController(BaseController):
     """Confirm the order and add it to the order history"""
     def confirm_order(self):
         # double check the order
-        self.frame.shopping_cart_widget.double_check_confirm()
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
+        self.frame.shopping_cart_widget.double_check_confirm(language_window)
         self.frame.shopping_cart_widget.confirm_yes_btn.config(command=self.confirm_order_yes)
         self.frame.shopping_cart_widget.confirm_no_btn.config(command=self.confirm_order_no)
 

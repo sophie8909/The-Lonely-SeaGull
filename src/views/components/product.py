@@ -109,12 +109,13 @@ class Settings(tk.Frame):
         self.logout_button.grid(row=0, column=4, padx=10, pady=10)
 
 class ShoppingCart(tk.Frame):
-    def __init__(self, master, background_color, primary_color, default_font, current_language):
+    def __init__(self, master, background_color, primary_color, default_font, current_language, current_resolution):
         tk.Frame.__init__(self, master)
         self.background_color = background_color
         self.primary_color = primary_color
         self.default_font = default_font
         self.current_language = current_language
+        self.current_resolution = current_resolution
 
         # Define colors
         self.primary_color = "#035BAC"
@@ -295,30 +296,30 @@ class ShoppingCart(tk.Frame):
 
 
     # pop up window for confirm order
-    def double_check_confirm(self):
-        # pop up window in center for double check the order
+    def double_check_confirm(self, language):
+        # pop up window in center for double-check the order
         self.confirm_window = tk.Toplevel(self)
         self.confirm_window.title("Confirm Order")
         self.confirm_window.geometry("300x200")
         self.confirm_window.resizable(False, False)
-        # set the position of the pop up window
+        # set the position of the pop-up window
         x = self.confirm_window.winfo_screenwidth() // 2 - 150
         y = self.confirm_window.winfo_screenheight() // 2 - 100
         self.confirm_window.geometry(f"+{x}+{y}")
 
         # force the user to confirm the order
         self.confirm_window.grab_set() # block the main window
-        self.confirm_window.focus_set() # focus on the pop up window
+        self.confirm_window.focus_set() # focus on the pop-up window
         self.confirm_window.protocol("WM_DELETE_WINDOW", self.prevent_closing)
 
-        self.confirm_label = tk.Label(self.confirm_window, text=LANGUAGE[self.current_language]["confirm_order"], font=("Inter", 12))
+        self.confirm_label = tk.Label(self.confirm_window, text=LANGUAGE[language]["confirm_order"], font=("Inter", 12))
         self.confirm_label.pack(pady=20)
 
-        self.confirm_yes_btn = tk.Button(self.confirm_window, text=LANGUAGE[self.current_language]["yes"], bg=self.primary_color, fg="white", font=("Inter", 12))
+        self.confirm_yes_btn = tk.Button(self.confirm_window, text=LANGUAGE[language]["yes"], bg=self.primary_color, fg="white", font=("Inter", 12))
         self.confirm_yes_btn.pack(side="left", padx=20)
 
-        self.confirm_no_btn = tk.Button(self.confirm_window, text=LANGUAGE[self.current_language]["no"], bg=self.primary_color, fg="white", font=("Inter", 12))
-        self.confirm_no_btn.pack(side="right", padx=20)    
+        self.confirm_no_btn = tk.Button(self.confirm_window, text=LANGUAGE[language]["no"], bg=self.primary_color, fg="white", font=("Inter", 12))
+        self.confirm_no_btn.pack(side="right", padx=20)
 
 
     def confirm_window_close(self):
@@ -349,8 +350,6 @@ class ProductCard(Dragable, tk.Frame):
         self.product_card.grid(row=row, column=col, padx=10, pady=10)
         self.product_card.pack_propagate(False)
 
-        
-
         self.product_image = tk.PhotoImage(file="../assets/beer.png")
         self.product_image = self.product_image.subsample(3)
         self.product_image_label = tk.Label(self.product_card, image=self.product_image, bg=self.background_color)
@@ -359,7 +358,7 @@ class ProductCard(Dragable, tk.Frame):
 
         self.product_name = tk.Label(self.product_card, text=self.product['Name'], bg=self.background_color, font=self.default_font)
         self.product_name.pack(pady=(30, 5))
-        
+
 
         price_info_frame = tk.Frame(self.product_card, bg=self.background_color)
         price_info_frame.pack(pady=5)
@@ -369,20 +368,15 @@ class ProductCard(Dragable, tk.Frame):
         self.product_price.pack(side="left")
 
         # info button
-        self.info_btn = tk.Button(price_info_frame, text="ℹ️", bg=self.primary_color, fg="white", padx=10, pady=5)
-        self.info_btn.pack(side="left", padx=(10, 0)) 
+        self.info_btn = tk.Button(price_info_frame, text="ℹ️", bg=self.primary_color, fg="white", padx=5, pady=3)
+        self.info_btn.pack(side="left", padx=(5, 0))
         self.info_btn.bind("<Button-1>", self.info_click)
 
         if product["VIP"]:
             self.product_vip_label = tk.Label(price_info_frame, text="VIP", bg=self.primary_color, fg="white", font=self.default_font)
             self.product_vip_label.pack(side="left", anchor="w", padx=(10, 0))
 
-
-        for widget in [self.product_card, self.product_image_label, self.product_name, self.product_price]:
-            widget.bind("<Button-1>", self.start_drag)
-            widget.bind("<B1-Motion>", self.do_drag)
-            widget.bind("<ButtonRelease-1>", self.stop_drag)
-
+        self.add_draggable([self.product_card, self.product_image_label, self.product_name, self.product_price])
 
         self.set_anchor_widget(self.product_card)
     
@@ -391,7 +385,6 @@ class ProductCard(Dragable, tk.Frame):
         print(self.product)
         self.popup_item_detail(self.product)
 
-       
     def create_ghost_card(self):
         root = self.master
 

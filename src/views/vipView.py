@@ -9,7 +9,7 @@ class VIPView(CustomerView):
         print("VIP View")
         # name frame
         self.name_frame = tk.Frame(self.customer_info_frame, bg=self.background_color)
-        self.name_frame.pack(side="left",fill="both", expand=True, padx=10)
+        self.name_frame.pack(side="top",fill="both", expand=True, padx=10)
         self.vip_welcome_label = tk.Label(self.name_frame, text=LANGUAGE[self.current_language]["welcome"] + "!", font=self.default_font, bg=self.background_color)
         self.vip_welcome_label.pack(side="left", anchor="e")
         self.vip_name_label = tk.Label(self.name_frame, font=self.default_font, bg=self.background_color)
@@ -17,7 +17,7 @@ class VIPView(CustomerView):
 
         # balance frame
         self.balance_frame = tk.Frame(self.customer_info_frame, bg=self.background_color)
-        self.balance_frame.pack(side="right",fill="both", expand=True)
+        self.balance_frame.pack(side="bottom",fill="both", expand=True, padx=10)
         self.vip_balance_label = tk.Label(self.balance_frame, text=LANGUAGE[self.current_language]["account balance"], font=self.default_font, bg=self.background_color)
         self.vip_balance_label.pack(side="left", anchor="e")
         self.vip_balance_amount_label = tk.Label(self.balance_frame, font=self.default_font, bg=self.background_color)

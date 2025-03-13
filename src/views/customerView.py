@@ -69,9 +69,40 @@ class CustomerView(tk.Frame):
         self.filter_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
         self.filter_frame.pack(fill="x", pady=10)
 
-        # Product grid
-        self.product_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
-        self.product_frame.pack(fill="both", expand=True, pady=10)
+        # --- Product grid with scrollbar ---
+        # Create a frame to hold canvas and scrollbar
+        self.product_frame_container = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
+        self.product_frame_container.pack(fill="both", expand=True, pady=10)
+
+        # Add a canvas in that frame
+        self.product_canvas = tk.Canvas(self.product_frame_container, bg=self.content_frame["bg"], highlightthickness=0)
+        self.product_canvas.pack(side="left", fill="both", expand=True)
+
+        # Add a vertical scrollbar linked to the canvas
+        self.product_scrollbar = tk.Scrollbar(self.product_frame_container, orient="vertical", command=self.product_canvas.yview)
+        self.product_scrollbar.pack(side="right", fill="y")
+
+        # Configure canvas to respond to scrollbar
+        self.product_canvas.configure(yscrollcommand=self.product_scrollbar.set)
+
+        # Inner frame to hold actual product widgets
+        self.product_frame = tk.Frame(self.product_canvas, bg=self.content_frame["bg"])
+
+        # Create window inside canvas to hold the product frame
+        self.product_canvas.create_window((0, 0), window=self.product_frame, anchor="nw")
+
+        # Make sure canvas scrolls properly when frame content changes
+        self.product_frame.bind("<Configure>", lambda e: self.product_canvas.configure(scrollregion=self.product_canvas.bbox("all")))
+
+        # Optional: Enable mouse wheel scrolling on canvas (Windows + Mac + Linux)
+        def _on_mouse_wheel(event):
+            self.product_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
+        # Bind mousewheel to canvas
+        self.product_canvas.bind_all("<MouseWheel>", _on_mouse_wheel)
+        self.product_canvas.bind_all("<Button-4>", lambda e: self.product_canvas.yview_scroll(-1, "units"))  # For Linux
+        self.product_canvas.bind_all("<Button-5>", lambda e: self.product_canvas.yview_scroll(1, "units"))   # For Linux
+
 
         # left side of the main frame
         self.right_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)

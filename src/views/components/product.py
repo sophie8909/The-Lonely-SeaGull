@@ -374,7 +374,6 @@ class ProductCard(Dragable, tk.Frame):
         self.product_price = tk.Label(price_info_frame, text=self.product['Price'], bg=self.background_color, font=self.default_font)
         self.product_price.pack(side="left")
 
-
         if product["VIP"]:
             self.product_vip_label = tk.Label(price_info_frame, text="VIP", bg=self.primary_color, fg="white", font=self.default_font)
             self.product_vip_label.pack(side="left", anchor="w", padx=(10, 0))
@@ -385,7 +384,6 @@ class ProductCard(Dragable, tk.Frame):
         self.add_to_cart_btn = tk.Button(price_info_frame, text="+", bg=self.primary_color, fg="white", padx=10, pady=5)
         self.add_to_cart_btn.pack(side="right")
         self.add_to_cart_btn.bind("<Button-1>", self.add_to_cart_click)  # 綁定事件
-
 
         self.set_anchor_widget(self.product_card)
     
@@ -425,8 +423,7 @@ class ProductCard(Dragable, tk.Frame):
         # clear the detail frame
         for widget in self.detail_frame.winfo_children():
             widget.destroy()
-        
-        
+
         item_label = tk.Label(self.detail_frame, text=item_info["Name"], font=self.default_font, bg=self.background_color)
         item_label.pack()
         

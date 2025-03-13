@@ -96,19 +96,12 @@ class CustomerView(BaseView):
         self.middle_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)
         self.middle_frame.pack(side="left", fill="both", expand=True)
 
-
         self.detail_label = tk.Label(self.middle_frame, text=LANGUAGE[self.current_language]["information"], font=self.header_font, bg=self.primary_color, fg="white")
         self.detail_label.pack(side="top", fill="both")
 
         # detail info frame
         self.detail_frame = tk.Frame(self.middle_frame, bg=self.background_color, padx=10, pady=10)
         self.detail_frame.pack(side="top", fill="both", expand=True)
-
-
-
-
-
-
 
         # left side of the main frame
         self.right_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)
@@ -124,7 +117,6 @@ class CustomerView(BaseView):
         # needs also to have the current_language as parameter
         self.shopping_cart_widget = ShoppingCart(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
         self.shopping_cart_widget.pack(fill="both", expand=True, pady=10)
-
 
 
     def update_cart(self, current_person, person_count, shopping_cart):
@@ -167,7 +159,7 @@ class CustomerView(BaseView):
     #     self.redo_btn.config(text=LANGUAGE[self.current_language]["redo"])
 
 
-    def update_menu(self, products):
+    def update_menu(self, products, add_to_cart_callback=None):
         for widget in self.product_frame.winfo_children():
             widget.destroy()
 
@@ -223,7 +215,7 @@ class CustomerView(BaseView):
             self.filter_buttons.append(filter_button)
             col += 1
 
-            if col >= 4:
+            if col >= self.menu_col_num:
                 col = 0
                 row += 1
 

@@ -7,7 +7,8 @@
         "email": "johndoe@example.com",
         "phone": "123-456-7890",
         "credentials": 1,
-        "password": "password123"
+        "password": "password123",
+        "balance": 1000
     },
     {
         "user_id": 2,
@@ -17,7 +18,8 @@
         "email": "janedoe@example.com",
         "phone": "098-765-4321",
         "credentials": 2,
-        "password": "password456"
+        "password": "password456",
+        "balance": 500
     },
     {
         "user_id": 3,
@@ -27,6 +29,18 @@
         "email": "alice@example.com",
         "phone": "555-555-5555",
         "credentials": 1,
-        "password": "password789"
+        "password": "password789",
+        "balance": 2000
+    },
+    {
+        "user_id": 4,
+        "username": "user",
+        "first_name": "Tom",
+        "last_name": "Smith",
+        "email": "tom@example.com",
+        "phone": "555-555-5555",
+        "credentials": 1,
+        "password": "pw",
+        "balance": 2000
     }
 ]

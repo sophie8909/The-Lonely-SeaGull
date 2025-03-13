@@ -12,6 +12,7 @@ class User:
     phone: Optional[str] = None
     credentials: int = 0
     password: str = ""
+    balance: float = 0.0
 
 @dataclass
 class Beer:

@@ -74,21 +74,21 @@ class CustomerView(tk.Frame):
         self.product_frame.pack(fill="both", expand=True, pady=10)
 
         # left side of the main frame
-        self.left_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)
-        self.left_frame.pack(side="left", fill="both", expand=True)
+        self.right_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)
+        self.right_frame.pack(side="right", fill="both", expand=True)
 
+        # Added the view for language and display size settings
+        self.settings_widget = Settings(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
+        self.settings_widget.pack(side="top", anchor="e")
         # customer info
-        self.customer_info_frame = tk.Frame(self.left_frame, bg=self.background_color, padx=10, pady=10)
+        self.customer_info_frame = tk.Frame(self.right_frame, bg=self.background_color, padx=10, pady=10)
         self.customer_info_frame.pack(fill="both", expand=True)
         
         # needs also to have the current_language as parameter
-        self.shopping_cart_widget = ShoppingCart(self.left_frame, self.background_color, self.primary_color, self.default_font, self.current_language)
+        self.shopping_cart_widget = ShoppingCart(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language)
         self.shopping_cart_widget.pack(fill="both", expand=True, pady=10)
 
 
-        # Added the view for language and display size settings
-        self.settings_widget = Settings(self.shopping_cart_widget.person_frame_top, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
-        self.settings_widget.pack(side="top", anchor="e")
 
 
     def update_cart(self, current_person, person_count, shopping_cart):
@@ -173,7 +173,8 @@ class CustomerView(tk.Frame):
             icon_label = tk.Label(btn_frame, text=filter_data[filter_name]["icon"], fg=icon_color, bg=btn_bg)
             icon_label.pack(side="left", padx=2)
             
-            filter_button = tk.Button(btn_frame, text=filter_data[filter_name]["text"], 
+
+            filter_button = tk.Button(btn_frame, text=filter_data[filter_name]["text"], # LANGUAGE[self.current_language][filter_name],
                                      bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
                                      padx=10, pady=5, font=self.default_font)
             filter_button.pack(side="left")

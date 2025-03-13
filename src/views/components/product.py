@@ -164,7 +164,7 @@ class ShoppingCart(tk.Frame):
                                bg=self.light_gray, font=("Inter", 12))
         self.undo_btn.pack(side="left", padx=5)
         
-        self.redo_btn = tk.Button(self.action_frame, text=LANGUAGE[self.current_language]["undo"],
+        self.redo_btn = tk.Button(self.action_frame, text=LANGUAGE[self.current_language]["redo"],
                                bg=self.light_gray, font=("Inter", 12))
         self.redo_btn.pack(side="right", padx=5)
         
@@ -174,13 +174,16 @@ class ShoppingCart(tk.Frame):
                                        bd=0, padx=16, pady=10)
         self.add_friends_btn.pack(fill="x", pady=10)
         # Confirm button (third from bottom)
-        self.confirm_btn = tk.Button(self.bottom_frame, text=LANGUAGE[self.current_language]["confirm"],
+        self.payment_frame = tk.Frame(self.bottom_frame, bg=self.background_color)
+        self.payment_frame.pack(fill="x", pady=10)
+
+        self.confirm_btn = tk.Button(self.payment_frame, text=LANGUAGE[self.current_language]["confirm"],
                                    bg=self.primary_color, fg="white", font=self.header_font,
                                    bd=0, padx=16, pady=10)
-        self.confirm_btn.pack(fill="x", pady=10)
+        self.confirm_btn.pack(fill="x", pady=10, side="top")
 
-        self.total_frame = tk.Frame(self.bottom_frame, bg=self.background_color)
-        self.total_frame.pack(fill="x", pady=10)
+        self.total_frame = tk.Frame(self.payment_frame, bg=self.background_color)
+        self.total_frame.pack(fill="x", pady=10, side="bottom")
 
         self.total_text_label = tk.Label(self.total_frame, text=f"{LANGUAGE[self.current_language]["total"]}",
                                          bg=self.background_color, font=self.header_font)
@@ -346,6 +349,8 @@ class ProductCard(Dragable, tk.Frame):
         self.product_card.grid(row=row, column=col, padx=10, pady=10)
         self.product_card.pack_propagate(False)
 
+        
+
         self.product_image = tk.PhotoImage(file="../assets/beer.png")
         self.product_image = self.product_image.subsample(3)
         self.product_image_label = tk.Label(self.product_card, image=self.product_image, bg=self.background_color)
@@ -365,8 +370,12 @@ class ProductCard(Dragable, tk.Frame):
 
         # info button
         self.info_btn = tk.Button(price_info_frame, text="ℹ️", bg=self.primary_color, fg="white", padx=10, pady=5)
-        self.info_btn.pack(side="left", padx=(10, 0))  # 左邊留 10px 間距，讓價格與按鈕之間有空隙
+        self.info_btn.pack(side="left", padx=(10, 0)) 
         self.info_btn.bind("<Button-1>", self.info_click)
+
+        if product["VIP"]:
+            self.product_vip_label = tk.Label(price_info_frame, text="VIP", bg=self.primary_color, fg="white", font=self.default_font)
+            self.product_vip_label.pack(side="left", anchor="w", padx=(10, 0))
 
 
         for widget in [self.product_card, self.product_image_label, self.product_name, self.product_price]:

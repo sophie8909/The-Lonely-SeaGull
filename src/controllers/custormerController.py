@@ -149,7 +149,7 @@ class CustomerController(BaseController):
         self.frame = None
 
 
-    def hide_customer_widgets(self):
+    def hide_widgets(self):
         pass
 
 
@@ -185,14 +185,14 @@ class CustomerController(BaseController):
         """Add an item to the shopping cart"""
         self.make_operation()
         item_name = product_widget.product_name.cget("text")
-        itme_price = product_widget.product_price.cget("text").split(" ")[0]
+        item_price = product_widget.product_price.cget("text").split(" ")[0]
         print(f"Adding {item_name} to the Person {self.data.current_person}'s cart")
         item_list = [item["name"] for item in self.data.shopping_cart[self.data.current_person]]
         if item_name in item_list:
             self.data.shopping_cart[self.data.current_person][item_list.index(item_name)]["amount"] += 1
         else:
             self.data.shopping_cart[self.data.current_person].append({  "name": item_name,
-                                                                        "price": float(itme_price),
+                                                                        "price": float(item_price),
                                                                         "amount": 1})
         self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart)
 

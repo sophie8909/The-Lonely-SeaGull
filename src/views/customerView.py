@@ -5,31 +5,15 @@ if __name__ == "__main__":
 import tkinter as tk
 from tkinter import ttk, font
 from models.language import LANGUAGE
+from views.baseView import BaseView
 from views.components.product import ProductCard, ShoppingCart, Settings
+from views.style import style
 
-
-class CustomerView(tk.Frame):
+class CustomerView(BaseView):
     def __init__(self, parent, current_language, current_resolution):
-        super().__init__(parent, bg="#FFFFFF")
-        self.current_language = current_language
-        self.current_resolution = current_resolution
-
-        # Define colors
-        self.primary_color = "#035BAC"
-        self.light_primary = "#D5E5F5"  # Approximation of rgba(3, 91, 172, 0.27)
-        self.background_color = "#FFFFFF"
-        self.light_gray = "#D9D9D9"
-        self.dark_text = "#5A5A5A"  # Approximation of rgba(0, 0, 0, 0.65)
-        self.light_icon = "#BEBDBD"  # Approximation of rgba(151, 148, 148, 0.5)
+        super().__init__(parent, current_language, current_resolution)
         
-        # Try to set up fonts (if not available, fallback to system fonts)
-        try:
-            self.default_font = font.Font(family="Roboto", size=14)
-            self.header_font = font.Font(family="Roboto", size=24, weight="normal")
-        except:
-            self.default_font = font.Font(family="Arial", size=14)
-            self.header_font = font.Font(family="Arial", size=24, weight="normal")
-            
+
         # Create the main container frame
         self.main_frame = tk.Frame(self, bg=self.background_color)
         self.main_frame.pack(fill="both", expand=True)
@@ -141,8 +125,7 @@ class CustomerView(tk.Frame):
         self.shopping_cart_widget = ShoppingCart(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language)
         self.shopping_cart_widget.pack(fill="both", expand=True, pady=10)
 
-
-
+    
 
     def update_cart(self, current_person, person_count, shopping_cart):
         self.shopping_cart_widget.update_cart(current_person, person_count, shopping_cart)

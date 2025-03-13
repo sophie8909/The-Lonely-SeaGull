@@ -52,7 +52,10 @@ class LoginController(BaseController):
             show_error_message(message)
             return
         else:
-            self.main_controller.switch_controller(self.main_controller.vip_controller)
+            if self.main_controller.current_user.credentials == 0:
+                self.main_controller.switch_controller(self.main_controller.bartender_controller)
+            elif self.main_controller.current_user.credentials == 1:
+                self.main_controller.switch_controller(self.main_controller.vip_controller)
 
 
     def guest_button_click(self, event):

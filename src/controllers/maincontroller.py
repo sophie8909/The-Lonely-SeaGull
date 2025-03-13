@@ -5,6 +5,7 @@ from controllers.base import BaseController
 from controllers.custormerController import CustomerController
 from controllers.loginController import LoginController
 from controllers.vipController import VIPController
+from controllers.bartenderController import BartenderController
 
 
 class MainController(BaseController):
@@ -14,6 +15,7 @@ class MainController(BaseController):
         self.customer_controller = CustomerController(tk_root, self, current_language, current_resolution)
         self.login_controller = LoginController(tk_root, self, current_language, current_resolution)
         self.vip_controller = VIPController(tk_root, self, current_language, current_resolution)
+        self.bartender_controller = BartenderController(tk_root, self, current_language, current_resolution)
 
         self.current_controller = self.login_controller
         self.current_controller.create_login_widgets(self.current_language, self.current_resolution)
@@ -38,6 +40,9 @@ class MainController(BaseController):
             self.current_controller.hide_widgets()
         elif self.current_controller == self.vip_controller:
             self.current_controller.create_vip_widgets(self.current_language, self.current_resolution)
+            self.current_controller.hide_widgets()
+        elif self.bartender_controller == self.bartender_controller:
+            self.current_controller.create_bartender_widgets(self.current_language, self.current_resolution)
             self.current_controller.hide_widgets()
 
     # Method used to handle different display size setting

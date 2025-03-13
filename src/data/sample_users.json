@@ -42,5 +42,16 @@
         "credentials": 1,
         "password": "pw",
         "balance": 2000
+    },
+    {
+        "user_id": 5,
+        "username": "draco",
+        "first_name": "Draco",
+        "last_name": "Malfoy",
+        "email": "draco@example.com",
+        "phone": "555-555-5555",
+        "credentials": 0,
+        "password": "pw",
+        "balance": 2000
     }
 ]

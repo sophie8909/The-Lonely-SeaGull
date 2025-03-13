@@ -78,6 +78,9 @@ class CustomerView(tk.Frame):
         self.product_canvas = tk.Canvas(self.product_frame_container, bg=self.content_frame["bg"], highlightthickness=0)
         self.product_canvas.pack(side="left", fill="both", expand=True)
 
+        # set the number of columns in the product grid
+        self.menu_col_num = 3
+
         # Add a vertical scrollbar linked to the canvas
         self.product_scrollbar = tk.Scrollbar(self.product_frame_container, orient="vertical", command=self.product_canvas.yview)
         self.product_scrollbar.pack(side="right", fill="y")
@@ -102,6 +105,25 @@ class CustomerView(tk.Frame):
         self.product_canvas.bind_all("<MouseWheel>", _on_mouse_wheel)
         self.product_canvas.bind_all("<Button-4>", lambda e: self.product_canvas.yview_scroll(-1, "units"))  # For Linux
         self.product_canvas.bind_all("<Button-5>", lambda e: self.product_canvas.yview_scroll(1, "units"))   # For Linux
+
+        # --- End of product grid with scrollbar ---
+
+        # middle frame
+        self.middle_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)
+        self.middle_frame.pack(side="left", fill="both", expand=True)
+
+    
+        self.detail_label = tk.Label(self.middle_frame, text=LANGUAGE[self.current_language]["information"], font=self.header_font, bg=self.primary_color, fg="white")
+        self.detail_label.pack(side="top", fill="both")
+
+        # detail info frame
+        self.detail_frame = tk.Frame(self.middle_frame, bg=self.background_color, padx=10, pady=10)
+        self.detail_frame.pack(side="top", fill="both", expand=True)
+
+
+        
+
+
 
 
         # left side of the main frame
@@ -162,7 +184,7 @@ class CustomerView(tk.Frame):
     #     self.redo_btn.config(text=LANGUAGE[self.current_language]["redo"])
 
 
-    def update_menu(self, products):
+    def update_menu(self, products, add_to_cart_callback=None):
         self.products_widget=[]
         for widget in self.product_frame.winfo_children():
             widget.destroy()
@@ -171,10 +193,13 @@ class CustomerView(tk.Frame):
         row = 0
         col = 0
         for product in products:
-            product_widget = ProductCard(self.product_frame, row, col, self.background_color, self.primary_color, self.default_font, product)
+            product_widget = ProductCard(self.product_frame, row, col, 
+                                         self.background_color, self.primary_color, self.default_font, 
+                                         product, self.detail_frame,
+                                         click_callback=add_to_cart_callback)
             self.products_widget.append(product_widget)
             col += 1
-            if col >= 3:
+            if col >= self.menu_col_num:
                 col = 0
                 row += 1
 

@@ -27,6 +27,7 @@ LANGUAGE = {
         "welcome": "Welcome",
         "account balance": "Account Balance",
         "add to balance": "Add to balance",
+        "information": "Information",
     },
     "Română": {
         "index": "1",
@@ -56,6 +57,7 @@ LANGUAGE = {
         "welcome": "Bine ai venit",
         "account balance": "Sold cont",
         "add to balance": "Adaugă la sold",
+        "information": "Informații",
     },
     "中文": {
         "index": "2",
@@ -85,5 +87,6 @@ LANGUAGE = {
         "welcome": "欢迎",
         "account balance": "账户余额",
         "add to balance": "添加余额",
+        "information": "資訊",
     }
 }

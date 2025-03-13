@@ -156,6 +156,7 @@ class ShoppingCart(tk.Frame):
         self.person_bottom = []
         self.items = []
 
+
         # Undo/Redo section (at the bottom)
         self.action_frame = tk.Frame(self.bottom_frame, bg=self.background_color)
         self.action_frame.pack(fill="x", pady=10)
@@ -182,6 +183,7 @@ class ShoppingCart(tk.Frame):
                                    bd=0, padx=16, pady=10)
         self.confirm_btn.pack(fill="x", pady=10, side="top")
 
+        # total 
         self.total_frame = tk.Frame(self.payment_frame, bg=self.background_color)
         self.total_frame.pack(fill="x", pady=10, side="bottom")
 
@@ -333,7 +335,7 @@ class ShoppingCart(tk.Frame):
 class ProductCard(Dragable, tk.Frame):
     drag_threshold = 20
 
-    def __init__(self, master, row, col, background_color, primary_color, default_font, product, click_callback=None):
+    def __init__(self, master, row, col, background_color, primary_color, default_font, product, detail_frame, click_callback=None):
         tk.Frame.__init__(self, master)
         Dragable.__init__(self, self)
         self.product_frame = master
@@ -344,6 +346,8 @@ class ProductCard(Dragable, tk.Frame):
         self.col = col
         self._is_dragging = False
         self.product = product
+        self.detail_frame = detail_frame
+        self.click_callback = click_callback
 
         self.product_card = tk.Frame(self.product_frame, bg=self.background_color, width=223, height=262, bd=1, relief="solid")
         self.product_card.grid(row=row, column=col, padx=10, pady=10)
@@ -364,14 +368,14 @@ class ProductCard(Dragable, tk.Frame):
         price_info_frame = tk.Frame(self.product_card, bg=self.background_color)
         price_info_frame.pack(pady=5)
 
+        # info button
+        self.info_btn = tk.Button(price_info_frame, text="ℹ️", bg=self.primary_color, fg="white", width=2, height=2)
+        self.info_btn.pack(side="left", padx=(10, 0)) 
+        self.info_btn.bind("<Button-1>", self.info_click)
         # price
         self.product_price = tk.Label(price_info_frame, text=self.product['Price'], bg=self.background_color, font=self.default_font)
         self.product_price.pack(side="left")
 
-        # info button
-        self.info_btn = tk.Button(price_info_frame, text="ℹ️", bg=self.primary_color, fg="white", padx=10, pady=5)
-        self.info_btn.pack(side="left", padx=(10, 0)) 
-        self.info_btn.bind("<Button-1>", self.info_click)
 
         if product["VIP"]:
             self.product_vip_label = tk.Label(price_info_frame, text="VIP", bg=self.primary_color, fg="white", font=self.default_font)
@@ -383,13 +387,22 @@ class ProductCard(Dragable, tk.Frame):
             widget.bind("<B1-Motion>", self.do_drag)
             widget.bind("<ButtonRelease-1>", self.stop_drag)
 
+        # add to cart
+        self.add_to_cart_btn = tk.Button(price_info_frame, text="+", bg=self.primary_color, fg="white", padx=10, pady=5)
+        self.add_to_cart_btn.pack(side="right")
+        self.add_to_cart_btn.bind("<Button-1>", self.add_to_cart_click)  # 綁定事件
+
 
         self.set_anchor_widget(self.product_card)
     
-
+    def add_to_cart_click(self, event):
+        if self.click_callback:
+            self.click_callback(self)
+            
     def info_click(self, event):
         print(self.product)
-        self.popup_item_detail(self.product)
+        self.show_item_detail(self.product)
+
 
        
     def create_ghost_card(self):
@@ -415,29 +428,27 @@ class ProductCard(Dragable, tk.Frame):
 
         return ghost
 
-    def popup_item_detail(self, item_info):
-        """Display a popup window with detailed information about a product"""
-        popup = tk.Toplevel(self)
-        popup.title(item_info["Name"])
-        popup.geometry("400x400")
-        # show the popup window in the center of the screen
-        x = popup.winfo_screenwidth() // 2 - 200
-        y = popup.winfo_screenheight() // 2 - 200
+    def show_item_detail(self, item_info):
+        # clear the detail frame
+        for widget in self.detail_frame.winfo_children():
+            widget.destroy()
         
         
-        item_label = tk.Label(popup, text=item_info["Name"])
+        item_label = tk.Label(self.detail_frame, text=item_info["Name"], font=self.default_font, bg=self.background_color)
         item_label.pack()
         
-        item_price = tk.Label(popup, text=item_info["Price"])
+        item_price = tk.Label(self.detail_frame, text=item_info["Price"], font=self.default_font, bg=self.background_color)
         item_price.pack()
         
         for info in item_info:
-            if info not in ["Name", "Price"]:
-                info_label = tk.Label(popup, text=f"{info}: {item_info[info]}")
-                info_label.pack()
+            if info not in ["Name", "Price", "VIP"]:
+                if info == "Allergens":
+                    allergens_label = tk.Label(self.detail_frame, text=f"{info}: {', '.join(item_info[info])}", font=self.default_font, bg=self.background_color)
+                    allergens_label.pack()
+                else:
+                    info_label = tk.Label(self.detail_frame, text=f"{info}: {item_info[info]}", font=self.default_font, bg=self.background_color)
+                    info_label.pack()
         
-        close_button = tk.Button(popup, text="Close", command=popup.destroy)
-        close_button.pack()
 
 if __name__ == "__main__":
     root = tk.Tk()

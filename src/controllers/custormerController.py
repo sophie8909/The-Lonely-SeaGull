@@ -50,6 +50,7 @@ class CustomerController(BaseController):
 
     def customer_view_setup(self):
         self.frame.shopping_cart_widget.set_on_drop(self.add_cart_item)
+        
         self.frame.shopping_cart_widget.set_current_person_command(self.set_current_person)
         self.frame.shopping_cart_widget.set_remove_person_command(self.remove_person)
         self.frame.shopping_cart_widget.add_friends_btn.config(command=self.add_person)
@@ -244,7 +245,7 @@ class CustomerController(BaseController):
                 for product in self.cocktail_list:
                     products_list.append(product)
 
-        self.frame.update_menu(products_list)
+        self.frame.update_menu(products_list, self.add_cart_item)
         for filter_btn in self.frame.filter_buttons:
             filter_text = filter_btn.cget("text")  # 立即存下當前的文本
             filter_btn.config(command=lambda text=filter_text: self.switch_filter(text))

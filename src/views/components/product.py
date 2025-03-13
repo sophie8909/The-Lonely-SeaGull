@@ -164,7 +164,7 @@ class ShoppingCart(tk.Frame):
                                bg=self.light_gray, font=("Inter", 12))
         self.undo_btn.pack(side="left", padx=5)
         
-        self.redo_btn = tk.Button(self.action_frame, text=LANGUAGE[self.current_language]["undo"],
+        self.redo_btn = tk.Button(self.action_frame, text=LANGUAGE[self.current_language]["redo"],
                                bg=self.light_gray, font=("Inter", 12))
         self.redo_btn.pack(side="right", padx=5)
         

@@ -1,3 +1,5 @@
+from models.language import LANGUAGE
+
 if __name__ == "__main__":
     import sys
 
@@ -41,6 +43,7 @@ class CustomerController(BaseController):
 
         self.main_controller = main_controller
         self.current_language = current_language
+        self.tk_root = tk_root
         self.beverage_filter_data = {
             "Beers": {
                 "text": "Beers",
@@ -111,7 +114,7 @@ class CustomerController(BaseController):
             }
         }
 
-        self.current_menu = "Beverages"
+        self.current_menu = LANGUAGE[self.current_language]["beverages"]
 
 
     def customer_view_setup(self):
@@ -122,8 +125,11 @@ class CustomerController(BaseController):
         self.frame.shopping_cart_widget.confirm_btn.config(command=self.confirm_order)
         self.frame.shopping_cart_widget.undo_btn.config(command=self.undo)
         self.frame.shopping_cart_widget.redo_btn.config(command=self.redo)
-        self.frame.beverages_button.config(command=lambda: self.switch_menu("Beverages"))
-        self.frame.food_button.config(command=lambda: self.switch_menu("Food"))
+        self.frame.beverages_button.config(command=lambda: self.switch_menu(LANGUAGE[self.current_language]["beverages"]))
+        self.frame.food_button.config(command=lambda: self.switch_menu(LANGUAGE[self.current_language]["food"]))
+        # added also key shortcuts for the undo/redo functionalities
+        self.tk_root.bind('<Control-z>', lambda event: self.undo())
+        self.tk_root.bind('<Control-y>', lambda event: self.redo())
 
         self.frame.settings_widget.logout_button.bind("<Button-1>", self.logout_button_click)
         self.frame.settings_widget.login_combo.bind("<<ComboboxSelected>>", self.main_controller.update_language)
@@ -273,7 +279,7 @@ class CustomerController(BaseController):
 
     def switch_filter(self, filter_text):
         print("Filtering products for", filter_text)
-        if self.current_menu == "Food":
+        if self.current_menu == LANGUAGE[self.current_language]["food"]:
             self.allergens_dict[filter_text]["active"] = not self.allergens_dict[filter_text]["active"]
         else:
             self.beverage_filter_data[filter_text]["active"] = not self.beverage_filter_data[filter_text]["active"]
@@ -287,14 +293,14 @@ class CustomerController(BaseController):
 
     def update_menu(self):
         # Filter data
-        if self.current_menu == "Food":
+        if self.current_menu == LANGUAGE[self.current_language]["food"]:
             self.frame.update_filter(self.allergens_dict)
         else:
             self.frame.update_filter(self.beverage_filter_data)
 
         # Filter products based on the active filters
         products_list = []
-        if self.current_menu == "Food":
+        if self.current_menu == LANGUAGE[self.current_language]["food"]:
             for product in self.food_list:
                 allergens = product["Allergens"]
                 if all([self.allergens_dict[allergen]["active"] for allergen in allergens]):

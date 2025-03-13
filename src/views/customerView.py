@@ -96,7 +96,7 @@ class CustomerView(BaseView):
         self.middle_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)
         self.middle_frame.pack(side="left", fill="both", expand=True)
 
-    
+
         self.detail_label = tk.Label(self.middle_frame, text=LANGUAGE[self.current_language]["information"], font=self.header_font, bg=self.primary_color, fg="white")
         self.detail_label.pack(side="top", fill="both")
 
@@ -105,7 +105,7 @@ class CustomerView(BaseView):
         self.detail_frame.pack(side="top", fill="both", expand=True)
 
 
-        
+
 
 
 
@@ -122,10 +122,10 @@ class CustomerView(BaseView):
         self.customer_info_frame.pack(fill="both", expand=True)
         
         # needs also to have the current_language as parameter
-        self.shopping_cart_widget = ShoppingCart(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language)
+        self.shopping_cart_widget = ShoppingCart(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
         self.shopping_cart_widget.pack(fill="both", expand=True, pady=10)
 
-    
+
 
     def update_cart(self, current_person, person_count, shopping_cart):
         self.shopping_cart_widget.update_cart(current_person, person_count, shopping_cart)
@@ -167,17 +167,18 @@ class CustomerView(BaseView):
     #     self.redo_btn.config(text=LANGUAGE[self.current_language]["redo"])
 
 
-    def update_menu(self, products, add_to_cart_callback=None):
-        self.products_widget=[]
+    def update_menu(self, products):
         for widget in self.product_frame.winfo_children():
             widget.destroy()
 
-        # Create a grid of product items 
+        self.products_widget=[]
+        # Create a grid of product items
         row = 0
         col = 0
+
         for product in products:
-            product_widget = ProductCard(self.product_frame, row, col, 
-                                         self.background_color, self.primary_color, self.default_font, 
+            product_widget = ProductCard(self.product_frame, row, col,
+                                         self.background_color, self.primary_color, self.default_font,
                                          product, self.detail_frame,
                                          click_callback=add_to_cart_callback)
             self.products_widget.append(product_widget)
@@ -195,10 +196,12 @@ class CustomerView(BaseView):
 
         # Filter buttons
         self.filter_buttons = []
-        
+        row = 0
+        col = 0
+
         for filter_name in list(filter_data):
             btn_frame = tk.Frame(self.filter_frame)
-            btn_frame.pack(side="left", padx=5)
+            btn_frame.grid(row=row, column=col, sticky="n", padx=5)
             
             if filter_data[filter_name]["active"]:
                 btn_bg = self.light_primary
@@ -208,16 +211,22 @@ class CustomerView(BaseView):
                 btn_bg = "#FAFAFA"
                 btn_fg = self.dark_text
                 icon_color = self.light_icon
-            
+
             icon_label = tk.Label(btn_frame, text=filter_data[filter_name]["icon"], fg=icon_color, bg=btn_bg)
             icon_label.pack(side="left", padx=2)
-            
 
-            filter_button = tk.Button(btn_frame, text=filter_data[filter_name]["text"], # LANGUAGE[self.current_language][filter_name],
-                                     bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
-                                     padx=10, pady=5, font=self.default_font)
+            filter_button = tk.Button(btn_frame, text=filter_data[filter_name]["text"],
+                                      # LANGUAGE[self.current_language][filter_name],
+                                      bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
+                                      padx=10, pady=5, font=self.default_font)
             filter_button.pack(side="left")
             self.filter_buttons.append(filter_button)
+            col += 1
+
+            if col >= 4:
+                col = 0
+                row += 1
+
 
 
 if __name__ == "__main__":

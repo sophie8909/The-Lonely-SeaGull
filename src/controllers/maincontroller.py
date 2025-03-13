@@ -55,10 +55,18 @@ class MainController(BaseController):
                 w = screen_width
                 h = screen_height
                 self.current_resolution = 0
+
+                if self.current_controller == self.customer_controller:
+                    self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.NORMAL
+
             else:
-                w = screen_width * 0.5
-                h = screen_height * 0.5
+                w = screen_width * 0.7
+                h = screen_height * 0.7
                 self.current_resolution = 1
+
+                if self.current_controller == self.customer_controller:
+                    self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.DISABLED
+
             x = (screen_width / 2) - (w / 2)
             y = (screen_height / 2) - (h / 2)
 
@@ -88,13 +96,12 @@ class MainController(BaseController):
             self.current_controller.frame.shopping_cart_widget.undo_btn.config(text=LANGUAGE[self.current_language]["undo"])
             self.current_controller.frame.shopping_cart_widget.redo_btn.config(text=LANGUAGE[self.current_language]["redo"])
 
-            self.current_controller.frame.shopping_cart_widget.total_text_label.config(text=LANGUAGE[self.current_language]["total"])
-            self.current_controller.frame.shopping_cart_widget.confirm_label.config(text=LANGUAGE[self.current_language]["confirm_order"])
-            self.current_controller.frame.shopping_cart_widget.confirm_yes_btn.config(text=LANGUAGE[self.current_language]["yes"])
-            self.current_controller.frame.shopping_cart_widget.confirm_no_btn.config(text=LANGUAGE[self.current_language]["no"])
-
             self.current_controller.frame.food_button.config(text=LANGUAGE[self.current_language]["food"])
             self.current_controller.frame.beverages_button.config(text=LANGUAGE[self.current_language]["beverages"])
+            self.current_controller.frame.shopping_cart_widget.total_text_label.config(text=LANGUAGE[self.current_language]["total"])
+
+            return self.current_language
+
 
 if __name__ == "__main__":
     root = tk.Tk()

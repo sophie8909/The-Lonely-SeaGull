@@ -13,6 +13,7 @@ from views.customerView import CustomerView
 
 from models.food import food_menu
 from models.beverages import beers, wines, cocktails
+from models.filters import allergens_dict, beverage_filter_data
 
 
 @dataclass
@@ -41,75 +42,8 @@ class CustomerController(BaseController):
 
         self.main_controller = main_controller
         self.current_language = current_language
-        self.beverage_filter_data = {
-            "Beers": {
-                "text": "Beers",
-                "icon": "🍺",
-                "active": True
-            },
-            "Wine": {
-                "text": "Wine",
-                "icon": "🍷",
-                "active": True
-            },
-            "Cocktails": {
-                "text": "Cocktails",
-                "icon": "🍸",
-                "active": True
-            },
-        }
-        self.allergens_dict = {
-            "Gluten": {
-                "text": "Gluten",
-                "icon": "🌾",
-                "active": True
-            },
-            "Lactose": {
-                "text": "Lactose",
-                "icon": "🥛",
-                "active": True
-            },
-            "Egg": {
-                "text": "Egg",
-                "icon": "🥚",
-                "active": True
-            },
-            "Fish": {
-                "text": "Fish",
-                "icon": "🐟",
-                "active": True
-            },
-            "Sesame": {
-                "text": "Sesame",
-                "icon": "🌿",
-                "active": True
-            },
-            "Nuts": {
-                "text": "Nuts",
-                "icon": "🌰",
-                "active": True
-            },
-            "Coconut": {
-                "text": "Coconut",
-                "icon": "🥥",
-                "active": True
-            },
-            "Shellfish": {
-                "text": "Shellfish",
-                "icon": "🦐",
-                "active": True
-            },
-            "Soy": {
-                "text": "Soy",
-                "icon": "🌱",
-                "active": True
-            },
-            "Peanuts": {
-                "text": "Peanuts",
-                "icon": "🥜",
-                "active": True
-            }
-        }
+        self.allergens_dict = allergens_dict
+        self.beverage_filter_data = beverage_filter_data
 
         self.current_menu = "Beverages"
 

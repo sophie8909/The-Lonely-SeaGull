@@ -9,7 +9,8 @@ beers = [
         "Price": "55 SEK",
         "Allergens": ["Gluten"],
         "Alcohol Content": "5.6%",
-        "Tannins": "None"
+        "Tannins": "None",
+        "VIP": False
     },
     {
         "Name": "Heineken",
@@ -21,7 +22,8 @@ beers = [
         "Price": "50 SEK",
         "Allergens": ["Gluten"],
         "Alcohol Content": "5.0%",
-        "Tannins": "None"
+        "Tannins": "None",
+        "VIP": False
     },
     {
         "Name": "Guinness Draught",
@@ -33,7 +35,8 @@ beers = [
         "Price": "60 SEK",
         "Allergens": ["Gluten", "Lactose"],
         "Alcohol Content": "4.2%",
-        "Tannins": "None"
+        "Tannins": "None",
+        "VIP": False
     },
     {
         "Name": "Carlsberg",
@@ -45,7 +48,8 @@ beers = [
         "Price": "48 SEK",
         "Allergens": ["Gluten"],
         "Alcohol Content": "5.0%",
-        "Tannins": "None"
+        "Tannins": "None",
+        "VIP": False
     },
     {
         "Name": "Sierra Nevada Pale Ale",
@@ -57,10 +61,10 @@ beers = [
         "Price": "65 SEK",
         "Allergens": ["Gluten"],
         "Alcohol Content": "5.6%",
-        "Tannins": "None"
+        "Tannins": "None",
+        "VIP": False
     }
 ]
-
 wines = [
     {
         "Name": "Château Margaux",
@@ -72,7 +76,8 @@ wines = [
         "Price": "2500 SEK",
         "Allergens": [],
         "Alcohol Content": "13.5%",
-        "Tannins": "High"
+        "Tannins": "High",
+        "VIP": False
     },
     {
         "Name": "Dom Pérignon",
@@ -84,7 +89,8 @@ wines = [
         "Price": "2000 SEK",
         "Allergens": [],
         "Alcohol Content": "12.5%",
-        "Tannins": "Low"
+        "Tannins": "Low",
+        "VIP": False
     },
     {
         "Name": "Cloudy Bay Sauvignon Blanc",
@@ -96,7 +102,8 @@ wines = [
         "Price": "150 SEK",
         "Allergens": [],
         "Alcohol Content": "12.0%",
-        "Tannins": "Low"
+        "Tannins": "Low",
+        "VIP": False
     },
     {
         "Name": "Barolo",
@@ -108,7 +115,8 @@ wines = [
         "Price": "1800 SEK",
         "Allergens": [],
         "Alcohol Content": "14.0%",
-        "Tannins": "High"
+        "Tannins": "High",
+        "VIP": False
     },
     {
         "Name": "Riesling Kabinett",
@@ -120,10 +128,10 @@ wines = [
         "Price": "130 SEK",
         "Allergens": [],
         "Alcohol Content": "11.5%",
-        "Tannins": "Medium"
+        "Tannins": "Medium",
+        "VIP": False
     }
 ]
-
 cocktails = [
     {
         "Name": "Margarita",
@@ -133,7 +141,8 @@ cocktails = [
         "Price": "120 SEK",
         "Allergens": ["None"],
         "Alcohol Content": "40%",
-        "Tannins": "None"
+        "Tannins": "None",
+        "VIP": False
     },
     {
         "Name": "Mojito",
@@ -143,7 +152,8 @@ cocktails = [
         "Price": "110 SEK",
         "Allergens": ["None"],
         "Alcohol Content": "25%",
-        "Tannins": "None"
+        "Tannins": "None",
+        "VIP": False
     },
     {
         "Name": "Old Fashioned",
@@ -153,7 +163,8 @@ cocktails = [
         "Price": "130 SEK",
         "Allergens": ["None"],
         "Alcohol Content": "35%",
-        "Tannins": "None"
+        "Tannins": "None",
+        "VIP": False
     },
     {
         "Name": "Negroni",
@@ -163,7 +174,8 @@ cocktails = [
         "Price": "125 SEK",
         "Allergens": ["None"],
         "Alcohol Content": "30%",
-        "Tannins": "None"
+        "Tannins": "None",
+        "VIP": False
     },
     {
         "Name": "Piña Colada",
@@ -173,6 +185,7 @@ cocktails = [
         "Price": "115 SEK",
         "Allergens": ["Coconut"],
         "Alcohol Content": "20%",
-        "Tannins": "None"
+        "Tannins": "None",
+        "VIP": False
     }
 ]

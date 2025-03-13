@@ -24,6 +24,9 @@ LANGUAGE = {
         "confirm_order": "Confirm the order?",
         "yes": "Yes",
         "no": "No",
+        "welcome": "Welcome",
+        "account balance": "Account Balance",
+        "add to balance": "Add to balance",
     },
     "Română": {
         "index": "1",
@@ -50,6 +53,9 @@ LANGUAGE = {
         "confirm_order": "Confirmi comanda?",
         "yes": "Da",
         "no": "Nu",
+        "welcome": "Bine ai venit",
+        "account balance": "Sold cont",
+        "add to balance": "Adaugă la sold",
     },
     "中文": {
         "index": "2",
@@ -71,10 +77,13 @@ LANGUAGE = {
         "confirm": "确认",
         "language": "语言",
         "resolution": "显示分辨率",
-        "total": "总付款",
+        "total": "总付款金額",
         "person": "人",
         "confirm_order": "确认订单？",
-        "yes": "是的",
-        "no": "不",
+        "yes": "是",
+        "no": "否",
+        "welcome": "欢迎",
+        "account balance": "账户余额",
+        "add to balance": "添加余额",
     }
 }

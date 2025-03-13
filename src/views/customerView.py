@@ -69,26 +69,57 @@ class CustomerView(tk.Frame):
         self.filter_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
         self.filter_frame.pack(fill="x", pady=10)
 
-        # Product grid
-        self.product_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
-        self.product_frame.pack(fill="both", expand=True, pady=10)
+        # --- Product grid with scrollbar ---
+        # Create a frame to hold canvas and scrollbar
+        self.product_frame_container = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
+        self.product_frame_container.pack(fill="both", expand=True, pady=10)
+
+        # Add a canvas in that frame
+        self.product_canvas = tk.Canvas(self.product_frame_container, bg=self.content_frame["bg"], highlightthickness=0)
+        self.product_canvas.pack(side="left", fill="both", expand=True)
+
+        # Add a vertical scrollbar linked to the canvas
+        self.product_scrollbar = tk.Scrollbar(self.product_frame_container, orient="vertical", command=self.product_canvas.yview)
+        self.product_scrollbar.pack(side="right", fill="y")
+
+        # Configure canvas to respond to scrollbar
+        self.product_canvas.configure(yscrollcommand=self.product_scrollbar.set)
+
+        # Inner frame to hold actual product widgets
+        self.product_frame = tk.Frame(self.product_canvas, bg=self.content_frame["bg"])
+
+        # Create window inside canvas to hold the product frame
+        self.product_canvas.create_window((0, 0), window=self.product_frame, anchor="nw")
+
+        # Make sure canvas scrolls properly when frame content changes
+        self.product_frame.bind("<Configure>", lambda e: self.product_canvas.configure(scrollregion=self.product_canvas.bbox("all")))
+
+        # Optional: Enable mouse wheel scrolling on canvas (Windows + Mac + Linux)
+        def _on_mouse_wheel(event):
+            self.product_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
+        # Bind mousewheel to canvas
+        self.product_canvas.bind_all("<MouseWheel>", _on_mouse_wheel)
+        self.product_canvas.bind_all("<Button-4>", lambda e: self.product_canvas.yview_scroll(-1, "units"))  # For Linux
+        self.product_canvas.bind_all("<Button-5>", lambda e: self.product_canvas.yview_scroll(1, "units"))   # For Linux
+
 
         # left side of the main frame
-        self.left_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)
-        self.left_frame.pack(side="left", fill="both", expand=True)
+        self.right_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)
+        self.right_frame.pack(side="right", fill="both", expand=True)
 
+        # Added the view for language and display size settings
+        self.settings_widget = Settings(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
+        self.settings_widget.pack(side="top", anchor="e")
         # customer info
-        self.customer_info_frame = tk.Frame(self.left_frame, bg=self.background_color, padx=10, pady=10)
+        self.customer_info_frame = tk.Frame(self.right_frame, bg=self.background_color, padx=10, pady=10)
         self.customer_info_frame.pack(fill="both", expand=True)
         
         # needs also to have the current_language as parameter
-        self.shopping_cart_widget = ShoppingCart(self.left_frame, self.background_color, self.primary_color, self.default_font, self.current_language)
+        self.shopping_cart_widget = ShoppingCart(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language)
         self.shopping_cart_widget.pack(fill="both", expand=True, pady=10)
 
 
-        # Added the view for language and display size settings
-        self.settings_widget = Settings(self.shopping_cart_widget.person_frame_top, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
-        self.settings_widget.pack(side="top", anchor="e")
 
 
     def update_cart(self, current_person, person_count, shopping_cart):
@@ -173,7 +204,8 @@ class CustomerView(tk.Frame):
             icon_label = tk.Label(btn_frame, text=filter_data[filter_name]["icon"], fg=icon_color, bg=btn_bg)
             icon_label.pack(side="left", padx=2)
             
-            filter_button = tk.Button(btn_frame, text=filter_data[filter_name]["text"], 
+
+            filter_button = tk.Button(btn_frame, text=filter_data[filter_name]["text"], # LANGUAGE[self.current_language][filter_name],
                                      bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
                                      padx=10, pady=5, font=self.default_font)
             filter_button.pack(side="left")

@@ -127,9 +127,11 @@ class MainController(BaseController):
         self.current_controller.frame.shopping_cart_widget.confirm_btn.config(text=LANGUAGE[self.current_language]["confirm"])
         self.current_controller.frame.shopping_cart_widget.undo_btn.config(text=LANGUAGE[self.current_language]["undo"])
         self.current_controller.frame.shopping_cart_widget.redo_btn.config(text=LANGUAGE[self.current_language]["redo"])
+        self.current_controller.frame.shopping_cart_widget.total_text_label.config(text=LANGUAGE[self.current_language]["total"])
         self.current_controller.frame.food_button.config(text=LANGUAGE[self.current_language]["food"])
         self.current_controller.frame.beverages_button.config(text=LANGUAGE[self.current_language]["beverages"])
-        self.current_controller.frame.shopping_cart_widget.total_text_label.config(text=LANGUAGE[self.current_language]["total"])
+        self.current_controller.frame.search_entry_name.set(LANGUAGE[self.current_language]["search"])
+
 
 
 if __name__ == "__main__":

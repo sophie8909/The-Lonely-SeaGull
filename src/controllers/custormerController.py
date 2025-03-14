@@ -54,7 +54,6 @@ class CustomerController(BaseController):
 
     def customer_view_setup(self):
         self.frame.shopping_cart_widget.set_on_drop(self.add_cart_item)
-        
         self.frame.shopping_cart_widget.set_current_person_command(self.set_current_person)
         self.frame.shopping_cart_widget.set_remove_person_command(self.remove_person)
         self.frame.shopping_cart_widget.add_friends_btn.config(command=self.add_person)
@@ -96,12 +95,14 @@ class CustomerController(BaseController):
 
 
     def update_cart(self):
-        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart)
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
+        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
 
 
     def set_current_person(self, person):
         self.data.current_person = person
-        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart)
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
+        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
 
 
     def add_person(self):
@@ -109,7 +110,8 @@ class CustomerController(BaseController):
         self.data.person_count += 1
         self.data.shopping_cart.append([])
         self.data.current_person = self.data.person_count - 1
-        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart)
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
+        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
 
 
     def remove_person(self, i):
@@ -120,7 +122,8 @@ class CustomerController(BaseController):
             self.add_person()
         elif self.data.current_person == self.data.person_count:
             self.data.current_person -= 1
-        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart)
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
+        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
 
 
     def add_cart_item(self, product_widget):
@@ -136,7 +139,8 @@ class CustomerController(BaseController):
             self.data.shopping_cart[self.data.current_person].append({  "name": item_name,
                                                                         "price": float(item_price),
                                                                         "amount": 1})
-        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart)
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
+        self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
 
 
     def make_operation(self):

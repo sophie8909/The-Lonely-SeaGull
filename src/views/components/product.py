@@ -187,7 +187,7 @@ class ShoppingCart(tk.Frame):
         self.total_frame = tk.Frame(self.payment_frame, bg=self.background_color)
         self.total_frame.pack(fill="x", pady=10, side="bottom")
 
-        self.total_text_label = tk.Label(self.total_frame, text=f"{LANGUAGE[self.current_language]["total"]}",
+        self.total_text_label = tk.Label(self.total_frame, text=LANGUAGE[self.current_language]["total"],
                                          bg=self.background_color, font=self.header_font)
         self.total_text_label.pack(fill="x", pady=0, side="left", anchor="center")
 
@@ -195,20 +195,22 @@ class ShoppingCart(tk.Frame):
         self.total_price_label.pack(fill="x", pady=0, side="right", anchor="center")
 
 
-    def _add_person(self, person_frame, person_id, total=0):
+    def _add_person(self, person_frame, person_id, current_lgn, total=0):
         person_container = tk.Frame(person_frame, bg=self.light_gray, pady=5, padx=10)
         person_container.pack(fill="x", pady=10)
         
-        person_label = tk.Label(person_container, text=f"{person_id+1}", bg=self.light_gray, font=("Inter", 12))
-        person_label.pack(side="left")
-        remove_btn = tk.Button(person_container, text="✕", bg=self.light_gray, bd=1, command=lambda: self.remove_person_command(person_id))
+        self.person_label = tk.Label(person_container, text=f"{LANGUAGE[current_lgn]["person"]}", bg=self.light_gray, font=("Inter", 12))
+        self.person_label.pack(side="left")
+        person_count_label = tk.Label(person_container, text=f"{person_id+1}", bg=self.light_gray, font=("Inter", 12))
+        person_count_label.pack(side="left")
+        remove_btn = tk.Button(person_container, text="X", bg=self.light_gray, bd=1, command=lambda: self.remove_person_command(person_id))
         remove_btn.pack(side="right")
         
         total_text = f"{total:.2f} SEK"
         total_label = tk.Label(person_container, text=total_text, bg=self.light_gray, font=("Inter", 12), padx=10)
         total_label.pack(side="right")
         person_container.bind("<Button-1>", lambda event: self.current_person_command(person_id))
-        person_label.bind("<Button-1>", lambda event: self.current_person_command(person_id))
+        self.person_label.bind("<Button-1>", lambda event: self.current_person_command(person_id))
         total_label.bind("<Button-1>", lambda event: self.current_person_command(person_id))
         self.person_top.append(person_container)
 
@@ -235,16 +237,16 @@ class ShoppingCart(tk.Frame):
         self.items = []
 
 
-    def update_cart(self, current_person, person_count, shopping_cart):
+    def update_cart(self, current_person, person_count, shopping_cart, current_lgn):
         self.clear_cart()
         final_total = 0
         for i in range(person_count):
             total = sum([item["price"]*item["amount"] for item in shopping_cart[i]])
             final_total += total
             if i <= current_person:
-                self._add_person(self.person_frame_top, i, total)
+                self._add_person(self.person_frame_top, i, current_lgn, total)
             else:
-                self._add_person(self.person_frame_bottom, i, total)
+                self._add_person(self.person_frame_bottom, i, current_lgn, total)
         for item in shopping_cart[current_person]:
             self._add_item(item["name"], item["price"], item["amount"])
         self.total_price_label.config(text=f" {final_total} SEK")

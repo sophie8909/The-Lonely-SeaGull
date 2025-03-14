@@ -10,6 +10,8 @@ class LoginView(BaseView):
     def __init__(self, parent, current_language, current_resolution):
         super().__init__(parent, current_language, current_resolution)
 
+        style = ttk.Style()
+        style.configure("BTN.TButton", background="white", foreground=self.primary_color, font=self.default_font, relief="flat")
 
         # Create a frame for the login form
         self.frame = tk.Frame(self, bg=self.light_gray)
@@ -29,15 +31,13 @@ class LoginView(BaseView):
 
         # Buttons
         self.btn_frame = tk.Frame(self.frame, bg=self.primary_color)
-        self.btn_frame.grid(row=2, column=0, columnspan=2, pady=10)
+        self.btn_frame.grid(row=2, column=0, columnspan=3, pady=10)
 
         # 用 tk.Button 替代 ttk.Button 來方便設計樣式
-        self.login_button = tk.Button(self.btn_frame, text=LANGUAGE[self.current_language]["login"], 
-                                    bg=self.primary_color, fg="white", font=self.default_font, relief="flat")
+        self.login_button = ttk.Button(self.btn_frame, text=LANGUAGE[self.current_language]["login"], style="BTN.TButton")
         self.login_button.pack(side="left")
 
-        self.guest_button = tk.Button(self.btn_frame, text=LANGUAGE[self.current_language]["guest_btn"], 
-                                    bg=self.primary_color, fg="white", font=self.default_font, relief="flat")
+        self.guest_button = ttk.Button(self.btn_frame, text=LANGUAGE[self.current_language]["guest_btn"], style="BTN.TButton")
         self.guest_button.pack(side="right")
 
 

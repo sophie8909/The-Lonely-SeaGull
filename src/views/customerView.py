@@ -12,7 +12,7 @@ from views.style import style
 class CustomerView(BaseView):
     def __init__(self, parent, current_language, current_resolution):
         super().__init__(parent, current_language, current_resolution)
-        
+        self.search_entry_name = tk.StringVar()
 
         # Create the main container frame
         self.main_frame = tk.Frame(self, bg=self.background_color)
@@ -26,12 +26,12 @@ class CustomerView(BaseView):
         self.search_frame = tk.Frame(self.content_frame, bg=self.background_color, height=45)
         self.search_frame.pack(fill="x", pady=10)
         
-        self.search_entry = tk.Entry(self.search_frame, font=self.default_font, bd=1, relief="solid")
+        self.search_entry = tk.Entry(self.search_frame, textvariable=self.search_entry_name, font=self.default_font, bd=1, relief="solid")
         self.search_entry.pack(side="left", fill="x", expand=True, ipady=6)
         self.search_entry.insert(0, LANGUAGE[self.current_language]["search"])
         self.search_entry.bind("<FocusIn>", lambda event: self.search_entry.delete(0, "end") if self.search_entry.get() == LANGUAGE[self.current_language]["search"] else None)
         self.search_entry.bind("<FocusOut>", lambda event: self.search_entry.insert(0, LANGUAGE[self.current_language]["search"]) if self.search_entry.get() == "" else None)
-        
+
         # Search button
         self.search_button = tk.Button(self.search_frame, text="🔍", bg=self.primary_color, fg="white", bd=0, padx=16, 
                                        font=self.default_font, activebackground="#034d91")
@@ -63,7 +63,8 @@ class CustomerView(BaseView):
         self.product_canvas.pack(side="left", fill="both", expand=True)
 
         # set the number of columns in the product grid
-        self.menu_col_num = 3
+        self.product_card_col_num = 2
+        self.filter_col_num = 4
 
         # Add a vertical scrollbar linked to the canvas
         self.product_scrollbar = tk.Scrollbar(self.product_frame_container, orient="vertical", command=self.product_canvas.yview)
@@ -119,8 +120,8 @@ class CustomerView(BaseView):
         self.shopping_cart_widget.pack(fill="both", expand=True, pady=10)
 
 
-    def update_cart(self, current_person, person_count, shopping_cart):
-        self.shopping_cart_widget.update_cart(current_person, person_count, shopping_cart)
+    def update_cart(self, current_person, person_count, shopping_cart, current_lgn):
+        self.shopping_cart_widget.update_cart(current_person, person_count, shopping_cart, current_lgn)
 
 
     # def add_person(self, remove_command=None):
@@ -175,7 +176,7 @@ class CustomerView(BaseView):
                                          click_callback=add_to_cart_callback)
             self.products_widget.append(product_widget)
             col += 1
-            if col >= self.menu_col_num:
+            if col >= self.product_card_col_num:
                 col = 0
                 row += 1
 
@@ -215,7 +216,7 @@ class CustomerView(BaseView):
             self.filter_buttons.append(filter_button)
             col += 1
 
-            if col >= self.menu_col_num:
+            if col >= self.filter_col_num:
                 col = 0
                 row += 1
 

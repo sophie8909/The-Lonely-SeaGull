@@ -13,7 +13,7 @@ LANGUAGE = {
         "beverages": "Beverages",
         "food": "Food",
         "order": "Order",
-        "guest_btn": "Continue as a Guest",
+        "guest_btn": "Continue as guest",
         "search": "Search...",
         "add friends": "Add Friends",
         "confirm": "Confirm",

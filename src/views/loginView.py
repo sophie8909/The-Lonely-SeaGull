@@ -3,7 +3,7 @@ from tkinter import ttk, font
 
 from models.language import LANGUAGE
 from views.baseView import BaseView
-from views.components.product import Settings
+from views.components.settings import Settings
 
 
 class LoginView(BaseView):

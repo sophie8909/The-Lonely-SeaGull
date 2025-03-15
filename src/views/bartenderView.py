@@ -1,8 +1,8 @@
 import tkinter as tk
-from views.components.product import ProductCard
-from views.components.product import ShoppingCart
+from views.components.product_card import ProductCard
+from views.components.shopping_cart import ShoppingCart
+from views.components.settings import Settings
 from views.baseView import BaseView
-from views.components.product import Settings
 from tkinter import messagebox
 from models.language import LANGUAGE
 

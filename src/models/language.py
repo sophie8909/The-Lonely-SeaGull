@@ -33,8 +33,8 @@ LANGUAGE = {
         "compensation": "Compensation",
         "single payment": "Single Payment",
         "group payment": "Group Payment",
-        "hello": "Hello",
-        "goodbye": "Goodbye",
+        "hello": "Hello,",
+        "goodbye": "Goodbye,",
     },
     "Română": {
         "index": "1",
@@ -66,12 +66,12 @@ LANGUAGE = {
         "add to balance": "Adaugă la sold",
         "information": "Informații",
         "panic": "Panică",
-        "on house": "Pe cheltuiala casei",
+        "on house": "Din partea casei",
         "compensation": "Compensație",
         "single payment": "Plată individuală",
         "group payment": "Plată de grup",
-        "hello": "Salut",
-        "goodbye": "La revedere",
+        "hello": "Salut,",
+        "goodbye": "La revedere,",
     },
     "中文": {
         "index": "2",
@@ -107,7 +107,7 @@ LANGUAGE = {
         "compensation": "赔偿",
         "single payment": "单笔付款",
         "group payment": "团体付款",
-        "hello": "你好",
-        "goodbye": "再见",
+        "hello": "你好,",
+        "goodbye": "再见,",
     }
 }

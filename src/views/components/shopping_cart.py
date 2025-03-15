@@ -93,8 +93,10 @@ class ShoppingCart(tk.Frame):
     def _add_person(self, person_frame, person_id, current_lgn, total=0):
         person_container = tk.Frame(person_frame, bg=self.light_gray, pady=5, padx=10)
         person_container.pack(fill="x", pady=10)
-        
-        self.person_label = tk.Label(person_container, text=LANGUAGE[self.current_language]["person"], bg=self.light_gray, font=("Inter", 12))
+
+        # it has to be the current_lgn parameter in order to dynamically change the "Person" word
+        # throughout the language changes
+        self.person_label = tk.Label(person_container, text=LANGUAGE[current_lgn]["person"], bg=self.light_gray, font=("Inter", 12))
         self.person_label.pack(side="left")
         person_count_label = tk.Label(person_container, text=f"{person_id+1}", bg=self.light_gray, font=("Inter", 12))
         person_count_label.pack(side="left")

@@ -1,3 +1,6 @@
+if __name__ == "__main__":
+    import sys
+    sys.path.append(sys.path[0]+"/../..")
 import tkinter as tk
 from tkinter import ttk
 from models.language import LANGUAGE
@@ -7,22 +10,22 @@ class TableFrame(tk.Frame):
     def __init__(self, parent, table_number, table_data=[], total=0, remove_command=None, **kwargs):
         super().__init__(parent, bg='lightgray', **kwargs)
 
-        title_frame = tk.Frame(self, bg='lightgray')
-        tk.Label(title_frame, text=f"Table {table_number}", font=("Arial", 10, "bold"), bg='lightgray').pack(side='left', fill='x')
-        tk.Button(title_frame, text="X", bg='red', fg='white', command=lambda: remove_command(table_number-1) if remove_command else None).pack(side='right')
-        title_frame.pack(fill='x')
+        tk.Label(self, text=f"Table {table_number}", font=("Arial", 10, "bold"), bg='lightgray').pack(anchor='w', pady=5)
         
         # Items, Prices, Comments Headers
         headers_frame = tk.Frame(self, bg='lightgray')
         headers_frame.pack(fill='x')
         
-        tk.Label(headers_frame, text="Items", bg='lightgray').grid(row=0, column=0, padx=5)
-        tk.Label(headers_frame, text="Prices", bg='lightgray').grid(row=0, column=1, padx=5)
-        tk.Label(headers_frame, text="Comments", bg='lightgray').grid(row=0, column=2, padx=5)
+        tk.Label(headers_frame, text="Items", bg='lightgray').pack(side='left', padx=5, expand=True)
+        tk.Label(headers_frame, text="Prices", bg='lightgray').pack(side='left', padx=5, expand=True)
+        tk.Label(headers_frame, text="Comments", bg='lightgray').pack(side='left', padx=5, expand=True)
         for row, data in enumerate(table_data):
-            tk.Label(headers_frame, text=data['item'], bg='lightgray').grid(row=row+1, column=0, padx=5)
-            tk.Label(headers_frame, text=data['price'], bg='lightgray').grid(row=row+1, column=1, padx=5)
-            tk.Label(headers_frame, text=data['comment'], bg='lightgray').grid(row=row+1, column=2, padx=5)
+            item_frame = tk.Frame(self, bg='lightgray')
+            item_frame.pack(fill='x', pady=5)
+            tk.Label(item_frame, text=data['item'], bg='lightgray').pack(side='left', padx=5, expand=True)
+            tk.Label(item_frame, text=data['price'], bg='lightgray').pack(side='left', padx=5, expand=True)
+            tk.Label(item_frame, text=data['comment'], bg='lightgray').pack(side='left', padx=5, expand=True)
+            tk.Button(item_frame, text="X", command=remove_command).pack(side='right', padx=5)
 
         
         # Total Payment
@@ -49,10 +52,8 @@ class BartenderPannel(BaseView):
         self.table_frame.pack(fill='both', expand=True)
         
         # test
-        for i in range(2):
-            table_frame = TableFrame(self.table_frame, i+1)
-            table_frame.pack(fill='x', pady=10)
-            self.table_frames.append(table_frame)
+        # for i in range(2):
+        #     self._add_table(i+1, [{'item': 'item1', 'price': 10, 'comment': 'comment1'}, {'item': 'item2', 'price': 20, 'comment': 'comment2'}], 30)
         
         # Frame for holding 4 action buttons at corners
         self.button_frame = tk.Frame(self)
@@ -105,8 +106,8 @@ class BartenderPannel(BaseView):
         self.group_payment_button.grid(row=1, column=1, sticky="nsew", padx=5, pady=5)
 
 
-    def _add_table(self, table_number, table_data=[]):
-        table_frame = TableFrame(self.table_frame, table_number, table_data)
+    def _add_table(self, table_number, table_data=[], total=0):
+        table_frame = TableFrame(self.table_frame, table_number, table_data, total)
         table_frame.pack(fill='x', pady=10)
         self.table_frames.append(table_frame)
 
@@ -115,15 +116,26 @@ class BartenderPannel(BaseView):
             table_frame.destroy()
         self.table_frames = []
 
-    def update(self, table_data):
+    def update(self, tables):
+        """
+        Update the table data
+        
+        Args:
+            tables (list): List of dictionaries containing table data
+            e.g. [{'data': [{'item': 'item1', 'price': 10, 'comment': 'comment1'}, {'item': 'item2', 'price': 20, 'comment': 'comment2'}], 'total': 30}]
+        """
         self._clear_tables()
-        for i, table in enumerate(table_data):
-            self._add_table(i+1, table)
+        for i, table in enumerate(tables):
+            data = table['data']
+            total = table['total']
+            self._add_table(i+1, data, total)
         
 # Example usage
 if __name__ == "__main__":
+    
     root = tk.Tk()
     root.title("Bartender Panel")
-    panel = BartenderPannel(root)
+    panel = BartenderPannel(root, "English", 1)
     panel.pack(fill='both', expand=True, padx=10, pady=10)
+    panel.update([{'data': [{'item': 'item1', 'price': 10, 'comment': 'comment1'}, {'item': 'item2', 'price': 20, 'comment': 'comment2'}], 'total': 30}])
     root.mainloop()

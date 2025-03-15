@@ -6,7 +6,9 @@ import tkinter as tk
 from tkinter import ttk, font
 from models.language import LANGUAGE
 from views.baseView import BaseView
-from views.components.product import ProductCard, ShoppingCart, Settings
+from views.components.product_card import ProductCard
+from views.components.shopping_cart import ShoppingCart
+from views.components.settings import Settings
 from views.style import style
 
 class CustomerView(BaseView):

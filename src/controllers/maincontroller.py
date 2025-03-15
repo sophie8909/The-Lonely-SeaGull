@@ -5,7 +5,7 @@ from controllers.base import BaseController
 from controllers.custormerController import CustomerController
 from controllers.loginController import LoginController
 from controllers.vipController import VIPController
-# from controllers.bartenderController import BartenderController
+from controllers.bartenderController import BartenderController
 
 
 class MainController(BaseController):
@@ -15,7 +15,7 @@ class MainController(BaseController):
         self.customer_controller = CustomerController(tk_root, self, current_language, current_resolution)
         self.login_controller = LoginController(tk_root, self, current_language, current_resolution)
         self.vip_controller = VIPController(tk_root, self, current_language, current_resolution)
-        # self.bartender_controller = BartenderController(tk_root, self, current_language, current_resolution)
+        self.bartender_controller = BartenderController(tk_root, self, current_language, current_resolution)
 
         self.current_controller = self.login_controller
         self.current_controller.create_login_widgets(self.current_language, self.current_resolution)

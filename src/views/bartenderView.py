@@ -1,6 +1,6 @@
 import tkinter as tk
 from views.components.product_card import ProductCard
-from views.components.bartender_pannel import BartenderPannel
+from src.views.components.bartender_panel import BartenderPanel
 from views.components.settings import Settings
 from views.baseView import BaseView
 from tkinter import messagebox
@@ -118,7 +118,7 @@ class BartenderView(BaseView):
         self.settings_widget = Settings(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
         self.settings_widget.pack(side="top", anchor="e")
 
-        self.bartender_pannel = BartenderPannel(self.right_frame, self.current_language, self.current_resolution)
+        self.bartender_pannel = BartenderPanel(self.right_frame, self.current_language, self.current_resolution)
         self.bartender_pannel.pack(fill="both", expand=True)
 
 

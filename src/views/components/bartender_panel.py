@@ -31,7 +31,7 @@ class TableFrame(tk.Frame):
         # Total Payment
         tk.Label(self, text=f"Total payment: {total:.2f} SEK", bg='lightgray').pack(anchor='w', pady=5)
 
-class BartenderPannel(BaseView):
+class BartenderPanel(BaseView):
     def __init__(self, parent, current_language, current_resolution):
         super().__init__(parent, current_language, current_resolution)
 
@@ -135,7 +135,7 @@ if __name__ == "__main__":
     
     root = tk.Tk()
     root.title("Bartender Panel")
-    panel = BartenderPannel(root, "English", 1)
+    panel = BartenderPanel(root, "English", 1)
     panel.pack(fill='both', expand=True, padx=10, pady=10)
     panel.update([{'data': [{'item': 'item1', 'price': 10, 'comment': 'comment1'}, {'item': 'item2', 'price': 20, 'comment': 'comment2'}], 'total': 30}])
     root.mainloop()

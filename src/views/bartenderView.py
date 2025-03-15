@@ -1,6 +1,6 @@
 import tkinter as tk
 from views.components.product_card import ProductCard
-from views.components.shopping_cart import ShoppingCart
+from views.components.bartender_pannel import BartenderPannel
 from views.components.settings import Settings
 from views.baseView import BaseView
 from tkinter import messagebox
@@ -117,78 +117,38 @@ class BartenderView(BaseView):
         # Added the view for language and display size settings
         self.settings_widget = Settings(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
         self.settings_widget.pack(side="top", anchor="e")
-        # customer info
-        self.customer_info_frame = tk.Frame(self.right_frame, bg=self.background_color, padx=10, pady=10)
-        self.customer_info_frame.pack(side="top", fill="both", expand=True)
 
-        # name frame
-        self.name_frame = tk.Frame(self.customer_info_frame, bg=self.background_color)
-        self.name_frame.pack(side="top",fill="both", expand=True, padx=10)
-        self.welcome_label = tk.Label(self.name_frame, text=LANGUAGE[self.current_language]["hello"], font=self.default_font, bg=self.background_color)
-        self.welcome_label.pack(side="left", anchor="e")
-        self.name_label = tk.Label(self.name_frame, font=self.default_font, bg=self.background_color)
-        self.name_label.pack(side="left", anchor="e")
+        self.bartender_pannel = BartenderPannel(self.right_frame, self.current_language, self.current_resolution)
+        self.bartender_pannel.pack(fill="both", expand=True)
 
 
-        # --- Panic & Logout Buttons ---
-        self.panic_button = tk.Button(
-            self.customer_info_frame,
-            text=LANGUAGE[self.current_language]["panic"],
-            bg="#AD0000",
-            fg="white",
-            font=self.default_font,
-        )
-        self.panic_button.pack(side="right", expand=True, ipady=6)
 
-        self.table_frame = tk.Frame(self.right_frame, bg=self.background_color, padx=10, pady=10)
-        self.table_frame.pack(side="top", fill="both", expand=True)
+        # # customer info
+        # self.customer_info_frame = tk.Frame(self.right_frame, bg=self.background_color, padx=10, pady=10)
+        # self.customer_info_frame.pack(side="top", fill="both", expand=True)
 
-        # Frame for holding 4 action buttons at corners
-        self.button_frame = tk.Frame(self.right_frame, bg=self.background_color, padx=10, pady=10)
-        self.button_frame.pack(side="bottom", fill="both", expand=True)
+        # # name frame
+        # self.name_frame = tk.Frame(self.customer_info_frame, bg=self.background_color)
+        # self.name_frame.pack(side="top",fill="both", expand=True, padx=10)
+        # self.welcome_label = tk.Label(self.name_frame, text=LANGUAGE[self.current_language]["hello"], font=self.default_font, bg=self.background_color)
+        # self.welcome_label.pack(side="left", anchor="e")
+        # self.name_label = tk.Label(self.name_frame, font=self.default_font, bg=self.background_color)
+        # self.name_label.pack(side="left", anchor="e")
 
-        # Configure grid to evenly distribute buttons (2x2)
-        self.button_frame.columnconfigure(0, weight=1)
-        self.button_frame.columnconfigure(1, weight=1)
-        self.button_frame.rowconfigure(0, weight=1)
-        self.button_frame.rowconfigure(1, weight=1)
 
-        # Button at top-left (On house)
-        self.on_house_button = tk.Button(
-            self.button_frame,
-            text=LANGUAGE[self.current_language]["on house"],
-            bg=self.primary_color,
-            fg="white",
-            font=self.default_font
-        )
-        self.on_house_button.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+        # # --- Panic & Logout Buttons ---
+        # self.panic_button = tk.Button(
+        #     self.customer_info_frame,
+        #     text=LANGUAGE[self.current_language]["panic"],
+        #     bg="#AD0000",
+        #     fg="white",
+        #     font=self.default_font,
+        # )
+        # self.panic_button.pack(side="right", expand=True, ipady=6)
 
-        # Button at top-right (Compensation)
-        self.compensation_button = tk.Button(
-            self.button_frame,
-            text=LANGUAGE[self.current_language]["compensation"],
-            bg=self.primary_color,
-            fg="white",
-            font=self.default_font
-        )
-        self.compensation_button.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
+        # self.table_frame = tk.Frame(self.right_frame, bg=self.background_color, padx=10, pady=10)
+        # self.table_frame.pack(side="top", fill="both", expand=True)
 
-        # Button at bottom-left (Single Payment)
-        self.single_payment_button = tk.Button(
-            self.button_frame,
-            text=LANGUAGE[self.current_language]["single payment"],
-            bg=self.primary_color,
-            fg="white",
-            font=self.default_font
-        )
-        self.single_payment_button.grid(row=1, column=0, sticky="nsew", padx=5, pady=5)
 
-        # Button at bottom-right (Group Payment)
-        self.group_payment_button = tk.Button(
-            self.button_frame,
-            text=LANGUAGE[self.current_language]["group payment"],
-            bg=self.primary_color,
-            fg="white",
-            font=self.default_font
-        )
-        self.group_payment_button.grid(row=1, column=1, sticky="nsew", padx=5, pady=5)
+
+        

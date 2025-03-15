@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
+from models.language import LANGUAGE
+from views.baseView import BaseView
 
 class TableFrame(tk.Frame):
     def __init__(self, parent, table_number, table_data=[], total=0, remove_command=None, **kwargs):
@@ -26,9 +28,11 @@ class TableFrame(tk.Frame):
         # Total Payment
         tk.Label(self, text=f"Total payment: {total:.2f} SEK", bg='lightgray').pack(anchor='w', pady=5)
 
-class BartenderPannel(tk.Frame):
-    def __init__(self, parent):
-        super().__init__(parent, bg='white', padx=10, pady=10)
+class BartenderPannel(BaseView):
+    def __init__(self, parent, current_language, current_resolution):
+        super().__init__(parent, current_language, current_resolution)
+
+        self.current_language = current_language
         
         # User Info and Panic Button in Horizontal Layout
         user_panic_frame = tk.Frame(self)
@@ -50,27 +54,56 @@ class BartenderPannel(tk.Frame):
             table_frame.pack(fill='x', pady=10)
             self.table_frames.append(table_frame)
         
-        # Payment Buttons
-        button_frame = tk.Frame(self)
-        button_frame.pack(side='bottom', fill='x', pady=10)
-        
-        button_width = 15  # Ensure all buttons are the same size
-        
-        self.on_house_button = tk.Button(button_frame, text="On house", bg='blue', fg='white', width=button_width)
-        self.on_house_button.grid(row=0, column=0, padx=5, pady=5, sticky='ew')
-        
-        self.compensation_button = tk.Button(button_frame, text="Compensation", bg='blue', fg='white', width=button_width)
-        self.compensation_button.grid(row=0, column=1, padx=5, pady=5, sticky='ew')
-        
-        self.single_payment_button = tk.Button(button_frame, text="Single payment", bg='blue', fg='white', width=button_width)
-        self.single_payment_button.grid(row=1, column=0, padx=5, pady=5, sticky='ew')
-        
-        self.group_payment_button = tk.Button(button_frame, text="Group payment", bg='blue', fg='white', width=button_width)
-        self.group_payment_button.grid(row=1, column=1, padx=5, pady=5, sticky='ew')
-        
-        # Make buttons expand horizontally
-        button_frame.columnconfigure(0, weight=1)
-        button_frame.columnconfigure(1, weight=1)
+        # Frame for holding 4 action buttons at corners
+        self.button_frame = tk.Frame(self)
+        self.button_frame.pack(side="bottom", fill="both", expand=True)
+
+        # Configure grid to evenly distribute buttons (2x2)
+        self.button_frame.columnconfigure(0, weight=1)
+        self.button_frame.columnconfigure(1, weight=1)
+        self.button_frame.rowconfigure(0, weight=1)
+        self.button_frame.rowconfigure(1, weight=1)
+
+        # Button at top-left (On house)
+        self.on_house_button = tk.Button(
+            self.button_frame,
+            text=LANGUAGE[self.current_language]["on house"],
+            bg=self.primary_color,
+            fg="white",
+            font=self.default_font
+        )
+        self.on_house_button.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+
+        # Button at top-right (Compensation)
+        self.compensation_button = tk.Button(
+            self.button_frame,
+            text=LANGUAGE[self.current_language]["compensation"],
+            bg=self.primary_color,
+            fg="white",
+            font=self.default_font
+        )
+        self.compensation_button.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
+
+        # Button at bottom-left (Single Payment)
+        self.single_payment_button = tk.Button(
+            self.button_frame,
+            text=LANGUAGE[self.current_language]["single payment"],
+            bg=self.primary_color,
+            fg="white",
+            font=self.default_font
+        )
+        self.single_payment_button.grid(row=1, column=0, sticky="nsew", padx=5, pady=5)
+
+        # Button at bottom-right (Group Payment)
+        self.group_payment_button = tk.Button(
+            self.button_frame,
+            text=LANGUAGE[self.current_language]["group payment"],
+            bg=self.primary_color,
+            fg="white",
+            font=self.default_font
+        )
+        self.group_payment_button.grid(row=1, column=1, sticky="nsew", padx=5, pady=5)
+
 
     def _add_table(self, table_number, table_data=[]):
         table_frame = TableFrame(self.table_frame, table_number, table_data)

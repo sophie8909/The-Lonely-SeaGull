@@ -10,7 +10,8 @@ beers = [
         "Allergens": ["Gluten"],
         "Alcohol Content": "5.6%",
         "Tannins": "None",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     },
     {
         "Name": "Heineken",
@@ -23,7 +24,8 @@ beers = [
         "Allergens": ["Gluten"],
         "Alcohol Content": "5.0%",
         "Tannins": "None",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     },
     {
         "Name": "Guinness Draught",
@@ -36,7 +38,8 @@ beers = [
         "Allergens": ["Gluten", "Lactose"],
         "Alcohol Content": "4.2%",
         "Tannins": "None",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     },
     {
         "Name": "Carlsberg",
@@ -49,7 +52,8 @@ beers = [
         "Allergens": ["Gluten"],
         "Alcohol Content": "5.0%",
         "Tannins": "None",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     },
     {
         "Name": "Sierra Nevada Pale Ale",
@@ -62,7 +66,8 @@ beers = [
         "Allergens": ["Gluten"],
         "Alcohol Content": "5.6%",
         "Tannins": "None",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     }
 ]
 wines = [
@@ -77,7 +82,8 @@ wines = [
         "Allergens": [],
         "Alcohol Content": "13.5%",
         "Tannins": "High",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     },
     {
         "Name": "Dom Pérignon",
@@ -90,7 +96,8 @@ wines = [
         "Allergens": [],
         "Alcohol Content": "12.5%",
         "Tannins": "Low",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     },
     {
         "Name": "Cloudy Bay Sauvignon Blanc",
@@ -103,7 +110,8 @@ wines = [
         "Allergens": [],
         "Alcohol Content": "12.0%",
         "Tannins": "Low",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     },
     {
         "Name": "Barolo",
@@ -116,7 +124,8 @@ wines = [
         "Allergens": [],
         "Alcohol Content": "14.0%",
         "Tannins": "High",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     },
     {
         "Name": "Riesling Kabinett",
@@ -129,7 +138,8 @@ wines = [
         "Allergens": [],
         "Alcohol Content": "11.5%",
         "Tannins": "Medium",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     }
 ]
 cocktails = [
@@ -142,7 +152,8 @@ cocktails = [
         "Allergens": ["None"],
         "Alcohol Content": "40%",
         "Tannins": "None",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     },
     {
         "Name": "Mojito",
@@ -153,7 +164,8 @@ cocktails = [
         "Allergens": ["None"],
         "Alcohol Content": "25%",
         "Tannins": "None",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     },
     {
         "Name": "Old Fashioned",
@@ -164,7 +176,8 @@ cocktails = [
         "Allergens": ["None"],
         "Alcohol Content": "35%",
         "Tannins": "None",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     },
     {
         "Name": "Negroni",
@@ -175,7 +188,8 @@ cocktails = [
         "Allergens": ["None"],
         "Alcohol Content": "30%",
         "Tannins": "None",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     },
     {
         "Name": "Piña Colada",
@@ -186,6 +200,7 @@ cocktails = [
         "Allergens": ["Coconut"],
         "Alcohol Content": "20%",
         "Tannins": "None",
-        "VIP": False
+        "VIP": False,
+        "Stock": 10
     }
 ]

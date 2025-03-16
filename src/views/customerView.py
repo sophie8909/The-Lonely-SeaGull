@@ -175,6 +175,7 @@ class CustomerView(BaseView):
             product_widget = ProductCard(self.product_frame, row, col,
                                          self.background_color, self.primary_color, self.default_font,
                                          product, self.detail_frame,
+                                         self.current_language,
                                          click_callback=add_to_cart_callback)
             self.products_widget.append(product_widget)
             col += 1

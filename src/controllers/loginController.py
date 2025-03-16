@@ -56,10 +56,11 @@ class LoginController(BaseController):
         else:
             self.show_message(self, message, "SUCCESS")
             if self.main_controller.current_user.credentials == 0:
-                self.main_controller.switch_controller(self.main_controller.bartender_controller)
+                self.main_controller.switch_controller(self.main_controller.owner_controller)
             elif self.main_controller.current_user.credentials == 1:
+                self.main_controller.switch_controller(self.main_controller.bartender_controller)
+            elif self.main_controller.current_user.credentials == 2:
                 self.main_controller.switch_controller(self.main_controller.vip_controller)
-
 
     def guest_button_click(self, event):
         print("Continue as guest button")

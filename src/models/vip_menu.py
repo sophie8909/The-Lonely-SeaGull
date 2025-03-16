@@ -1,41 +1,46 @@
-
 vip_food = [
     {
         "Name": "Wagyu Beef Sliders",
         "Ingredients": "Wagyu Beef, Brioche Bun, Truffle Mayo, Arugula, Caramelized Onion",
         "Price": "250 SEK",
         "Allergens": ["Gluten", "Egg", "Lactose"],
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Lobster Mac & Cheese",
         "Ingredients": "Pasta, Lobster, Cheddar, Gruyère, Parmesan, Cream, Garlic, Herbs",
         "Price": "275 SEK",
         "Allergens": ["Gluten", "Lactose"],
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Black Truffle Risotto",
         "Ingredients": "Arborio Rice, Black Truffle, Parmesan, Butter, White Wine",
         "Price": "260 SEK",
         "Allergens": ["Lactose"],
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Seared Tuna Tataki",
         "Ingredients": "Tuna, Soy Sauce, Ginger, Sesame Seeds, Scallions",
         "Price": "240 SEK",
         "Allergens": ["Fish", "Sesame", "Soy"],
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Foie Gras Crostini",
         "Ingredients": "Foie Gras, Toasted Bread, Fig Jam, Microgreens",
         "Price": "280 SEK",
         "Allergens": ["Gluten"],
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     }
 ]
+
 vip_beer = [
     {
         "Name": "Samuel Adams Utopias",
@@ -48,7 +53,8 @@ vip_beer = [
         "Allergens": ["Gluten"],
         "Alcohol Content": "28%",
         "Tannins": "None",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Westvleteren 12",
@@ -61,7 +67,8 @@ vip_beer = [
         "Allergens": ["Gluten"],
         "Alcohol Content": "10.2%",
         "Tannins": "None",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "The Bruery Black Tuesday",
@@ -74,7 +81,8 @@ vip_beer = [
         "Allergens": ["Gluten"],
         "Alcohol Content": "19.5%",
         "Tannins": "None",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Goose Island Bourbon County",
@@ -87,7 +95,8 @@ vip_beer = [
         "Allergens": ["Gluten"],
         "Alcohol Content": "14.7%",
         "Tannins": "None",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Schorschbock 57",
@@ -100,9 +109,11 @@ vip_beer = [
         "Allergens": ["Gluten"],
         "Alcohol Content": "57.5%",
         "Tannins": "None",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     }
 ]
+
 vip_wines = [
     {
         "Name": "Château Pétrus",
@@ -115,7 +126,8 @@ vip_wines = [
         "Allergens": [],
         "Alcohol Content": "14.5%",
         "Tannins": "High",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Screaming Eagle Cabernet Sauvignon",
@@ -128,7 +140,8 @@ vip_wines = [
         "Allergens": [],
         "Alcohol Content": "14.8%",
         "Tannins": "High",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Domaine de la Romanée-Conti",
@@ -141,7 +154,8 @@ vip_wines = [
         "Allergens": [],
         "Alcohol Content": "13.5%",
         "Tannins": "Medium",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Salon Cuvée 'S' Le Mesnil",
@@ -154,7 +168,8 @@ vip_wines = [
         "Allergens": [],
         "Alcohol Content": "12%",
         "Tannins": "Low",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Château d'Yquem",
@@ -167,9 +182,11 @@ vip_wines = [
         "Allergens": [],
         "Alcohol Content": "14%",
         "Tannins": "Low",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     }
 ]
+
 vip_cocktails = [
     {
         "Name": "The Billionaire",
@@ -180,7 +197,8 @@ vip_cocktails = [
         "Allergens": ["None"],
         "Alcohol Content": "35%",
         "Tannins": "None",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Gold Fashioned",
@@ -191,7 +209,8 @@ vip_cocktails = [
         "Allergens": ["None"],
         "Alcohol Content": "40%",
         "Tannins": "None",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Truffle Martini",
@@ -202,7 +221,8 @@ vip_cocktails = [
         "Allergens": ["None"],
         "Alcohol Content": "38%",
         "Tannins": "None",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Royal Negroni",
@@ -213,7 +233,8 @@ vip_cocktails = [
         "Allergens": ["None"],
         "Alcohol Content": "35%",
         "Tannins": "None",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     },
     {
         "Name": "Vintage Sidecar",
@@ -224,6 +245,7 @@ vip_cocktails = [
         "Allergens": ["None"],
         "Alcohol Content": "38%",
         "Tannins": "None",
-        "VIP": True
+        "VIP": True,
+        "Stock": 10
     }
 ]

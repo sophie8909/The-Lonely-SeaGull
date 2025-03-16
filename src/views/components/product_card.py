@@ -69,7 +69,7 @@ class Dragable:
 class ProductCard(Dragable, tk.Frame):
     drag_threshold = 20
 
-    def __init__(self, master, row, col, background_color, primary_color, default_font, product, detail_frame, click_callback=None):
+    def __init__(self, master, row, col, background_color, primary_color, default_font, product, detail_frame, current_language, click_callback=None):
         tk.Frame.__init__(self, master)
         Dragable.__init__(self, self)
         self.product_frame = master
@@ -82,6 +82,7 @@ class ProductCard(Dragable, tk.Frame):
         self.product = product
         self.detail_frame = detail_frame
         self.click_callback = click_callback
+        self.current_language = current_language
 
         self.product_card = tk.Frame(self.product_frame, bg=self.background_color, width=223, height=262, bd=1, relief="solid")
         self.product_card.grid(row=row, column=col, padx=10, pady=10)
@@ -165,12 +166,20 @@ class ProductCard(Dragable, tk.Frame):
         item_price.pack()
         
         for info in item_info:
-            if info not in ["Name", "Price", "VIP"]:
+            if info not in ["Name", "Price", "VIP", "Stock"]:
                 if info == "Allergens":
-                    allergens_label = tk.Label(self.detail_frame, text=f"{info}: {', '.join(item_info[info])}", font=self.default_font, bg=self.background_color)
+                    allergens_label = tk.Label(self.detail_frame, 
+                                               text=f"{info}: {', '.join(item_info[info])}", 
+                                               font=self.default_font, 
+                                               anchor="w",
+                                               bg=self.background_color)
                     allergens_label.pack()
                 else:
-                    info_label = tk.Label(self.detail_frame, text=f"{info}: {item_info[info]}", font=self.default_font, bg=self.background_color)
+                    info_label = tk.Label(self.detail_frame, 
+                                          text=f"{info}: {item_info[info]}", 
+                                          font=self.default_font, 
+                                          anchor="w",
+                                          bg=self.background_color)
                     info_label.pack()
 
 

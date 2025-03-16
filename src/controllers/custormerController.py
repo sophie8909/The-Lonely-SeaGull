@@ -60,6 +60,7 @@ class CustomerController(BaseController):
         self.frame.shopping_cart_widget.confirm_btn.config(command=self.confirm_order)
         self.frame.shopping_cart_widget.undo_btn.config(command=self.undo)
         self.frame.shopping_cart_widget.redo_btn.config(command=self.redo)
+        self.frame.search_button.config(command=self.search_product)
         self.frame.beverages_button.config(command=lambda: self.switch_menu(LANGUAGE[self.current_language]["beverages"]))
         self.frame.food_button.config(command=lambda: self.switch_menu(LANGUAGE[self.current_language]["food"]))
         # added also key shortcuts for the undo/redo functionalities
@@ -79,6 +80,7 @@ class CustomerController(BaseController):
             filter_btn.config(command=lambda text=filter_text: self.switch_filter(text))
 
 
+
     def create_customer_widgets(self, current_lng, current_res):
         self.frame = CustomerView(self.tk_root, current_lng, current_res)
         self.frame.pack(expand=True, fill='both')
@@ -93,6 +95,26 @@ class CustomerController(BaseController):
     def hide_widgets(self):
         pass
 
+    def search_product(self):
+        print("Searching for product")
+        search_term = self.frame.search_entry.get()
+        if self.current_menu == LANGUAGE[self.current_language]["food"]:
+            products_list = [product for product in self.food_list if search_term.lower() in product["Name"].lower()]
+        else:
+            products_list = []
+            if self.beverage_filter_data["Beers"]["active"]:
+                for product in self.beer_list:
+                    if search_term.lower() in product["Name"].lower():
+                        products_list.append(product)
+            if self.beverage_filter_data["Wine"]["active"]:
+                for product in self.wine_list:
+                    if search_term.lower() in product["Name"].lower():
+                        products_list.append(product)
+            if self.beverage_filter_data["Cocktails"]["active"]:
+                for product in self.cocktail_list:
+                    if search_term.lower() in product["Name"].lower():
+                        products_list.append(product)
+        self.frame.update_menu(products_list, self.add_cart_item)
 
     def update_cart(self):
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)

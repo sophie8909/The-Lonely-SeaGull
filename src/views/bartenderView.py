@@ -118,8 +118,8 @@ class BartenderView(BaseView):
         self.settings_widget = Settings(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
         self.settings_widget.pack(side="top", anchor="e")
 
-        self.bartender_pannel = BartenderPanel(self.right_frame, self.current_language, self.current_resolution)
-        self.bartender_pannel.pack(fill="both", expand=True)
+        self.bartender_panel = BartenderPanel(self.right_frame, self.current_language, self.current_resolution)
+        self.bartender_panel.pack(fill="both", expand=True)
 
     def update_menu(self, products, select_item_callback=None):
         for widget in self.product_frame.winfo_children():

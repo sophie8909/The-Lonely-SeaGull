@@ -38,16 +38,16 @@ class BartenderController(BaseController):
 
         # Right side
         self.table_data = [[] for _ in range(self.table_count)]
-        self.frame.bartender_pannel.set_value_changed_command(self.table_data_changed)
-        self.frame.bartender_pannel.set_remove_command(self.item_removed)
-        self.frame.bartender_pannel.panic_button.config(command=self.panic_alert)
-        self.frame.bartender_pannel.single_payment_button.config(command=self.single_payment)
-        self.frame.bartender_pannel.group_payment_button.config(command=self.group_payment)
+        self.frame.bartender_panel.set_value_changed_command(self.table_data_changed)
+        self.frame.bartender_panel.set_remove_command(self.item_removed)
+        self.frame.bartender_panel.panic_button.config(command=self.panic_alert)
+        self.frame.bartender_panel.single_payment_button.config(command=self.single_payment)
+        self.frame.bartender_panel.group_payment_button.config(command=self.group_payment)
 
 
         self.load_menu()
         self.update_menu()
-        self.frame.bartender_pannel.update_table(self.table_data)
+        self.frame.bartender_panel.update_table(self.table_data)
         
 
     
@@ -67,13 +67,13 @@ class BartenderController(BaseController):
         self.menu_list = menu_data
 
     def table_data_changed(self, event):
-        self.table_data = self.frame.bartender_pannel.get_values()
+        self.table_data = self.frame.bartender_panel.get_values()
         print("Table data changed", self.table_data)
-        self.frame.bartender_pannel.update_value(self.table_data)
+        self.frame.bartender_panel.update_value(self.table_data)
 
     def item_removed(self, table_id, item_id):
         self.table_data[table_id].pop(item_id)
-        self.frame.bartender_pannel.update_table(self.table_data)
+        self.frame.bartender_panel.update_table(self.table_data)
         
 
 
@@ -81,14 +81,14 @@ class BartenderController(BaseController):
     # TODO
     def add_cart_item(self, product_card):
         print("Add to cart", product_card.product["Name"])
-        table_id = self.frame.bartender_pannel.current_table
+        table_id = self.frame.bartender_panel.current_table
         item_name = product_card.product["Name"]
         item_amount = 1
         item_price = float(product_card.product["Price"].replace(" SEK", ""))
         item_reason = "Normal"
         item_comment = ""
         self.table_data[table_id].append({"item": item_name, "amount": item_amount, "price": item_price, "reason": item_reason, "comment": item_comment})
-        self.frame.bartender_pannel.update_table(self.table_data, table_id)
+        self.frame.bartender_panel.update_table(self.table_data, table_id)
 
 
     def panic_alert(self):
@@ -96,12 +96,12 @@ class BartenderController(BaseController):
         messagebox.showinfo(LANGUAGE[self.current_language]["panic"], LANGUAGE[self.current_language]["panic"])
 
     def single_payment(self):
-        table_id = self.frame.bartender_pannel.current_table
+        table_id = self.frame.bartender_panel.current_table
         msg = LANGUAGE[self.current_language]["total"] + " " + str(sum([item["price"] for item in self.table_data[table_id]])) + " SEK"
         messagebox.showinfo(LANGUAGE[self.current_language]["checkout"], msg)
 
     def group_payment(self):
-        table_id = self.frame.bartender_pannel.current_table
+        table_id = self.frame.bartender_panel.current_table
         total_amount = sum(item["price"] for item in self.table_data[table_id])
         people_count = askinteger("Group Payment", f"{LANGUAGE[self.current_language]['enter number of people']}:", parent=self.tk_root, minvalue=1)
         messagebox.showinfo(LANGUAGE[self.current_language]["checkout"], f"{LANGUAGE[self.current_language]['total']}: {total_amount:.2f} SEK\n{LANGUAGE[self.current_language]['each pay']}: {total_amount/people_count:.2f} SEK")

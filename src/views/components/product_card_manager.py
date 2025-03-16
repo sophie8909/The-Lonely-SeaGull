@@ -25,6 +25,15 @@ class ProductCardManager(ProductCard):
         self.left_num_label.pack(side="left", fill="both", expand=True)
 
         self.add_to_cart_btn.bind("<Button-1>", self.select_item_click)
+        
+        # if product["Hidden"] add a label to show it is hidden
+        if product["Hidden"]: 
+            self.hidden_label = tk.Label(self.product_card, 
+                                         text=LANGUAGE[self.current_language]["hide item"], 
+                                         font=default_font, 
+                                         bg=background_color, 
+                                         fg=primary_color)
+            self.hidden_label.pack(side="bottom", fill="both", expand=True)
 
 
     def select_item_click(self, event):

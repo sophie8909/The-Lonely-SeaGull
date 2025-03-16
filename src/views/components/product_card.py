@@ -84,6 +84,9 @@ class ProductCard(Dragable, tk.Frame):
         self.click_callback = click_callback
         self.current_language = current_language
 
+        
+
+
         self.product_card = tk.Frame(self.product_frame, bg=self.background_color, width=223, height=262, bd=1, relief="solid")
         self.product_card.grid(row=row, column=col, padx=10, pady=10)
         self.product_card.pack_propagate(False)
@@ -121,6 +124,9 @@ class ProductCard(Dragable, tk.Frame):
         self.add_to_cart_btn.bind("<Button-1>", self.add_to_cart_click)  # 綁定事件
 
         self.set_anchor_widget(self.product_card)
+
+
+
     
     def add_to_cart_click(self, event):
         if self.click_callback:

@@ -269,22 +269,22 @@ class CustomerController(BaseController):
 
         if self.current_menu == LANGUAGE[self.current_language]["food"]:
             for product in self.menu_list:
-                if product["Tag"] == "food":
+                if product["Tag"] == "food" and not product["Hidden"]:
                     allergens = product["Allergens"]
                     if all([self.allergens_dict[allergen]["active"] for allergen in allergens]):
                         products_list.append(product)
         else:
             if self.beverage_filter_data["Beer"]["active"]:
                 for product in self.menu_list:
-                    if product["Tag"] == "beer":
+                    if product["Tag"] == "beer" and not product["Hidden"]:
                         products_list.append(product)
             if self.beverage_filter_data["Wine"]["active"]:
                 for product in self.menu_list:
-                    if product["Tag"] == "wine":
+                    if product["Tag"] == "wine" and not product["Hidden"]:
                         products_list.append(product)
             if self.beverage_filter_data["Cocktail"]["active"]:
                 for product in self.menu_list:
-                    if product["Tag"] == "cocktail":
+                    if product["Tag"] == "cocktail" and not product["Hidden"]:
                         products_list.append(product)
 
         self.frame.update_menu(products_list, self.add_cart_item)

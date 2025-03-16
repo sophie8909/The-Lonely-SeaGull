@@ -1,5 +1,5 @@
 import tkinter as tk
-from views.components.product_card import ProductCard
+from views.components.product_card_manager import ProductCardManager
 from views.components.bartender_panel import BartenderPanel
 from views.components.settings import Settings
 from views.baseView import BaseView
@@ -121,34 +121,73 @@ class BartenderView(BaseView):
         self.bartender_pannel = BartenderPanel(self.right_frame, self.current_language, self.current_resolution)
         self.bartender_pannel.pack(fill="both", expand=True)
 
+    def update_menu(self, products, select_item_callback=None):
+        for widget in self.product_frame.winfo_children():
+            widget.destroy()
+
+        self.products_widget=[]
+        # Create a grid of product items
+        row = 0
+        col = 0
+
+        for product in products:
+            product_widget = ProductCardManager(self.product_frame, row, col,
+                                         self.background_color, self.primary_color, self.default_font,
+                                         product, self.detail_frame,
+                                         self.current_language,
+                                         click_callback=select_item_callback)
+            self.products_widget.append(product_widget)
+            col += 1
+            if col >= self.product_card_col_num:
+                col = 0
+                row += 1
 
 
-        # # customer info
-        # self.customer_info_frame = tk.Frame(self.right_frame, bg=self.background_color, padx=10, pady=10)
-        # self.customer_info_frame.pack(side="top", fill="both", expand=True)
+    def update_filter(self, filter_data):
+        """Update the filter buttons based on the filter data"""
+        # Clear existing filter buttons
+        for widget in self.filter_frame.winfo_children():
+            widget.destroy()
 
-        # # name frame
-        # self.name_frame = tk.Frame(self.customer_info_frame, bg=self.background_color)
-        # self.name_frame.pack(side="top",fill="both", expand=True, padx=10)
-        # self.welcome_label = tk.Label(self.name_frame, text=LANGUAGE[self.current_language]["hello"], font=self.default_font, bg=self.background_color)
-        # self.welcome_label.pack(side="left", anchor="e")
-        # self.name_label = tk.Label(self.name_frame, font=self.default_font, bg=self.background_color)
-        # self.name_label.pack(side="left", anchor="e")
+        # Filter buttons
+        self.filter_buttons = []
+        row = 0
+        col = 0
 
+        for filter_name in list(filter_data):
+            btn_frame = tk.Frame(self.filter_frame)
+            btn_frame.grid(row=row, column=col, sticky="n", padx=5)
+            
+            if filter_data[filter_name]["active"]:
+                btn_bg = self.light_primary
+                btn_fg = self.primary_color
+                icon_color = self.primary_color
+            else:
+                btn_bg = "#FAFAFA"
+                btn_fg = self.dark_text
+                icon_color = self.light_icon
 
-        # # --- Panic & Logout Buttons ---
-        # self.panic_button = tk.Button(
-        #     self.customer_info_frame,
-        #     text=LANGUAGE[self.current_language]["panic"],
-        #     bg="#AD0000",
-        #     fg="white",
-        #     font=self.default_font,
-        # )
-        # self.panic_button.pack(side="right", expand=True, ipady=6)
+            icon_label = tk.Label(btn_frame, text=filter_data[filter_name]["icon"], fg=icon_color, bg=btn_bg)
+            icon_label.pack(side="left", padx=2)
 
-        # self.table_frame = tk.Frame(self.right_frame, bg=self.background_color, padx=10, pady=10)
-        # self.table_frame.pack(side="top", fill="both", expand=True)
+            filter_button = tk.Button(btn_frame, text=filter_data[filter_name]["text"],
+                                      # LANGUAGE[self.current_language][filter_name],
+                                      bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
+                                      padx=10, pady=5, font=self.default_font)
+            filter_button.pack(side="left")
+            self.filter_buttons.append(filter_button)
+            col += 1
 
+            if col >= self.filter_col_num:
+                col = 0
+                row += 1
 
-
+    def search_product(self):
+        search_text = self.frame.search_entry.get()
+        print("Searching for", search_text)
+        if self.current_menu == LANGUAGE[self.current_language]["food"]:
+            products_list = [product for product in self.food_list if search_text.lower() in product["Name"].lower()]
+        else:
+            products_list = [product for product in self.beer_list + self.wine_list + self.cocktail_list if search_text.lower() in product["Name"].lower()]
+        self.frame.update_menu(products_list, self.select_item_click)
         

@@ -13,8 +13,7 @@ from copy import deepcopy
 from controllers.base import BaseController
 from views.customerView import CustomerView
 
-from models.food import food_menu
-from models.beverages import beers, wines, cocktails
+from models.menu import menu
 from models.filters import allergens_dict, beverage_filter_data
 
 
@@ -234,10 +233,11 @@ class CustomerController(BaseController):
 
 
     def load_menu(self):
-        self.beer_list = beers
-        self.wine_list = wines
-        self.cocktail_list = cocktails
-        self.food_list = food_menu
+        # load the menu from the database with VIP=true
+        self.menu_list = [menu_item for menu_item in menu if menu_item["VIP"] == False]
+
+
+
 
 
     def switch_filter(self, filter_text):
@@ -263,21 +263,27 @@ class CustomerController(BaseController):
 
         # Filter products based on the active filters
         products_list = []
+        
+
         if self.current_menu == LANGUAGE[self.current_language]["food"]:
-            for product in self.food_list:
-                allergens = product["Allergens"]
-                if all([self.allergens_dict[allergen]["active"] for allergen in allergens]):
-                    products_list.append(product)
+            for product in self.menu_list:
+                if product["Tag"] == "food":
+                    allergens = product["Allergens"]
+                    if all([self.allergens_dict[allergen]["active"] for allergen in allergens]):
+                        products_list.append(product)
         else:
             if self.beverage_filter_data["Beers"]["active"]:
-                for product in self.beer_list:
-                    products_list.append(product)
+                for product in self.menu_list:
+                    if product["Tag"] == "beer":
+                        products_list.append(product)
             if self.beverage_filter_data["Wine"]["active"]:
-                for product in self.wine_list:
-                    products_list.append(product)
+                for product in self.menu_list:
+                    if product["Tag"] == "wine":
+                        products_list.append(product)
             if self.beverage_filter_data["Cocktails"]["active"]:
-                for product in self.cocktail_list:
-                    products_list.append(product)
+                for product in self.menu_list:
+                    if product["Tag"] == "cocktail":
+                        products_list.append(product)
 
         self.frame.update_menu(products_list, self.add_cart_item)
         for filter_btn in self.frame.filter_buttons:

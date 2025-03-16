@@ -43,6 +43,10 @@ LANGUAGE = {
         "price": "Price",
         "stock": "Stock",
         "update": "Update",
+        "remove_item": "Remove item",
+        "remove_item_message": "Are you sure you want to remove this item?",
+        "remove": "Remove",
+        "filter": "Filter"
     },
     "Română": {
         "index": "1",
@@ -88,6 +92,10 @@ LANGUAGE = {
         "price": "Preț",
         "stock": "Stoc",
         "update": "Actualizare",
+        "remove_item": "Elimină element",
+        "remove_item_message": "Sigur doriți să eliminați acest element?",
+        "remove": "Elimină",
+        "filter": "Filtru"
     },
     "中文": {
         "index": "2",
@@ -133,5 +141,9 @@ LANGUAGE = {
         "price": "价格",
         "stock": "库存",
         "update": "更新",
+        "remove_item": "删除项目",
+        "remove_item_message": "您确定要删除此项目吗？",
+        "remove": "删除",
+        "filter": "筛选"
     }
 }

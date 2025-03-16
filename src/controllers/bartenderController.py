@@ -3,22 +3,12 @@ from typing import List
 from copy import deepcopy
 
 from controllers.base import BaseController
-from views.customerView import CustomerView
-
-from models.food import food_menu
-from models.beverages import beers, wines, cocktails
-from models.filters import allergens_dict, beverage_filter_data
-
-
-from dataclasses import dataclass
-from typing import List
-from copy import deepcopy
 from views.bartenderView import BartenderView
-from models.beverages import beers, wines, cocktails
-from models.food import food_menu
+
+from models.menu import menu
 from models.filters import allergens_dict, beverage_filter_data
-from models.vip_menu import vip_beer, vip_wines, vip_cocktails, vip_food
-# from models.orders import Order
+
+
 
 @dataclass
 class BartenderData:

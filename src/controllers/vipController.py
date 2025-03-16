@@ -1,8 +1,6 @@
 from controllers.custormerController import CustomerController
 from views.vipView import VIPView
-from models.food import food_menu
-from models.beverages import beers, wines, cocktails
-from models.vip_menu import vip_food, vip_beer, vip_wines, vip_cocktails
+from models.menu import menu
 
 
 class VIPController(CustomerController):
@@ -26,10 +24,7 @@ class VIPController(CustomerController):
         self.frame.vip_balance_amount_label.config(text=self.main_controller.current_user.balance)
 
     def load_menu(self):
-        self.beer_list = beers + vip_beer
-        self.wine_list = wines + vip_wines
-        self.cocktail_list = cocktails + vip_cocktails
-        self.food_list = food_menu + vip_food
+        self.menu_list = menu
 
 
 if __name__ == "__main__":

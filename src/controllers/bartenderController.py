@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 from copy import deepcopy
+from tkinter import messagebox
 
 from controllers.base import BaseController
 from views.bartenderView import BartenderView
@@ -8,6 +9,7 @@ from views.bartenderView import BartenderView
 from models.menu import menu as menu_data
 from models.filters import allergens_dict, beverage_filter_data
 from models.language import LANGUAGE
+from tkinter.simpledialog import askinteger
 
 
 
@@ -39,6 +41,8 @@ class BartenderController(BaseController):
         self.frame.bartender_pannel.set_value_changed_command(self.table_data_changed)
         self.frame.bartender_pannel.set_remove_command(self.item_removed)
         self.frame.bartender_pannel.panic_button.config(command=self.panic_alert)
+        self.frame.bartender_pannel.single_payment_button.config(command=self.single_payment)
+        self.frame.bartender_pannel.group_payment_button.config(command=self.group_payment)
 
 
         self.load_menu()
@@ -89,7 +93,20 @@ class BartenderController(BaseController):
 
     def panic_alert(self):
         """Handle panic"""
-        print("Panic button pressed!")
+        messagebox.showinfo(LANGUAGE[self.current_language]["panic"], LANGUAGE[self.current_language]["panic"])
+
+    def single_payment(self):
+        table_id = self.frame.bartender_pannel.current_table
+        msg = LANGUAGE[self.current_language]["total"] + " " + str(sum([item["price"] for item in self.table_data[table_id]])) + " SEK"
+        messagebox.showinfo(LANGUAGE[self.current_language]["checkout"], msg)
+
+    def group_payment(self):
+        table_id = self.frame.bartender_pannel.current_table
+        total_amount = sum(item["price"] for item in self.table_data[table_id])
+        people_count = askinteger("Group Payment", "Enter number of people:", parent=self.tk_root, minvalue=1)
+        if people_count:
+            share = total_amount / people_count
+            messagebox.showinfo("Group Payment", f"Total: {total_amount:.2f} SEK\nEach pays: {share:.2f} SEK")
 
     def search_product(self):
         search_text = self.frame.search_entry.get()

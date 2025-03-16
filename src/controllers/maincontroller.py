@@ -120,7 +120,7 @@ class MainController(BaseController):
             self.common_widgets()
         elif self.current_controller == self.vip_controller:
             self.common_widgets()
-            self.current_controller.frame.vip_welcome_label.config(text=LANGUAGE[self.current_language]["welcome"])
+            self.current_controller.frame.welcome_label.config(text=LANGUAGE[self.current_language]["welcome"])
             self.current_controller.frame.vip_balance_label.config(text=LANGUAGE[self.current_language]["account balance"])
             self.current_controller.frame.add_to_balance_button.config(text=LANGUAGE[self.current_language]["add to balance"])
 

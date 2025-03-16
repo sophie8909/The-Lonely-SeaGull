@@ -64,43 +64,42 @@ class MainController(BaseController):
 
     # Method used to handle different display size setting
     def change_res(self, event):
-            res_type = self.current_controller.frame.settings_widget.res_combo.get()
-            screen_width = self.tk_root.winfo_screenwidth()
-            screen_height = self.tk_root.winfo_screenheight()
+        res_type = self.current_controller.frame.settings_widget.res_combo.get()
+        screen_width = self.tk_root.winfo_screenwidth()
+        screen_height = self.tk_root.winfo_screenheight()
 
-            if res_type == "27\"":
-                w = screen_width
-                h = screen_height
-                self.current_resolution = 0
+        if res_type == "27\"":
+            w = int(screen_width)
+            h = int(screen_height - int(0.036 * screen_height))
+            x = -int(0.005 * screen_width)
+            y = 0
+            self.current_resolution = 0
+        else:
+            w = int(screen_width * 0.7)
+            h = int(screen_height * 0.7)
+            x = int((screen_width / 2) - (w / 2))
+            y = int((screen_height / 2) - (h / 2))
+            self.current_resolution = 1
+
+        self.tk_root.geometry(str(w) + "x" + str(h) + "+" + str(x) + "+" + str(y))
+        print("screen_width:", w)
+        print("screen_height:", h)
+        print("x:", x)
+        print("y:", y)
+
+        # disable the buttons if they are not at the correct tablet, depending on the view
+        if self.current_controller == self.customer_controller:
+            if self.current_resolution == 1:
+                self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.DISABLED
             else:
-                w = screen_width * 0.7
-                h = screen_height * 0.7
-                self.current_resolution = 1
-
-            x = (screen_width / 2) - (w / 2)
-            y = (screen_height / 2) - (h / 2)
-
-            self.tk_root.geometry(str(int(w)) + "x" + str(int(h)) + "+" + str(int(x)) + "+" + str(int(y)))
-            print("screen_width:", w)
-            print("screen_height:", h)
-            print("x:", x)
-            print("y:", y)
-
-            # disable the buttons if they are not at the correct tablet, depending on the view
-            if self.current_controller == self.customer_controller:
-                if self.current_resolution == 1:
-                    self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.DISABLED
-                else:
-                    self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.NORMAL
-            elif self.current_controller == self.vip_controller:
-                if self.current_resolution == 1:
-                    self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.NORMAL
-                    self.current_controller.frame.add_to_balance_button["state"] = tk.DISABLED
-                else:
-                    self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.DISABLED
-                    self.current_controller.frame.add_to_balance_button["state"] = tk.NORMAL
-
-            return self.current_resolution
+                self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.NORMAL
+        elif self.current_controller == self.vip_controller:
+            if self.current_resolution == 1:
+                self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.NORMAL
+                self.current_controller.frame.add_to_balance_button["state"] = tk.DISABLED
+            else:
+                self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.DISABLED
+                self.current_controller.frame.add_to_balance_button["state"] = tk.NORMAL
 
     # Method used to handle different languages and update the text fields of different widgets
     # belonging to different views (login, guest, vip, bartender, owner)
@@ -116,11 +115,12 @@ class MainController(BaseController):
             self.current_controller.frame.password_label.config(text=LANGUAGE[self.current_language]["password"])
             self.current_controller.frame.login_button.config(text=LANGUAGE[self.current_language]["login"])
             self.current_controller.frame.guest_button.config(text=LANGUAGE[self.current_language]["guest_btn"])
+            self.current_controller.frame.login_welcome_label.config(text=LANGUAGE[self.current_language]["login_welcome"])
         elif self.current_controller == self.customer_controller:
             self.common_widgets()
         elif self.current_controller == self.vip_controller:
             self.common_widgets()
-            self.current_controller.frame.vip_welcome_label.config(text=LANGUAGE[self.current_language]["welcome"])
+            self.current_controller.frame.welcome_label.config(text=LANGUAGE[self.current_language]["welcome"])
             self.current_controller.frame.vip_balance_label.config(text=LANGUAGE[self.current_language]["account balance"])
             self.current_controller.frame.add_to_balance_button.config(text=LANGUAGE[self.current_language]["add to balance"])
 

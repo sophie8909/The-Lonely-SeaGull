@@ -62,13 +62,14 @@ class CustomerController(BaseController):
         self.frame.search_button.config(command=self.search_product)
         self.frame.beverages_button.config(command=lambda: self.switch_menu(LANGUAGE[self.current_language]["beverages"]))
         self.frame.food_button.config(command=lambda: self.switch_menu(LANGUAGE[self.current_language]["food"]))
+
         # added also key shortcuts for the undo/redo functionalities
         self.tk_root.bind('<Control-z>', lambda event: self.undo())
         self.tk_root.bind('<Control-y>', lambda event: self.redo())
-
         self.frame.settings_widget.logout_button.bind("<Button-1>", self.logout_button_click)
         self.frame.settings_widget.login_combo.bind("<<ComboboxSelected>>", self.main_controller.update_language)
         self.frame.settings_widget.res_combo.bind("<<ComboboxSelected>>", self.main_controller.change_res)
+        self.tk_root.bind("<Return>", lambda event: self.search_product())
 
         # fetch data from the database and update the view
         self.load_menu()
@@ -101,7 +102,7 @@ class CustomerController(BaseController):
             products_list = [product for product in self.food_list if search_term.lower() in product["Name"].lower()]
         else:
             products_list = []
-            if self.beverage_filter_data["Beers"]["active"]:
+            if self.beverage_filter_data["Beer"]["active"]:
                 for product in self.beer_list:
                     if search_term.lower() in product["Name"].lower():
                         products_list.append(product)
@@ -109,7 +110,7 @@ class CustomerController(BaseController):
                 for product in self.wine_list:
                     if search_term.lower() in product["Name"].lower():
                         products_list.append(product)
-            if self.beverage_filter_data["Cocktails"]["active"]:
+            if self.beverage_filter_data["Cocktail"]["active"]:
                 for product in self.cocktail_list:
                     if search_term.lower() in product["Name"].lower():
                         products_list.append(product)
@@ -256,10 +257,11 @@ class CustomerController(BaseController):
 
     def update_menu(self):
         # Filter data
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         if self.current_menu == LANGUAGE[self.current_language]["food"]:
-            self.frame.update_filter(self.allergens_dict)
+            self.frame.update_filter(self.allergens_dict, language_window)
         else:
-            self.frame.update_filter(self.beverage_filter_data)
+            self.frame.update_filter(self.beverage_filter_data, language_window)
 
         # Filter products based on the active filters
         products_list = []
@@ -287,8 +289,10 @@ class CustomerController(BaseController):
 
         self.frame.update_menu(products_list, self.add_cart_item)
         for filter_btn in self.frame.filter_buttons:
-            filter_text = filter_btn.cget("text")  # 立即存下當前的文本
-            filter_btn.config(command=lambda text=filter_text: self.switch_filter(text))
+            filter_text = filter_btn.cget("text")
+            # not to complicate the logic of having too many duplicates in filter's dictionary
+            eng_filter_text = [key for key, value in LANGUAGE[language_window].items() if value == filter_text]
+            filter_btn.config(command=lambda text=eng_filter_text[0]: self.switch_filter(text))
 
 
     def logout_button_click(self, event):

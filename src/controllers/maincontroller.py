@@ -123,6 +123,11 @@ class MainController(BaseController):
             self.current_controller.frame.welcome_label.config(text=LANGUAGE[self.current_language]["welcome"])
             self.current_controller.frame.vip_balance_label.config(text=LANGUAGE[self.current_language]["account balance"])
             self.current_controller.frame.add_to_balance_button.config(text=LANGUAGE[self.current_language]["add to balance"])
+        elif self.current_controller == self.bartender_controller:
+            self.current_controller.frame.detail_label.config(text=LANGUAGE[self.current_language]["information"])
+            self.current_controller.frame.food_button.config(text=LANGUAGE[self.current_language]["food"])
+            self.current_controller.frame.beverages_button.config(text=LANGUAGE[self.current_language]["beverages"])
+            self.current_controller.frame.search_entry_name.set(LANGUAGE[self.current_language]["search"])
 
         return self.current_language
 

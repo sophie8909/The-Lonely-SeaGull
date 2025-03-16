@@ -31,6 +31,7 @@ class BartenderController(BaseController):
 
 
     def bartender_view_setup(self):
+        self.frame.bartender_pannel.name_label.config(text=self.main_controller.current_user.first_name + " " + self.main_controller.current_user.last_name)
         # self.
 
 

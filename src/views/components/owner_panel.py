@@ -50,24 +50,24 @@ class ItemInfo(tk.Frame):
         info_frame = tk.Frame(self)
         info_frame.pack(side='bottom', expand=True, fill='both')
 
-        # Price field
+        # Price field (Entry only)
         self.price_frame = tk.Frame(info_frame)
         self.price_frame.pack(side='top', expand=True, fill='both')
         self.price_label = tk.Label(self.price_frame, text=LANGUAGE[self.current_language]["price"], font=("Arial", 12))
         self.price_label.pack(side='left', anchor='w', padx=5)
-        self.price_info_label = tk.Label(self.price_frame, font=("Arial", 12))
-        self.price_info_label.pack(side='left', anchor='e', padx=5)
-        self.price_entry = tk.Entry(self.price_frame, font=("Arial", 12))
+        self.price_entry = tk.Entry(self.price_frame, font=("Arial", 12))  # Direct input
+        self.price_entry.pack(side='left', anchor='e', padx=5)
         self.currency = tk.Label(self.price_frame, text="SEK", font=("Arial", 12))
+        self.currency.pack(side='left', anchor='e', padx=5)
 
-        # Stock field
+        # Stock field (Entry only)
         stock_frame = tk.Frame(info_frame)
         stock_frame.pack(side='top', expand=True, fill='both')
         self.stock_label = tk.Label(stock_frame, text=LANGUAGE[self.current_language]["stock"], font=("Arial", 12))
         self.stock_label.pack(side='left', anchor='w', padx=5)
-        self.stock_info_label = tk.Label(stock_frame, font=("Arial", 12))
-        self.stock_info_label.pack(side='left', anchor='e', padx=5)
-        self.stock_entry = tk.Entry(stock_frame, font=("Arial", 12))
+        self.stock_entry = tk.Entry(stock_frame, font=("Arial", 12))  # Direct input
+        self.stock_entry.pack(side='left', anchor='e', padx=5)
+
 
 
         # ---------------- Update Button ----------------
@@ -105,11 +105,20 @@ class ItemInfo(tk.Frame):
 
     def update(self, product):
         """Fill the widget with product data (for edit/view mode)"""
-        self.product = product
-        self.item_label.config(text=product["Name"])
-        self.filter_combobox.set(product["Tag"])
-        self.price_info_label.config(text=product["Price"])
-        self.stock_info_label.config(text=product["Stock"])
+        if product is None:
+            self.item_label.config(text="")
+            self.filter_combobox.set("")
+            self.price_entry.delete(0, tk.END)
+            self.stock_entry.delete(0, tk.END)
+        else:
+            self.product = product
+            self.item_label.config(text=product["Name"])
+            self.filter_combobox.set(product["Tag"])
+            self.price_entry.delete(0, tk.END)
+            self.price_entry.insert(0, product["Price"].replace(" SEK", ""))  # Remove SEK if exists
+            self.stock_entry.delete(0, tk.END)
+            self.stock_entry.insert(0, product["Stock"])
+        
         self.set_add_active(False)  # Set to view mode
         self.on_filter_selected()  # Load appropriate fields
 
@@ -117,6 +126,7 @@ class ItemInfo(tk.Frame):
         for key, entry in self.dynamic_entries.items():
             entry.delete(0, tk.END)
             entry.insert(0, product.get(key, ""))
+
 
     def get_price(self):
         return self.price_entry.get()
@@ -130,20 +140,18 @@ class ItemInfo(tk.Frame):
     def set_add_active(self, active):
         """Toggle between add/edit mode and view mode"""
         if active:
-            # Show input fields
+            # Show input fields for editing
             self.item_name_entry.pack(expand=True, fill='both', anchor='center')
-            self.price_info_label.pack_forget()
-            self.stock_info_label.pack_forget()
-            self.currency.pack(side='right', anchor='e', padx=5)
-            self.price_entry.pack(side='right', anchor='e', padx=5)
-            self.stock_entry.pack(side='right', anchor='e', padx=5)
+            self.price_entry.pack(side='left', anchor='e', padx=5)
+            self.currency.pack(side='left', anchor='e', padx=5)
+            self.stock_entry.pack(side='left', anchor='e', padx=5)
             self.update_btn.pack(side='bottom', anchor='e', padx=5, pady=5)
         else:
-            # Show labels
+            # Hide entry, only show label
             self.item_name_entry.pack_forget()
             self.item_label.pack(expand=True, fill='both', anchor='center')
-            self.price_info_label.pack(side='left', anchor='e', padx=5)
-            self.stock_info_label.pack(side='left', anchor='e', padx=5)
+            # keep price and stock entry visible for review and edit anytime
+
 
     def get_product(self):
         """Collect all data from user input and return as dictionary"""
@@ -153,14 +161,12 @@ class ItemInfo(tk.Frame):
             "Price": self.price_entry.get() + " SEK",
             "Stock": self.stock_entry.get(),
             "VIP": False,
-            "Hide": False,
+            "Hidden": False,
             "Tag": tag
         }
         # Add dynamic fields data
         for field, entry in self.dynamic_entries.items():
             if field == "Allergens":
-                # Split allergens by comma to create a list
-                print(entry.get().split(","), type(entry.get().split(",")))
                 if entry.get():
                     product[field] = entry.get().split(",")
                 else:
@@ -168,6 +174,7 @@ class ItemInfo(tk.Frame):
             else:
                 product[field] = entry.get()
         return product
+
 
 class OwnerPanel(BaseView):
     def __init__(self, parent, current_language, current_resolution):

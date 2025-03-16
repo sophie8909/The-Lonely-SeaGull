@@ -9,6 +9,7 @@ from models.language import LANGUAGE
 
 from models.filters import allergens_dict, beverage_filter_data
 from models.menu import menu as menu_data
+
 # from models.orders import Order
 
 @dataclass
@@ -23,6 +24,7 @@ class OwnerController(BaseController):
         self.data = OwnerData(cart=[])
         self.tk_root = tk_root
 
+        
         self.main_controller = main_controller
         self.current_language = current_language
         self.allergens_dict = allergens_dict
@@ -148,17 +150,35 @@ class OwnerController(BaseController):
 
 
     def update_item_info(self):
-        product = self.frame.owner_panel.item.product
+        """Update item in menu_list and refresh the menu"""
+        product = self.frame.owner_panel.item.product  # Current selected product
+        
+        # Get updated product info from the form
+        updated_product = self.frame.owner_panel.item.get_product()
+
         if product is None:
-            product =self.frame.owner_panel.item.get_product()
-            self.menu_list.append(product)
+            # ---------- Case 1: New product ----------
+            print("Adding new product:", updated_product)
+            self.menu_list.append(updated_product)  # Add new product to menu
         else:
-            product = self.frame.owner_panel.item.get_product()
-            
-        self.frame.owner_panel.item.update(product)
+            # ---------- Case 2: Update existing product ----------
+            print("Updating existing product:", updated_product)
+            # Find and update the product in menu_list
+            for i, p in enumerate(self.menu_list):
+                if p["Name"] == product["Name"]:  # Assuming 'Name' is unique identifier
+                    self.menu_list[i] = updated_product  # Update the product in menu_list
+                    break  # Stop searching after update
+
+        # Refresh the item detail view (right side)
+        self.frame.owner_panel.item.update(updated_product)
+
+        # Clear input fields
         self.frame.owner_panel.item.price_entry.delete(0, 'end')
         self.frame.owner_panel.item.stock_entry.delete(0, 'end')
+
+        # Refresh the whole menu list (left side)
         self.update_menu()
+
     
     def add_item_to_menu_click(self):
         self.frame.owner_panel.item.product = None
@@ -176,14 +196,9 @@ class OwnerController(BaseController):
 
     def remove_item(self):
         product = self.frame.owner_panel.item.product
-        if product in self.food_list:
-            self.food_list.remove(product)
-        elif product in self.beer_list:
-            self.beer_list.remove(product)
-        elif product in self.wine_list:
-            self.wine_list.remove(product)
-        elif product in self.cocktail_list:
-            self.cocktail_list.remove(product)
+        if product in self.menu_list:
+            self.menu_list.remove(product)
+        self.frame.owner_panel.item.update(None)
         self.update_menu()
 
     def hide_item_click(self):
@@ -194,6 +209,6 @@ class OwnerController(BaseController):
 
     def order_refill_click(self):
         product = self.frame.owner_panel.item.product
-        product["Stock"] += 10
+        product["Stock"] = str(int(product["Stock"]+10))
         self.update_menu()
         self.frame.owner_panel.item.update(product)

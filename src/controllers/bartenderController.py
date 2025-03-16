@@ -5,7 +5,7 @@ from copy import deepcopy
 from controllers.base import BaseController
 from views.bartenderView import BartenderView
 
-from models.menu import menu
+from models.menu import menu as menu_data
 from models.filters import allergens_dict, beverage_filter_data
 
 
@@ -31,7 +31,7 @@ class BartenderController(BaseController):
 
 
     def bartender_view_setup(self):
-        self.frame.bartender_pannel.name_label.config(text=self.main_controller.current_user.first_name + " " + self.main_controller.current_user.last_name)
+        # self.frame.bartender_pannel.name_label.config(text=self.main_controller.current_user.first_name + " " + self.main_controller.current_user.last_name)
         # self.
 
 
@@ -48,13 +48,11 @@ class BartenderController(BaseController):
 
     def hide_widgets(self):
         pass
-        self.frame.pack_forget()
 
 
     def load_products(self):
         """Load products and update view"""
-        self.products = beers  # 假設目前只賣啤酒
-        self.frame.update_products(self.products)
+        self.products = menu_data
 
     def add_cart_item(self, product_card):
         """Add product to cart"""

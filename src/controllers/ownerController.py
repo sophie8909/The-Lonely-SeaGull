@@ -128,7 +128,7 @@ class OwnerController(BaseController):
                     if all([self.allergens_dict[allergen]["active"] for allergen in allergens]):
                         products_list.append(product)
         else:
-            if self.beverage_filter_data["Beers"]["active"]:
+            if self.beverage_filter_data["Beer"]["active"]:
                 for product in self.menu_list:
                     if product["Tag"] == "beer":
                         products_list.append(product)
@@ -136,7 +136,7 @@ class OwnerController(BaseController):
                 for product in self.menu_list:
                     if product["Tag"] == "wine":
                         products_list.append(product)
-            if self.beverage_filter_data["Cocktails"]["active"]:
+            if self.beverage_filter_data["Cocktail"]["active"]:
                 for product in self.menu_list:
                     if product["Tag"] == "cocktail":
                         products_list.append(product)

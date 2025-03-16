@@ -10,10 +10,10 @@ class VIPView(CustomerView):
         # name frame
         self.name_frame = tk.Frame(self.customer_info_frame, bg=self.background_color)
         self.name_frame.pack(side="top",fill="both", expand=True, padx=10)
-        self.vip_welcome_label = tk.Label(self.name_frame, text=LANGUAGE[self.current_language]["welcome"], font=self.default_font, bg=self.background_color)
-        self.vip_welcome_label.pack(side="left", anchor="e")
-        self.vip_name_label = tk.Label(self.name_frame, font=self.default_font, bg=self.background_color)
-        self.vip_name_label.pack(side="left", anchor="e")
+        self.welcome_label = tk.Label(self.name_frame, text=LANGUAGE[self.current_language]["welcome"], font=self.default_font, bg=self.background_color)
+        self.welcome_label.pack(side="left", anchor="e")
+        self.name_label = tk.Label(self.name_frame, font=self.default_font, bg=self.background_color)
+        self.name_label.pack(side="left", anchor="e")
 
         # balance frame
         self.balance_frame = tk.Frame(self.customer_info_frame, bg=self.background_color)

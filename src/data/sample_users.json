@@ -6,7 +6,7 @@
         "last_name": "Doe",
         "email": "johndoe@example.com",
         "phone": "123-456-7890",
-        "credentials": 1,
+        "credentials": 2,
         "password": "password123",
         "balance": 1000
     },
@@ -28,7 +28,7 @@
         "last_name": "Smith",
         "email": "alice@example.com",
         "phone": "555-555-5555",
-        "credentials": 1,
+        "credentials": 2,
         "password": "password789",
         "balance": 2000
     },
@@ -39,19 +39,31 @@
         "last_name": "Smith",
         "email": "tom@example.com",
         "phone": "555-555-5555",
-        "credentials": 1,
+        "credentials": 2,
         "password": "pw",
         "balance": 2000
     },
     {
         "user_id": 5,
-        "username": "draco",
+        "username": "waiter",
         "first_name": "Draco",
         "last_name": "Malfoy",
         "email": "draco@example.com",
+        "phone": "555-555-5555",
+        "credentials": 1,
+        "password": "pw",
+        "balance": 2000
+    },
+    {
+        "user_id": 6,
+        "username": "owner",
+        "first_name": "Harry",
+        "last_name": "Potter",
+        "email": "harry@example.com",
         "phone": "555-555-5555",
         "credentials": 0,
         "password": "pw",
         "balance": 2000
     }
+
 ]

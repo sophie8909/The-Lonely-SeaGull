@@ -17,7 +17,7 @@ class VIPController(CustomerController):
         self.vip_view_setup()
     
     def vip_view_setup(self):
-        self.frame.vip_name_label.config(text=self.main_controller.current_user.first_name + " " + self.main_controller.current_user.last_name)
+        self.frame.name_label.config(text=self.main_controller.current_user.first_name + " " + self.main_controller.current_user.last_name)
         self.frame.vip_balance_amount_label.config(text=self.main_controller.current_user.balance)
         self.frame.add_to_balance_button.config(command=self.add_to_balance)
 

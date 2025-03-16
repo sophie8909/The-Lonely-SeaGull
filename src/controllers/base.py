@@ -4,5 +4,5 @@ class BaseController:
         self.current_language = current_language
         self.current_controller = None
         self.current_resolution = current_resolution
-        pass
+
 

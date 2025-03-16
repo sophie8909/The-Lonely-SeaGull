@@ -66,10 +66,10 @@ class CustomerController(BaseController):
         # added also key shortcuts for the undo/redo functionalities
         self.tk_root.bind('<Control-z>', lambda event: self.undo())
         self.tk_root.bind('<Control-y>', lambda event: self.redo())
+        self.tk_root.bind("<Return>", lambda event: self.search_product())
         self.frame.settings_widget.logout_button.bind("<Button-1>", self.logout_button_click)
         self.frame.settings_widget.login_combo.bind("<<ComboboxSelected>>", self.main_controller.update_language)
         self.frame.settings_widget.res_combo.bind("<<ComboboxSelected>>", self.main_controller.change_res)
-        self.tk_root.bind("<Return>", lambda event: self.search_product())
 
         # fetch data from the database and update the view
         self.load_menu()
@@ -99,19 +99,19 @@ class CustomerController(BaseController):
         print("Searching for product")
         search_term = self.frame.search_entry.get()
         if self.current_menu == LANGUAGE[self.current_language]["food"]:
-            products_list = [product for product in self.food_list if search_term.lower() in product["Name"].lower()]
+            products_list = [product for product in self.menu_list if search_term.lower() in product["Name"].lower()]
         else:
             products_list = []
             if self.beverage_filter_data["Beer"]["active"]:
-                for product in self.beer_list:
+                for product in self.menu_list:
                     if search_term.lower() in product["Name"].lower():
                         products_list.append(product)
             if self.beverage_filter_data["Wine"]["active"]:
-                for product in self.wine_list:
+                for product in self.menu_list:
                     if search_term.lower() in product["Name"].lower():
                         products_list.append(product)
             if self.beverage_filter_data["Cocktail"]["active"]:
-                for product in self.cocktail_list:
+                for product in self.menu_list:
                     if search_term.lower() in product["Name"].lower():
                         products_list.append(product)
         self.frame.update_menu(products_list, self.add_cart_item)

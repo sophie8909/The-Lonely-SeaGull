@@ -6,6 +6,46 @@ from tkinter import ttk
 from models.language import LANGUAGE
 from views.baseView import BaseView
 
+# Class to create a toast notification
+# credit to this git repo https://github.com/ritik48/popup-notification-tkinter/blob/main/notification.py
+class Notification(tk.Frame):
+    def __init__(self, master, width, height, bg, text, font, y_pos):
+        super().__init__(master, bg=bg, width=width, height=height)
+        self.pack_propagate(tk.FALSE)
+
+        self.y_pos = y_pos
+
+        self.master = master
+        self.width = width
+
+        right_offset = 8
+
+        self.cur_x = self.master.winfo_width()
+        self.x = self.cur_x - (self.width + right_offset)
+
+        message = tk.Label(self, text=text, font=font, bg=bg, fg="black")
+        message.pack(side="left", padx=5)
+
+        close_btn = tk.Button(self, text="X", bg=bg, relief="flat", command=self.hide_animation, cursor="hand2")
+        close_btn.pack(side="right", padx=5)
+
+        print(self.cur_x)
+        self.place(x=self.cur_x, y=y_pos)
+
+    def show_animation(self):
+        if self.cur_x > self.x:
+            self.cur_x -= 1
+            self.place(x=self.cur_x, y=self.y_pos)
+
+            self.after(1, self.show_animation)
+
+    def hide_animation(self):
+        if self.cur_x < self.master.winfo_width():
+            self.cur_x += 1
+            self.place(x=self.cur_x, y=self.y_pos)
+
+            self.after(1, self.hide_animation)
+
 class TableFrame(tk.Frame):
     def __init__(self, parent, table_number, table_data=[], total=0, value_changed_command=None, remove_command=None, focus_command=None, **kwargs):
         super().__init__(parent, bg='lightgray', **kwargs)

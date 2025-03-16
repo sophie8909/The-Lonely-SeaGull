@@ -11,7 +11,7 @@ from models.filters import allergens_dict, beverage_filter_data
 from models.language import LANGUAGE
 from tkinter.simpledialog import askinteger
 
-
+from views.components.bartender_panel import Notification
 
 
 class BartenderController(BaseController):
@@ -31,6 +31,7 @@ class BartenderController(BaseController):
 
 
     def bartender_view_setup(self):
+        notification = Notification(self.tk_root, 230,55, "white", LANGUAGE[self.current_language]["panic"], "cambria 11", 8)
         # Left side
         self.frame.search_button.config(command=self.search_product)
         self.frame.beverages_button.config(command=lambda: self.switch_menu(LANGUAGE[self.current_language]["beverages"]))
@@ -40,7 +41,7 @@ class BartenderController(BaseController):
         self.table_data = [[] for _ in range(self.table_count)]
         self.frame.bartender_panel.set_value_changed_command(self.table_data_changed)
         self.frame.bartender_panel.set_remove_command(self.item_removed)
-        self.frame.bartender_panel.panic_button.config(command=self.panic_alert)
+        self.frame.bartender_panel.panic_button.config(command=notification.show_animation)
         self.frame.bartender_panel.single_payment_button.config(command=self.single_payment)
         self.frame.bartender_panel.group_payment_button.config(command=self.group_payment)
 
@@ -91,9 +92,9 @@ class BartenderController(BaseController):
         self.frame.bartender_panel.update_table(self.table_data, table_id)
 
 
-    def panic_alert(self):
-        """Handle panic"""
-        messagebox.showinfo(LANGUAGE[self.current_language]["panic"], LANGUAGE[self.current_language]["panic"])
+    # def panic_alert(self):
+    #     """Handle panic"""
+    #     messagebox.showinfo(LANGUAGE[self.current_language]["panic"], LANGUAGE[self.current_language]["panic"])
 
     def single_payment(self):
         table_id = self.frame.bartender_panel.current_table

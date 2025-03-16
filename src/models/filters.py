@@ -1,6 +1,6 @@
 beverage_filter_data = {
-            "Beers": {
-                "text": "Beers",
+            "Beer": {
+                "text": "Beer",
                 "icon": "🍺",
                 "active": True
             },
@@ -9,8 +9,8 @@ beverage_filter_data = {
                 "icon": "🍷",
                 "active": True
             },
-            "Cocktails": {
-                "text": "Cocktails",
+            "Cocktail": {
+                "text": "Cocktail",
                 "icon": "🍸",
                 "active": True
             },
@@ -41,8 +41,8 @@ allergens_dict = {
                 "icon": "🌿",
                 "active": True
             },
-            "Nuts": {
-                "text": "Nuts",
+            "Nut": {
+                "text": "Nut",
                 "icon": "🌰",
                 "active": True
             },
@@ -61,8 +61,8 @@ allergens_dict = {
                 "icon": "🌱",
                 "active": True
             },
-            "Peanuts": {
-                "text": "Peanuts",
+            "Peanut": {
+                "text": "Peanut",
                 "icon": "🥜",
                 "active": True
             }

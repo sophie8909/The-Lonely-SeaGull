@@ -1,19 +1,20 @@
+from models.language import LANGUAGE
 from models.services import UsersService
 from views.loginView import LoginView
 from controllers.base import BaseController
 
 from tkinter import messagebox
 
-def show_error_message(message):
-    messagebox.showerror("Error", message)
 
 
 class LoginController(BaseController):
     def __init__(self, tk_root, main_controller, current_language, current_resolution):
         super().__init__(tk_root, current_language, current_resolution)
 
+        # The geometry values might vary for different display sizes, but for a 15.6 inches
+        # display should be on a perfect fullscreen
         self.tk_root.title("The Flying Dutchman Pub")
-        self.tk_root.geometry("%dx%d" % (tk_root.winfo_screenwidth(), tk_root.winfo_screenheight()))
+        self.tk_root.geometry(str(tk_root.winfo_screenwidth()) + "x" + str(tk_root.winfo_screenheight()-int(0.036*tk_root.winfo_screenheight())) + "+" + str(-int(0.005*tk_root.winfo_screenwidth())) + "+" + str(0))
 
         self.users = UsersService('data/sample_users.json')
         self.frame = None
@@ -48,10 +49,12 @@ class LoginController(BaseController):
         username = self.frame.username_entry.get()
         password = self.frame.password_entry.get()
         success, message = self.login(username, password)
+
         if not success:
-            show_error_message(message)
+            self.show_message(self, message, "ERROR")
             return
         else:
+            self.show_message(self, message, "SUCCESS")
             if self.main_controller.current_user.credentials == 0:
                 self.main_controller.switch_controller(self.main_controller.bartender_controller)
             elif self.main_controller.current_user.credentials == 1:
@@ -59,16 +62,26 @@ class LoginController(BaseController):
 
 
     def guest_button_click(self, event):
-        print("Continue as a guest button")
+        print("Continue as guest button")
         self.main_controller.switch_controller(self.main_controller.customer_controller)
 
 
     def login(self, username, password):
         user = self.users.get_user(username)
-        if user is None:
-            return False, "User not found"
-        if user.password != password:
-            return False, "Incorrect password"
-        self.main_controller.current_user = user
-        return True, "Login success"
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
 
+        if user is None:
+            return False, LANGUAGE[language_window]["not_found"]
+        if user.password != password:
+            return False, LANGUAGE[language_window]["wrong_pass"]
+        self.main_controller.current_user = user
+        return True, LANGUAGE[language_window]["success"]
+
+    @staticmethod
+    def show_message(self, message, type):
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
+
+        if type == "ERROR":
+            messagebox.showerror(LANGUAGE[language_window]["error"], message)
+        elif type == "SUCCESS":
+            messagebox.showinfo(LANGUAGE[language_window]["success"], message)

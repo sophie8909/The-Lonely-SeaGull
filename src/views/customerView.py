@@ -183,7 +183,7 @@ class CustomerView(BaseView):
                 row += 1
 
 
-    def update_filter(self, filter_data):
+    def update_filter(self, filter_data, current_lgn):
         """Update the filter buttons based on the filter data"""
         # Clear existing filter buttons
         for widget in self.filter_frame.winfo_children():
@@ -210,8 +210,7 @@ class CustomerView(BaseView):
             icon_label = tk.Label(btn_frame, text=filter_data[filter_name]["icon"], fg=icon_color, bg=btn_bg)
             icon_label.pack(side="left", padx=2)
 
-            filter_button = tk.Button(btn_frame, text=filter_data[filter_name]["text"],
-                                      # LANGUAGE[self.current_language][filter_name],
+            filter_button = tk.Button(btn_frame, text=LANGUAGE[current_lgn][filter_name],
                                       bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
                                       padx=10, pady=5, font=self.default_font)
             filter_button.pack(side="left")

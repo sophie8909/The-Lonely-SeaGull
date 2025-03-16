@@ -10,17 +10,15 @@ from models.filters import allergens_dict, beverage_filter_data
 from models.language import LANGUAGE
 
 
-@dataclass
-class BartenderData:
-    cart: List[dict]
+
 
 class BartenderController(BaseController):
     def __init__(self, tk_root, main_controller, current_language, current_resolution):
         super().__init__(tk_root, current_language, current_resolution)
 
         self.frame = None
-        self.data = BartenderData(cart=[])
-        
+        self.table_count = 3
+        self.table_data = []
         self.main_controller = main_controller
         self.current_language = current_language
         self.allergens_dict = allergens_dict
@@ -37,10 +35,15 @@ class BartenderController(BaseController):
         self.frame.food_button.config(command=lambda: self.switch_menu(LANGUAGE[self.current_language]["food"]))
 
         # Right side
+        self.table_data = [[] for _ in range(self.table_count)]
+        self.frame.bartender_pannel.set_value_changed_command(self.table_data_changed)
+        self.frame.bartender_pannel.set_remove_command(self.item_removed)
+        self.frame.bartender_pannel.panic_button.config(command=self.panic_alert)
 
 
         self.load_menu()
         self.update_menu()
+        self.frame.bartender_pannel.update_table(self.table_data)
         
 
     
@@ -59,13 +62,30 @@ class BartenderController(BaseController):
         """Load products and update view"""
         self.menu_list = menu_data
 
+    def table_data_changed(self, event):
+        self.table_data = self.frame.bartender_pannel.get_values()
+        print("Table data changed", self.table_data)
+        self.frame.bartender_pannel.update_value(self.table_data)
+
+    def item_removed(self, table_id, item_id):
+        self.table_data[table_id].pop(item_id)
+        self.frame.bartender_pannel.update_table(self.table_data)
+        
+
+
+
     # TODO
     def add_cart_item(self, product_card):
-        pass
+        print("Add to cart", product_card.product["Name"])
+        table_id = self.frame.bartender_pannel.current_table
+        item_name = product_card.product["Name"]
+        item_amount = 1
+        item_price = float(product_card.product["Price"].replace(" SEK", ""))
+        item_reason = "Normal"
+        item_comment = ""
+        self.table_data[table_id].append({"item": item_name, "amount": item_amount, "price": item_price, "reason": item_reason, "comment": item_comment})
+        self.frame.bartender_pannel.update_table(self.table_data, table_id)
 
-    def offer_discount(self):
-        """Offer discount logic here"""
-        print("Offer discount - logic to implement")
 
     def panic_alert(self):
         """Handle panic"""
@@ -80,13 +100,6 @@ class BartenderController(BaseController):
             products_list = [product for product in self.beer_list + self.wine_list + self.cocktail_list if search_text.lower() in product["Name"].lower()]
         self.frame.update_menu(products_list, self.select_item_click)
 
-    def offer_discount(self):
-        """Offer discount logic here"""
-        print("Offer discount - logic to implement")
-
-    def panic_alert(self):
-        """Handle panic"""
-        print("Panic button pressed!")
 
         
     def switch_menu(self, menu):
@@ -126,7 +139,7 @@ class BartenderController(BaseController):
                         products_list.append(product)
 
         # TODO: bind the click callback
-        self.frame.update_menu(products_list, None)
+        self.frame.update_menu(products_list, self.add_cart_item)
         for filter_btn in self.frame.filter_buttons:
             filter_text = filter_btn.cget("text")  # 立即存下當前的文本
             filter_btn.config(command=lambda text=filter_text: self.switch_filter(text))

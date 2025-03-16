@@ -1,3 +1,7 @@
+if __name__ == "__main__":
+    import sys
+    sys.path.append(sys.path[0]+"/../..")
+
 import tkinter as tk
 from tkinter import font, ttk
 
@@ -195,7 +199,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("400x400")
     root.wm_attributes("-topmost", True)
-    shopping_cart = ShoppingCart(root, "gray", "blue", "Arial 10")
+    shopping_cart = ShoppingCart(root, "gray", "blue", "Arial 10", current_language="English", current_resolution=1)
     shopping_cart.pack(side="right", fill="both", expand=True, pady=10)
     product_frame = tk.Frame(root, bg="white")
     product_frame.pack(side="left", fill="both", expand=True, pady=10)

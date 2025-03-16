@@ -1,3 +1,7 @@
+if __name__ == "__main__":
+    import sys
+    sys.path.append(sys.path[0]+"/../..")
+
 import tkinter as tk
 from tkinter import font, ttk
 

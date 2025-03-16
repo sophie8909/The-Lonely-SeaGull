@@ -103,10 +103,8 @@ class BartenderController(BaseController):
     def group_payment(self):
         table_id = self.frame.bartender_pannel.current_table
         total_amount = sum(item["price"] for item in self.table_data[table_id])
-        people_count = askinteger("Group Payment", "Enter number of people:", parent=self.tk_root, minvalue=1)
-        if people_count:
-            share = total_amount / people_count
-            messagebox.showinfo("Group Payment", f"Total: {total_amount:.2f} SEK\nEach pays: {share:.2f} SEK")
+        people_count = askinteger("Group Payment", f"{LANGUAGE[self.current_language]['enter number of people']}:", parent=self.tk_root, minvalue=1)
+        messagebox.showinfo(LANGUAGE[self.current_language]["checkout"], f"{LANGUAGE[self.current_language]['total']}: {total_amount:.2f} SEK\n{LANGUAGE[self.current_language]['each pay']}: {total_amount/people_count:.2f} SEK")
 
     def search_product(self):
         search_text = self.frame.search_entry.get()

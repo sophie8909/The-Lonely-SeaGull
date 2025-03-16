@@ -64,7 +64,9 @@ LANGUAGE = {
         "remove_item": "Remove item",
         "remove_item_message": "Are you sure you want to remove this item?",
         "remove": "Remove",
-        "filter": "Filter"
+        "filter": "Filter",
+        "each pay": "Each pay",
+        "enter number of people": "Enter number of people"
     },
     "Română": {
         "index": "1",
@@ -131,7 +133,9 @@ LANGUAGE = {
         "remove_item": "Elimină element",
         "remove_item_message": "Sigur doriți să eliminați acest element?",
         "remove": "Elimină",
-        "filter": "Filtru"
+        "filter": "Filtru",
+        "each pay": "Fiecare plătește",
+        "enter number of people": "Introduceți numărul de persoane"
     },
     "中文": {
         "index": "2",
@@ -198,6 +202,8 @@ LANGUAGE = {
         "remove_item": "删除项目",
         "remove_item_message": "您确定要删除此项目吗？",
         "remove": "删除",
-        "filter": "筛选"
+        "filter": "筛选",
+        "each pay": "每人付款",
+        "enter number of people": "输入人数"
     }
 }

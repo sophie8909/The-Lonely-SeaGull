@@ -67,7 +67,9 @@ LANGUAGE = {
         "remove": "Remove",
         "filter": "Filter",
         "each pay": "Each pay",
-        "enter number of people": "Enter number of people"
+        "enter number of people": "Enter number of people",
+        "vip code": "VIP Code",
+        "get vip code": "Get VIP Code"
     },
     "Română": {
         "index": "1",
@@ -137,7 +139,9 @@ LANGUAGE = {
         "remove": "Elimină",
         "filter": "Filtru",
         "each pay": "Fiecare plătește",
-        "enter number of people": "Introduceți numărul de persoane"
+        "enter number of people": "Introduceți numărul de persoane",
+        "vip code": "Cod VIP",
+        "get vip code": "Obțineți codul VIP"
     },
     "中文": {
         "index": "2",
@@ -177,7 +181,7 @@ LANGUAGE = {
         "language": "语言",
         "resolution": "显示分辨率",
         "total": "总付款金額",
-        "person": "人",
+        "person": "顧客",
         "confirm_order": "确认订单？",
         "yes": "是",
         "no": "否",
@@ -207,6 +211,8 @@ LANGUAGE = {
         "remove": "删除",
         "filter": "筛选",
         "each pay": "每人付款",
-        "enter number of people": "输入人数"
+        "enter number of people": "输入人数",
+        "vip code": "VIP代码",
+        "get vip code": "获取VIP代码"
     }
 }

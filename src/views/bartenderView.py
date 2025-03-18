@@ -98,7 +98,7 @@ class BartenderView(BaseView):
 
 
         # middle frame
-        self.middle_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)
+        self.middle_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=25, pady=10)
         self.middle_frame.pack(side="left", fill="both", expand=True)
 
         self.detail_label = tk.Label(self.middle_frame, text=LANGUAGE[self.current_language]["information"], font=self.header_font, bg=self.primary_color, fg="white")
@@ -111,13 +111,16 @@ class BartenderView(BaseView):
 
         # right side of the main frame
         self.right_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)
-        self.right_frame.pack(side="right", fill="both", expand=True)
+        # self.right_frame.config(width=30)
+        self.right_frame.pack(side="right", fill="y", expand=False)
 
         # Added the view for language and display size settings
         self.settings_widget = Settings(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
+        # self.settings_widget.config(width=30)
         self.settings_widget.pack(side="top", anchor="e")
 
         self.bartender_panel = BartenderPanel(self.right_frame, self.current_language, self.current_resolution)
+        # self.bartender_panel.config(width=30)
         self.bartender_panel.pack(fill="both", expand=True)
 
     def update_bartender_language(self, current_lgn):

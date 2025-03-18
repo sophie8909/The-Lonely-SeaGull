@@ -80,10 +80,16 @@ class BartenderController(BaseController):
         self.frame.bartender_panel.update_table(self.table_data)
 
     # when click show item detail on the right side and can modify the information
-    def select_item_click(self, product_card):
-        product = product_card.product
-        self.frame.owner_panel.item.update(product)
-        self.frame.owner_panel.item.set_add_active(True)
+    def add_cart_item(self, product_card):
+        print("Add to cart", product_card.product["Name"])
+        table_id = self.frame.bartender_panel.current_table
+        item_name = product_card.product["Name"]
+        item_amount = 1
+        item_price = float(product_card.product["Price"].replace(" SEK", ""))
+        item_reason = "Normal"
+        item_comment = ""
+        self.table_data[table_id].append({"item": item_name, "amount": item_amount, "price": item_price, "reason": item_reason, "comment": item_comment})
+        self.frame.bartender_panel.update_table(self.table_data, table_id)
 
     def single_payment(self):
         table_id = self.frame.bartender_panel.current_table
@@ -152,7 +158,7 @@ class BartenderController(BaseController):
                         products_list.append(product)
 
         # TODO: bind the click callback
-        self.frame.update_menu(products_list, language_window, self.select_item_click)
+        self.frame.update_menu(products_list, language_window, self.add_cart_item)
         for filter_btn in self.frame.filter_buttons:
             filter_text = filter_btn.cget("text")  # 立即存下當前的文本
             # not to complicate the logic of having too many duplicates in filter's dictionary

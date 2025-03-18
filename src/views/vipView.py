@@ -21,9 +21,20 @@ class VIPView(CustomerView):
         self.vip_balance_label.pack(side="left", anchor="e")
         self.vip_balance_amount_label = tk.Label(self.balance_frame, font=self.default_font, bg=self.background_color)
         self.vip_balance_amount_label.pack(side="right", anchor="e")
+        
+        # vip code frame
+        self.vip_code_frame = tk.Frame(self.customer_info_frame, bg=self.background_color)
+        self.vip_code_frame.pack(side="bottom",fill="both", expand=True, padx=10)
+        self.vip_code_label = tk.Label(self.vip_code_frame, text=LANGUAGE[self.current_language]["vip code"], font=self.default_font, bg=self.background_color)
+        self.vip_code_label.pack(side="left", anchor="e")
+        self.vip_code = tk.Label(self.vip_code_frame, font=self.default_font, bg=self.background_color)
+        self.vip_code.pack(side="right", anchor="e")
 
         self.add_to_balance_button = tk.Button(self.shopping_cart_widget.payment_frame, text=LANGUAGE[self.current_language]["add to balance"], fg="white", font=self.header_font, bg=self.primary_color)
         self.add_to_balance_button.pack(fill="x", pady=10)
+
+        self.get_vip_code_button = tk.Button(self.shopping_cart_widget.payment_frame, text=LANGUAGE[self.current_language]["get vip code"], fg="white", font=self.header_font, bg=self.primary_color)
+        self.get_vip_code_button.pack(fill="x", pady=10)
 
     def update_vip_language(self, current_lgn):
         """Update UI text based on selected language"""

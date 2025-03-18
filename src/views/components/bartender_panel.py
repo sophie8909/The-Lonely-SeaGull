@@ -75,15 +75,15 @@ class TableFrame(tk.Frame):
             amount.set("1")
             amount.grid(row=row+1, column=1, padx=5)
 
-            price = tk.Entry(headers_frame, bg='lightgray')
+            price = tk.Entry(headers_frame, bg='lightgray', width=5)
             price.insert(0, f"{data['price']:.2f}")
             price.grid(row=row+1, column=2, padx=5, sticky="ew")
 
-            reason = ttk.Combobox(headers_frame, values=["Normal", "On House", "Compensation"], state='readonly')
+            reason = ttk.Combobox(headers_frame, values=["Normal", "On House", "Compensation"], state='readonly', width=10)
             reason.set(data['reason'])
             reason.grid(row=row+1, column=3, padx=5, sticky="ew")
 
-            comment = tk.Entry(headers_frame, bg='lightgray')
+            comment = tk.Entry(headers_frame, bg='lightgray', width=10)
             comment.insert(0, data['comment'])
             comment.grid(row=row+1, column=4, padx=5, sticky="ew")
 
@@ -123,8 +123,8 @@ class TableFrame(tk.Frame):
 
 
 class BartenderPanel(BaseView):
-    def __init__(self, parent, current_language, current_resolution):
-        super().__init__(parent, current_language, current_resolution)
+    def __init__(self, parent, current_language, current_resolution, *args, **kwargs):
+        super().__init__(parent, current_language, current_resolution, *args, **kwargs)
 
         self.current_language = current_language
 

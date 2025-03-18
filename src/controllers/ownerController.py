@@ -196,6 +196,6 @@ class OwnerController(BaseController):
 
     def order_refill_click(self):
         product = self.frame.owner_panel.item.product
-        product["Stock"] = str(int(product["Stock"]+10))
+        product["Stock"] = str(int(product["Stock"])+10)
         self.update_menu()
         self.frame.owner_panel.item.update(product)

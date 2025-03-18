@@ -1,7 +1,7 @@
 from controllers.custormerController import CustomerController
 from views.vipView import VIPView
 from models.menu import menu
-
+from random import randint
 
 class VIPController(CustomerController):
     def __init__(self, tk_root, main_controller, current_language, current_resolution):
@@ -17,6 +17,7 @@ class VIPController(CustomerController):
         self.frame.name_label.config(text=self.main_controller.current_user.first_name + " " + self.main_controller.current_user.last_name)
         self.frame.vip_balance_amount_label.config(text=self.main_controller.current_user.balance)
         self.frame.add_to_balance_button.config(command=self.add_to_balance)
+        self.frame.get_vip_code_button.config(command=self.get_vip_code)
 
     def add_to_balance(self):
         self.main_controller.current_user.balance += 100
@@ -25,6 +26,10 @@ class VIPController(CustomerController):
     def load_menu(self):
         self.menu_list = menu
 
+    def get_vip_code(self):
+        self.main_controller.current_user.balance -= 100
+        self.frame.vip_balance_amount_label.config(text=self.main_controller.current_user.balance)
+        self.frame.vip_code.config(text=randint(1000, 9999))
 
 if __name__ == "__main__":
     import tkinter as tk

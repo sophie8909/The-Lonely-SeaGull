@@ -22,6 +22,11 @@ class ProductCardManager(ProductCard):
                                        fg=primary_color)
         self.left_num_label.pack(side="left", fill="both", expand=True)
 
+
+        if int(product["Stock"]) <= 5:
+            self.num_label.config(fg="red")
+            self.left_num_label.config(fg="red")
+
         self.add_to_cart_btn.bind("<Button-1>", self.select_item_click)
         
         # if product["Hidden"] add a label to show it is hidden

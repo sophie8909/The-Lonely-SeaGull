@@ -84,22 +84,23 @@ class CustomerController(BaseController):
     def search_product(self):
         print("Searching for product")
         search_term = self.frame.search_entry.get()
-        if self.current_menu == LANGUAGE[self.current_language]["food"]:
-            products_list = [product for product in self.menu_list if search_term.lower() in product["Name"].lower()]
-        else:
-            products_list = []
-            if self.beverage_filter_data["Beer"]["active"]:
-                for product in self.menu_list:
-                    if search_term.lower() in product["Name"].lower():
-                        products_list.append(product)
-            if self.beverage_filter_data["Wine"]["active"]:
-                for product in self.menu_list:
-                    if search_term.lower() in product["Name"].lower():
-                        products_list.append(product)
-            if self.beverage_filter_data["Cocktail"]["active"]:
-                for product in self.menu_list:
-                    if search_term.lower() in product["Name"].lower():
-                        products_list.append(product)
+        products_list = [product for product in self.menu_list if search_term.lower() in product["Name"].lower() and not product["Hidden"] and int(product["Stock"]) > 0]
+        # if self.current_menu == LANGUAGE[self.current_language]["food"]:
+        #     products_list = [product for product in self.menu_list if search_term.lower() in product["Name"].lower()]
+        # else:
+        #     products_list = []
+        #     if self.beverage_filter_data["Beer"]["active"]:
+        #         for product in self.menu_list:
+        #             if search_term.lower() in product["Name"].lower():
+        #                 products_list.append(product)
+        #     if self.beverage_filter_data["Wine"]["active"]:
+        #         for product in self.menu_list:
+        #             if search_term.lower() in product["Name"].lower():
+        #                 products_list.append(product)
+        #     if self.beverage_filter_data["Cocktail"]["active"]:
+        #         for product in self.menu_list:
+        #             if search_term.lower() in product["Name"].lower():
+        #                 products_list.append(product)
         self.frame.update_menu(products_list, self.add_cart_item)
 
     def update_cart(self):
@@ -238,22 +239,22 @@ class CustomerController(BaseController):
 
         if self.current_menu == LANGUAGE[self.current_language]["food"]:
             for product in self.menu_list:
-                if product["Tag"] == "food" and not product["Hidden"]:
+                if product["Tag"] == "food" and not product["Hidden"] and int(product["Stock"]) > 0:
                     allergens = product["Allergens"]
                     if all([self.allergens_dict[allergen]["active"] for allergen in allergens]):
                         products_list.append(product)
         else:
             if self.beverage_filter_data["Beer"]["active"]:
                 for product in self.menu_list:
-                    if product["Tag"] == "beer" and not product["Hidden"]:
+                    if product["Tag"] == "beer" and not product["Hidden"] and int(product["Stock"]) > 0:
                         products_list.append(product)
             if self.beverage_filter_data["Wine"]["active"]:
                 for product in self.menu_list:
-                    if product["Tag"] == "wine" and not product["Hidden"]:
+                    if product["Tag"] == "wine" and not product["Hidden"] and int(product["Stock"]) > 0:
                         products_list.append(product)
             if self.beverage_filter_data["Cocktail"]["active"]:
                 for product in self.menu_list:
-                    if product["Tag"] == "cocktail" and not product["Hidden"]:
+                    if product["Tag"] == "cocktail" and not product["Hidden"] and int(product["Stock"]) > 0:
                         products_list.append(product)
 
         self.frame.update_menu(products_list, self.add_cart_item)

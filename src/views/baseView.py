@@ -4,8 +4,8 @@ from views.style import style
 
 
 class BaseView(tk.Frame):
-    def __init__(self, parent, current_language, current_resolution):
-        super().__init__(parent, bg=style["background_color"])
+    def __init__(self, parent, current_language, current_resolution, *args, **kwargs):
+        super().__init__(parent, bg=style["background_color"], *args, **kwargs)
 
         self.current_language = current_language
         self.current_resolution = current_resolution

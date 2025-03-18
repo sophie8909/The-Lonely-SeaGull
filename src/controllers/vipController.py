@@ -6,7 +6,6 @@ from models.menu import menu
 class VIPController(CustomerController):
     def __init__(self, tk_root, main_controller, current_language, current_resolution):
         super().__init__(tk_root, main_controller, current_language, current_resolution)
-        print("VIP Controller")
 
     def create_vip_widgets(self, current_language, current_resolution):
         self.frame = VIPView(self.tk_root, current_language, current_resolution)

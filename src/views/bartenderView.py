@@ -1,14 +1,13 @@
 import tkinter as tk
 from views.components.product_card_manager import ProductCardManager
-from views.components.bartender_panel import BartenderPanel
+from views.components.bartender_panel import BartenderPanel, Notification
 from views.components.settings import Settings
 from views.baseView import BaseView
-from tkinter import messagebox
 from models.language import LANGUAGE
 
 
 class BartenderView(BaseView):
-    def __init__(self, parent, current_language, current_resolution, controller=None):
+    def __init__(self, parent, current_language, current_resolution, controller):
         super().__init__(parent, current_language, current_resolution)
         self.controller = controller  
         self.create_widgets()
@@ -25,8 +24,8 @@ class BartenderView(BaseView):
         self.content_frame.pack(side="left", fill="both", expand=True)
 
 
-        self.search_entry_name = tk.StringVar()
         # --- Search Box ---
+        self.search_entry_name = tk.StringVar()
         self.search_frame = tk.Frame(self.content_frame, bg=self.background_color, height=45)
         self.search_frame.pack(fill="x", pady=10)
 
@@ -56,6 +55,7 @@ class BartenderView(BaseView):
         # Filter buttons frame
         self.filter_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
         self.filter_frame.pack(fill="x", pady=10)
+
 
         # --- Product grid with scrollbar ---
         # Create a frame to hold canvas and scrollbar
@@ -94,8 +94,8 @@ class BartenderView(BaseView):
         self.product_canvas.bind_all("<MouseWheel>", _on_mouse_wheel)
         self.product_canvas.bind_all("<Button-4>", lambda e: self.product_canvas.yview_scroll(-1, "units"))  # For Linux
         self.product_canvas.bind_all("<Button-5>", lambda e: self.product_canvas.yview_scroll(1, "units"))   # For Linux
-
         # --- End of product grid with scrollbar ---
+
 
         # middle frame
         self.middle_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)
@@ -108,9 +108,8 @@ class BartenderView(BaseView):
         self.detail_frame = tk.Frame(self.middle_frame, bg=self.background_color, padx=10, pady=10)
         self.detail_frame.pack(side="top", fill="both", expand=True)
 
-        
 
-        # left side of the main frame
+        # right side of the main frame
         self.right_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)
         self.right_frame.pack(side="right", fill="both", expand=True)
 
@@ -121,7 +120,22 @@ class BartenderView(BaseView):
         self.bartender_panel = BartenderPanel(self.right_frame, self.current_language, self.current_resolution)
         self.bartender_panel.pack(fill="both", expand=True)
 
-    def update_menu(self, products, select_item_callback=None):
+    def update_bartender_language(self, current_lgn):
+        """Update UI text based on selected language"""
+        self.settings_widget.language_label.config(text=LANGUAGE[current_lgn]["language"])
+        self.settings_widget.res_label.config(text=LANGUAGE[current_lgn]["resolution"])
+        self.settings_widget.logout_button.config(text=LANGUAGE[current_lgn]["logout"])
+        self.detail_label.config(text=LANGUAGE[current_lgn]["information"])
+        self.food_button.config(text=LANGUAGE[current_lgn]["food"])
+        self.beverages_button.config(text=LANGUAGE[current_lgn]["beverages"])
+        self.search_entry_name.set(LANGUAGE[current_lgn]["search"])
+        self.controller.notification.message.config(text=LANGUAGE[current_lgn]["panic text"])
+        self.bartender_panel.welcome_label.config(text=LANGUAGE[current_lgn]["welcome"])
+        self.bartender_panel.panic_button.config(text=LANGUAGE[current_lgn]["panic"])
+        self.bartender_panel.single_payment_button.config(text=LANGUAGE[current_lgn]["single payment"])
+        self.bartender_panel.group_payment_button.config(text=LANGUAGE[current_lgn]["group payment"])
+
+    def update_menu(self, products, current_lgn, select_item_callback=None):
         for widget in self.product_frame.winfo_children():
             widget.destroy()
 
@@ -134,7 +148,7 @@ class BartenderView(BaseView):
             product_widget = ProductCardManager(self.product_frame, row, col,
                                          self.background_color, self.primary_color, self.default_font,
                                          product, self.detail_frame,
-                                         self.current_language,
+                                         current_lgn,
                                          click_callback=select_item_callback)
             self.products_widget.append(product_widget)
             col += 1
@@ -142,8 +156,7 @@ class BartenderView(BaseView):
                 col = 0
                 row += 1
 
-
-    def update_filter(self, filter_data):
+    def update_filter(self, filter_data, current_lgn):
         """Update the filter buttons based on the filter data"""
         # Clear existing filter buttons
         for widget in self.filter_frame.winfo_children():
@@ -170,8 +183,7 @@ class BartenderView(BaseView):
             icon_label = tk.Label(btn_frame, text=filter_data[filter_name]["icon"], fg=icon_color, bg=btn_bg)
             icon_label.pack(side="left", padx=2)
 
-            filter_button = tk.Button(btn_frame, text=filter_data[filter_name]["text"],
-                                      # LANGUAGE[self.current_language][filter_name],
+            filter_button = tk.Button(btn_frame, text=LANGUAGE[current_lgn][filter_name],
                                       bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
                                       padx=10, pady=5, font=self.default_font)
             filter_button.pack(side="left")
@@ -181,13 +193,3 @@ class BartenderView(BaseView):
             if col >= self.filter_col_num:
                 col = 0
                 row += 1
-
-    def search_product(self):
-        search_text = self.frame.search_entry.get()
-        print("Searching for", search_text)
-        if self.current_menu == LANGUAGE[self.current_language]["food"]:
-            products_list = [product for product in self.food_list if search_text.lower() in product["Name"].lower()]
-        else:
-            products_list = [product for product in self.beer_list + self.wine_list + self.cocktail_list if search_text.lower() in product["Name"].lower()]
-        self.frame.update_menu(products_list, self.select_item_click)
-        

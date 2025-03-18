@@ -6,7 +6,6 @@ from controllers.base import BaseController
 from tkinter import messagebox
 
 
-
 class LoginController(BaseController):
     def __init__(self, tk_root, main_controller, current_language, current_resolution):
         super().__init__(tk_root, current_language, current_resolution)
@@ -20,21 +19,17 @@ class LoginController(BaseController):
         self.frame = None
         self.main_controller = main_controller
 
-
     def create_login_widgets(self, current_language, current_resolution):
         self.frame = LoginView(self.tk_root, current_language, current_resolution)
         self.frame.pack(expand=True, fill='both')
         self.set_up_bind()
 
-
     def hide_login_widgets(self):
         self.frame.settings_widget.logout_button.grid_forget()
-
 
     def destroy_widgets(self):
         self.frame.destroy()
         self.frame = None
-
 
     def set_up_bind(self):
         self.frame.login_button.bind("<Button-1>", self.login_button_click)
@@ -42,7 +37,6 @@ class LoginController(BaseController):
         self.frame.guest_button.bind("<Button-1>", self.guest_button_click)
         self.frame.settings_widget.login_combo.bind("<<ComboboxSelected>>", self.main_controller.update_language)
         self.frame.settings_widget.res_combo.bind("<<ComboboxSelected>>", self.main_controller.change_res)
-
 
     def login_button_click(self, event):
         print("Login button clicked")
@@ -65,7 +59,6 @@ class LoginController(BaseController):
     def guest_button_click(self, event):
         print("Continue as guest button")
         self.main_controller.switch_controller(self.main_controller.customer_controller)
-
 
     def login(self, username, password):
         user = self.users.get_user(username)

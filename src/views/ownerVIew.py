@@ -3,7 +3,6 @@ from views.components.product_card_manager import ProductCardManager
 from views.components.owner_panel import OwnerPanel
 from views.components.settings import Settings
 from views.baseView import BaseView
-from tkinter import messagebox
 from models.language import LANGUAGE
 
 
@@ -121,8 +120,22 @@ class OwnerView(BaseView):
         self.owner_panel = OwnerPanel(self.right_frame, self.current_language, self.current_resolution)
         self.owner_panel.pack(fill="both", expand=True)
 
+    def update_owner_language(self, current_lgn):
+        """Update UI text based on selected language"""
+        self.settings_widget.language_label.config(text=LANGUAGE[current_lgn]["language"])
+        self.settings_widget.res_label.config(text=LANGUAGE[current_lgn]["resolution"])
+        self.settings_widget.logout_button.config(text=LANGUAGE[current_lgn]["logout"])
+        self.detail_label.config(text=LANGUAGE[current_lgn]["information"])
+        self.food_button.config(text=LANGUAGE[current_lgn]["food"])
+        self.beverages_button.config(text=LANGUAGE[current_lgn]["beverages"])
+        self.search_entry_name.set(LANGUAGE[current_lgn]["search"])
+        self.owner_panel.welcome_label.config(text=LANGUAGE[current_lgn]["welcome"])
+        self.owner_panel.add_menu_item_button.config(text=LANGUAGE[current_lgn]["add item to the menu"])
+        self.owner_panel.remove_menu_item_button.config(text=LANGUAGE[current_lgn]["remove item from menu"])
+        self.owner_panel.hide_menu_item_button.config(text=LANGUAGE[current_lgn]["hide item"])
+        self.owner_panel.order_refill_button.config(text=LANGUAGE[current_lgn]["order refill"])
 
-    def update_menu(self, products, select_item_callback=None):
+    def update_menu(self, products, current_lgn, select_item_callback=None):
         for widget in self.product_frame.winfo_children():
             widget.destroy()
 
@@ -135,7 +148,7 @@ class OwnerView(BaseView):
             product_widget = ProductCardManager(self.product_frame, row, col,
                                          self.background_color, self.primary_color, self.default_font,
                                          product, self.detail_frame,
-                                         self.current_language,
+                                         current_lgn,
                                          click_callback=select_item_callback)
             self.products_widget.append(product_widget)
             col += 1
@@ -143,8 +156,7 @@ class OwnerView(BaseView):
                 col = 0
                 row += 1
 
-
-    def update_filter(self, filter_data):
+    def update_filter(self, filter_data, current_lgn):
         """Update the filter buttons based on the filter data"""
         # Clear existing filter buttons
         for widget in self.filter_frame.winfo_children():
@@ -171,8 +183,7 @@ class OwnerView(BaseView):
             icon_label = tk.Label(btn_frame, text=filter_data[filter_name]["icon"], fg=icon_color, bg=btn_bg)
             icon_label.pack(side="left", padx=2)
 
-            filter_button = tk.Button(btn_frame, text=filter_data[filter_name]["text"],
-                                      # LANGUAGE[self.current_language][filter_name],
+            filter_button = tk.Button(btn_frame, text=LANGUAGE[current_lgn][filter_name],
                                       bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
                                       padx=10, pady=5, font=self.default_font)
             filter_button.pack(side="left")
@@ -182,4 +193,3 @@ class OwnerView(BaseView):
             if col >= self.filter_col_num:
                 col = 0
                 row += 1
-

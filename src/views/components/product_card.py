@@ -1,13 +1,4 @@
-if __name__ == "__main__":
-    import sys
-    sys.path.append(sys.path[0]+"/../..")
-
 import tkinter as tk
-from tkinter import font, ttk
-
-from models.language import LANGUAGE
-
-
 
 
 class Dragable:
@@ -19,10 +10,8 @@ class Dragable:
         self.ghost = None
         self._drag_data = {"x": 0, "y": 0}
 
-
     def set_anchor_widget(self, widget):
         self.anchor_widget = widget
-
 
     def add_draggable(self, widgets):
         for widget in widgets:
@@ -31,7 +20,6 @@ class Dragable:
             widget.bind("<ButtonRelease-1>", self.stop_drag)
             self.widgets.append(widget)
 
-
     def start_drag(self, event):
         self._drag_data["x"] = event.x_root
         self._drag_data["y"] = event.y_root
@@ -39,21 +27,15 @@ class Dragable:
             self.ghost = self.create_ghost_card()
             self.ghost.place(x=self.anchor_widget.winfo_rootx(), y=self.anchor_widget.winfo_rooty())
 
-
     def do_drag(self, event):
         if self.ghost:
             dx = event.x_root - self._drag_data["x"]
             dy = event.y_root - self._drag_data["y"]
             if abs(dx) < self._drag_threshold and abs(dy) < self._drag_threshold:
                 return
-            # new_x = self.anchor_widget.winfo_x() - self.anchor_widget.master.winfo_x() + dx
-            # new_y = self.anchor_widget.winfo_y() - self.anchor_widget.master.winfo_y() + dy
-            # new_x = self.anchor_widget.winfo_x()+ dx
-            # new_y = self.anchor_widget.winfo_y()+ dy
             new_x = self.anchor_widget.winfo_rootx() + dx
             new_y = self.anchor_widget.winfo_rooty() + dy
             self.ghost.place(x=new_x, y=new_y)
-
 
     def stop_drag(self, event):
         if self.ghost:
@@ -68,7 +50,6 @@ class Dragable:
                 
             below_widget.on_drop(self.widget)
 
-# Class used for the language and display size settings, to change between them
 
 class ProductCard(Dragable, tk.Frame):
     drag_threshold = 20
@@ -129,9 +110,6 @@ class ProductCard(Dragable, tk.Frame):
 
         self.set_anchor_widget(self.product_card)
 
-
-
-    
     def add_to_cart_click(self, event):
         if self.click_callback:
             self.click_callback(self)
@@ -139,7 +117,6 @@ class ProductCard(Dragable, tk.Frame):
     def info_click(self, event):
         print(self.product)
         self.show_item_detail(self.product)
-
 
     def create_ghost_card(self):
         root = self.master

@@ -58,8 +58,17 @@ class LoginView(BaseView):
         self.guest_button = ttk.Button(self.btn_frame, text=LANGUAGE[self.current_language]["guest_btn"], style="BTN.TButton")
         self.guest_button.pack(side="right")
 
-
         # Added the view for language and display size settings
         self.settings_widget = Settings(self, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
         self.settings_widget.pack(side="top", anchor="e")
 
+    def update_login_language(self, current_lgn):
+        """Update UI text based on selected language"""
+        self.settings_widget.language_label.config(text=LANGUAGE[current_lgn]["language"])
+        self.settings_widget.res_label.config(text=LANGUAGE[current_lgn]["resolution"])
+        self.settings_widget.logout_button.config(text=LANGUAGE[current_lgn]["logout"])
+        self.username_label.config(text=LANGUAGE[current_lgn]["username"])
+        self.password_label.config(text=LANGUAGE[current_lgn]["password"])
+        self.login_button.config(text=LANGUAGE[current_lgn]["login"])
+        self.guest_button.config(text=LANGUAGE[current_lgn]["guest_btn"])
+        self.login_welcome_label.config(text=LANGUAGE[current_lgn]["login_welcome"])

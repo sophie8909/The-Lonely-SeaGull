@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import font, ttk
+from tkinter import font
 
 from models.language import LANGUAGE
 
@@ -89,7 +89,6 @@ class ShoppingCart(tk.Frame):
         self.total_price_label = tk.Label(self.total_frame, text="", bg=self.background_color, font=self.header_font)
         self.total_price_label.pack(fill="x", pady=0, side="right", anchor="center")
 
-
     def _add_person(self, person_frame, person_id, current_lgn, total=0):
         person_container = tk.Frame(person_frame, bg=self.light_gray, pady=5, padx=10)
         person_container.pack(fill="x", pady=10)
@@ -111,7 +110,6 @@ class ShoppingCart(tk.Frame):
         total_label.bind("<Button-1>", lambda event: self.current_person_command(person_id))
         self.person_top.append(person_container)
 
-
     def _add_item(self, item_name, price, amount=1):
         item_frame = tk.Frame(self.items_frame, bg=self.background_color, pady=0, padx=0)
         item_frame.pack(fill="x", side="top")
@@ -120,7 +118,6 @@ class ShoppingCart(tk.Frame):
         item_price_label = tk.Label(item_frame, text=f"{amount}x {price} = {amount*price} SEK", bg=self.background_color, font=("Inter", 12))
         item_price_label.pack(side="right")
         self.items.append(item_frame)
-
 
     def clear_cart(self):
         for person in self.person_top:
@@ -132,7 +129,6 @@ class ShoppingCart(tk.Frame):
         self.person_top = []
         self.person_bottom = []
         self.items = []
-
 
     def update_cart(self, current_person, person_count, shopping_cart, current_lgn):
         self.clear_cart()
@@ -148,44 +144,11 @@ class ShoppingCart(tk.Frame):
             self._add_item(item["name"], item["price"], item["amount"])
         self.total_price_label.config(text=f" {final_total} SEK")
 
-    # def set_person(self, current_person):
-    #     for i in range(len(self.person_top)):
-    #         if i <= current_person:
-    #             self.person_top[i].pack(fill="x", pady=10)
-    #             self.person_bottom[i].pack_forget()
-    #         else:
-    #             self.person_top[i].pack_forget()
-    #             self.person_bottom[i].pack(fill="x", pady=10)
-    #     if self.current_person < len(self.items):
-    #         for item in self.items[self.current_person]:
-    #             print(item.children['!label'].cget("text"))
-    #             item.pack_forget()
-    #     self.current_person = current_person
-    #     for item in self.items[self.current_person]:
-    #         item.pack(fill="x", side="top")
-
-    # def remove_person(self, i):
-    #     self.person_top[i].destroy()
-    #     self.person_top.pop(i)
-    #     for i, person in enumerate(self.person_top):
-    #         person.children["!label"].config(text=f"Person {i+1}")
-    #     self.person_bottom[i].destroy()
-    #     self.person_bottom.pop(i)
-    #     for i, person in enumerate(self.person_bottom):
-    #         person.children["!label"].config(text=f"Person {i+1}")
-    #     for item in self.items[i]:
-    #         item.destroy()
-    #     self.items.pop(i)
-    #     self.totals.pop(i)
-
-
     def set_current_person_command(self, set_person_command):
         self.current_person_command = set_person_command
 
-
     def set_remove_person_command(self, remove_person_command):
         self.remove_person_command = remove_person_command
-
 
     def set_on_drop(self, on_drop):
         self.on_drop = on_drop
@@ -193,7 +156,6 @@ class ShoppingCart(tk.Frame):
         self.person_frame_top.on_drop = on_drop
         self.items_frame.on_drop = on_drop
         self.person_frame_bottom.on_drop = on_drop
-
 
     # pop up window for confirm order
     def double_check_confirm(self, language):
@@ -221,12 +183,9 @@ class ShoppingCart(tk.Frame):
         self.confirm_no_btn = tk.Button(self.confirm_window, text=LANGUAGE[language]["no"], bg=self.primary_color, fg="white", font=("Inter", 12))
         self.confirm_no_btn.pack(side="right", padx=20)
 
-
     def confirm_window_close(self):
         self.confirm_window.destroy()
-
 
     def prevent_closing(self):
         """ Prevent closing the confirmation window without an explicit choice """
         pass  # Do nothing, forcing user interaction
-

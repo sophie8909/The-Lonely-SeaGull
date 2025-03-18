@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 from typing import List
-from copy import deepcopy
-import tkinter as tk
 from controllers.base import BaseController
 from views.ownerVIew import OwnerView
 
@@ -32,9 +30,6 @@ class OwnerController(BaseController):
 
         self.current_menu = LANGUAGE[self.current_language]["beverages"]
 
-
-
-
     def owner_view_setup(self):
         # Left side
         self.frame.search_button.config(command=self.search_product)
@@ -42,24 +37,26 @@ class OwnerController(BaseController):
         self.frame.food_button.config(command=lambda: self.switch_menu(LANGUAGE[self.current_language]["food"]))
 
         # Right side
+        self.frame.owner_panel.name_label.config(text=self.main_controller.current_user.first_name + " " + self.main_controller.current_user.last_name)
         self.frame.owner_panel.item.update_btn.config(command=self.update_item_info)
         self.frame.owner_panel.add_menu_item_button.config(command=self.add_item_to_menu_click)
         self.frame.owner_panel.remove_menu_item_button.config(command=self.remove_item_from_menu_click)
         self.frame.owner_panel.hide_menu_item_button.config(command=self.hide_item_click)
         self.frame.owner_panel.order_refill_button.config(command=self.order_refill_click)
 
+        self.tk_root.bind("<Return>", lambda event: self.search_product())
+        self.frame.settings_widget.logout_button.bind("<Button-1>", self.main_controller.logout_button_click)
+        self.frame.settings_widget.login_combo.bind("<<ComboboxSelected>>", self.main_controller.update_language)
+        self.frame.settings_widget.res_combo.bind("<<ComboboxSelected>>", self.main_controller.change_res)
 
         self.load_menu()
         self.update_menu()
-
-        
-
-    
 
     def create_owner_widgets(self, current_language, current_resolution):
         print("Create owner widgets")
         self.frame = OwnerView(self.tk_root, current_language, current_resolution)
         self.frame.pack(fill="both", expand=True)
+
         self.owner_view_setup()
 
     def hide_widgets(self):
@@ -71,8 +68,6 @@ class OwnerController(BaseController):
 
     def load_menu(self):
         self.menu_list = menu_data
-
-   
 
     # when click show item detail on the right side and can modify the information
     def select_item_click(self, product_card):
@@ -88,36 +83,29 @@ class OwnerController(BaseController):
             self.beverage_filter_data[filter_text]["active"] = not self.beverage_filter_data[filter_text]["active"]
         self.update_menu()
 
-
     def search_product(self):
         search_text = self.frame.search_entry.get()
         print("Searching for", search_text)
         if self.current_menu == LANGUAGE[self.current_language]["food"]:
-            products_list = [product for product in self.food_list if search_text.lower() in product["Name"].lower()]
+            products_list = [product for product in self.menu_list if search_text.lower() in product["Name"].lower()]
         else:
-            products_list = [product for product in self.beer_list + self.wine_list + self.cocktail_list if search_text.lower() in product["Name"].lower()]
-        self.frame.update_menu(products_list, self.select_item_click)
+            products_list = [product for product in self.menu_list if search_text.lower() in product["Name"].lower()]
 
-    def offer_discount(self):
-        """Offer discount logic here"""
-        print("Offer discount - logic to implement")
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
+        self.frame.update_menu(products_list, language_window, self.select_item_click)
 
-    def panic_alert(self):
-        """Handle panic"""
-        print("Panic button pressed!")
-
-        
     def switch_menu(self, menu):
         self.current_menu = menu
         self.update_menu()
 
-
     def update_menu(self):
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
+
         # Filter data
         if self.current_menu == LANGUAGE[self.current_language]["food"]:
-            self.frame.update_filter(self.allergens_dict)
+            self.frame.update_filter(self.allergens_dict, language_window)
         else:
-            self.frame.update_filter(self.beverage_filter_data)
+            self.frame.update_filter(self.beverage_filter_data, language_window)
 
         # Filter products based on the active filters
         products_list = []
@@ -143,11 +131,12 @@ class OwnerController(BaseController):
                     if product["Tag"] == "cocktail":
                         products_list.append(product)
 
-        self.frame.update_menu(products_list, self.select_item_click)
+        self.frame.update_menu(products_list, language_window, self.select_item_click)
         for filter_btn in self.frame.filter_buttons:
             filter_text = filter_btn.cget("text")  # 立即存下當前的文本
-            filter_btn.config(command=lambda text=filter_text: self.switch_filter(text))
-
+            # not to complicate the logic of having too many duplicates in filter's dictionary
+            eng_filter_text = [key for key, value in LANGUAGE[language_window].items() if value == filter_text]
+            filter_btn.config(command=lambda text=eng_filter_text[0]: self.switch_filter(text))
 
     def update_item_info(self):
         """Update item in menu_list and refresh the menu"""
@@ -179,20 +168,18 @@ class OwnerController(BaseController):
         # Refresh the whole menu list (left side)
         self.update_menu()
 
-    
     def add_item_to_menu_click(self):
         self.frame.owner_panel.item.product = None
         self.frame.owner_panel.item.set_add_active(True)
 
     def remove_item_from_menu_click(self):
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         self.frame.owner_panel.pop_up_window(
-            title=LANGUAGE[self.current_language]["remove_item"],
-            message="{}\n{}".format(self.frame.owner_panel.item.product["Name"], LANGUAGE[self.current_language]["remove_item_message"]),
-            confirm_text=LANGUAGE[self.current_language]["remove"],
+            title=LANGUAGE[language_window]["remove_item"],
+            message="{}\n{}".format(self.frame.owner_panel.item.product["Name"], LANGUAGE[language_window]["remove_item_message"]),
+            confirm_text=LANGUAGE[language_window]["remove"],
             confirm_command=self.remove_item
         )
-
-
 
     def remove_item(self):
         product = self.frame.owner_panel.item.product

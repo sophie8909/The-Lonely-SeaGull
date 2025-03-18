@@ -1,6 +1,3 @@
-if __name__ == "__main__":
-    import sys
-    sys.path.append(sys.path[0]+"/../..")
 import tkinter as tk
 from tkinter import ttk
 from models.language import LANGUAGE
@@ -23,14 +20,14 @@ class Notification(tk.Frame):
         self.cur_x = self.master.winfo_width()
         self.x = self.cur_x - (self.width + right_offset)
 
-        message = tk.Label(self, text=text, font=font, bg=bg, fg="black")
-        message.pack(side="left", padx=5)
+        self.message = tk.Label(self, text=LANGUAGE[text]["panic text"], font=font, bg=bg, fg="black")
+        self.message.pack(side="left", padx=5)
 
-        close_btn = tk.Button(self, text="X", bg=bg, relief="flat", command=self.hide_animation, cursor="hand2")
-        close_btn.pack(side="right", padx=5)
+        self.close_btn = tk.Button(self, text="X", bg=bg, relief="flat", command=self.hide_animation, cursor="hand2")
+        self.close_btn.pack(side="right", padx=5)
 
-        print(self.cur_x)
         self.place(x=self.cur_x, y=y_pos)
+        self.after(5000, self.hide_animation)
 
     def show_animation(self):
         if self.cur_x > self.x:
@@ -38,6 +35,7 @@ class Notification(tk.Frame):
             self.place(x=self.cur_x, y=self.y_pos)
 
             self.after(1, self.show_animation)
+            self.after(5000, self.hide_animation)
 
     def hide_animation(self):
         if self.cur_x < self.master.winfo_width():
@@ -45,6 +43,7 @@ class Notification(tk.Frame):
             self.place(x=self.cur_x, y=self.y_pos)
 
             self.after(1, self.hide_animation)
+
 
 class TableFrame(tk.Frame):
     def __init__(self, parent, table_number, table_data=[], total=0, value_changed_command=None, remove_command=None, focus_command=None, **kwargs):
@@ -69,14 +68,6 @@ class TableFrame(tk.Frame):
 
         self.items = []
         for row, data in enumerate(table_data):
-            # Use grid for each item row within its own frame
-            # item_frame = tk.Frame(self, bg='lightgray')
-            # item_frame.pack(fill='x', pady=2)
-            # item_frame.grid_columnconfigure(0, weight=1)
-            # item_frame.grid_columnconfigure(2, weight=1)
-            # item_frame.grid_columnconfigure(3, weight=1)
-            # item_frame.grid_columnconfigure(4, weight=1)
-
             item = tk.Label(headers_frame, text=data['item'], bg='lightgray')
             item.grid(row=row+1, column=0, padx=5, sticky="ew")
 
@@ -142,27 +133,24 @@ class BartenderPanel(BaseView):
         self.value_changed_command = None
         
         # User Info and Panic Button in Horizontal Layout
-        user_panic_frame = tk.Frame(self)
+        user_panic_frame = tk.Frame(self, bg=self.background_color)
         user_panic_frame.pack(fill='x', pady=5)
         
         # name frame
         self.name_frame = tk.Frame(user_panic_frame, bg=self.background_color)
-        self.name_frame.pack(side="left",fill="both", expand=True, padx=10)
+        self.name_frame.pack(side="left",fill="both", expand=True, padx=0)
         self.welcome_label = tk.Label(self.name_frame, text=LANGUAGE[self.current_language]["welcome"], font=self.default_font, bg=self.background_color)
         self.welcome_label.pack(side="left", anchor="e")
         self.name_label = tk.Label(self.name_frame, font=self.default_font, bg=self.background_color)
         self.name_label.pack(side="left", anchor="e")
 
-
-        
-        self.panic_button = tk.Button(user_panic_frame, text="Panic", bg="red", fg="white", font=("Arial", 12, "bold"))
+        self.panic_button = tk.Button(user_panic_frame, text=LANGUAGE[self.current_language]["panic"], bg="red", fg="white", font=("Arial", 12, "bold"))
         self.panic_button.pack(side='right', expand=True, fill='both')
         
         self.table_frames = []
         self.table_frame = tk.Frame(self, bg='white')
         self.table_frame.pack(fill='both', expand=True)
-        
-        
+
         # Frame for holding 4 action buttons at corners
         self.button_frame = tk.Frame(self)
         self.button_frame.pack(side="bottom", fill="both", expand=True)
@@ -192,7 +180,6 @@ class BartenderPanel(BaseView):
         )
         self.group_payment_button.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
 
-
     def _add_table(self, table_number, table_data=[], total=0):
         table_frame = TableFrame(self.table_frame, table_number, table_data, total, self.value_changed_command, self.remove_command, self.focus_changed)
         table_frame.pack(fill='x', pady=10)
@@ -221,7 +208,6 @@ class BartenderPanel(BaseView):
         for i, data in enumerate(tables):
             total = sum([item['amount'] * item['price'] for item in data])
             self.table_frames[i].set_values(data, total)
-
 
     def update_table(self, tables, current_table=0):
         """

@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from datetime import datetime, date
+from datetime import datetime
 from typing import List, Optional
 
 @dataclass
@@ -54,7 +54,7 @@ class ProductSold:
     transaction_id: int
     user_id: int
     product_id: int
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=datetime.now)
 
 @dataclass
 class Payment:
@@ -62,7 +62,7 @@ class Payment:
     user_id: int
     admin_id: int
     amount: float = 0.0
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=datetime.now)
 
 @dataclass
 class VipCustomer(User):
@@ -73,7 +73,7 @@ class Order:
     order_id: int
     user_id: int
     status: str = "pending"  # values: pending, completed, canceled
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=datetime.now)
     order_items: List = field(default_factory=list)
 
 @dataclass

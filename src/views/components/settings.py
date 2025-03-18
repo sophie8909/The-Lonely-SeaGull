@@ -2,8 +2,11 @@ import tkinter as tk
 from tkinter import font, ttk
 
 from models.language import LANGUAGE
+from views.baseView import BaseView
 
-class Settings(tk.Frame):
+
+# Class used for the language and display size settings, to change between them
+class Settings(BaseView):
     def __init__(self, master, background_color, primary_color, default_font, current_language, current_resolution):
         tk.Frame.__init__(self, master)
         self.background_color = background_color

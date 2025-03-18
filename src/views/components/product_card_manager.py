@@ -1,15 +1,9 @@
-if __name__ == "__main__":
-    import sys
-    sys.path.append(sys.path[0]+"/../..")
-
 import tkinter as tk
-from tkinter import font, ttk
 
 from models.language import LANGUAGE
 from views.components.product_card import ProductCard
 
 class ProductCardManager(ProductCard):
-
     def __init__(self, master, row, col, background_color, primary_color, default_font, product, detail_frame, current_language, click_callback=None):
         super().__init__(master, row, col, background_color, primary_color, default_font, product, detail_frame, current_language, click_callback)
         self.product_card.config(height=312)
@@ -39,10 +33,10 @@ class ProductCardManager(ProductCard):
                                          fg=primary_color)
             self.hidden_label.pack(side="bottom", fill="both", expand=True)
 
-
     def select_item_click(self, event):
         if self.click_callback:
             self.click_callback(self)
+
 
 if __name__ == "__main__":
     from views.components.shopping_cart import ShoppingCart

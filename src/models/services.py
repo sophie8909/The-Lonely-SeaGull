@@ -1,9 +1,9 @@
 from typing import List, Optional
 import json
-from models.models import User, Beer, Order, OrderItem, Payment, VipCustomer, ProductSold
+from models.models import User, Beer, Order, Payment, VipCustomer
+
 
 # In-memory store simulation
-
 class UsersService:
     _users: List[User] = []
     _data_path = ''
@@ -155,22 +155,3 @@ class VipCustomersService:
                 cls._vip_customers.pop(idx)
                 return True
         return False
-
-# class BeerSoldService:
-#     _beer_solds: List[BeerSold] = []
-
-#     @classmethod
-#     def get_beer_solds(cls) -> List[BeerSold]:
-#         return cls._beer_solds
-
-#     @classmethod
-#     def add_beer_sold(cls, beer_sold: BeerSold) -> None:
-#         cls._beer_solds.append(beer_sold)
-
-#     @classmethod
-#     def delete_beer_sold(cls, transaction_id: int) -> bool:
-#         for idx, existing in enumerate(cls._beer_solds):
-#             if existing.transaction_id == transaction_id:
-#                 cls._beer_solds.pop(idx)
-#                 return True
-#         return False

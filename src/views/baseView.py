@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, font
+from tkinter import font
 from views.style import style
 
 
@@ -28,4 +28,3 @@ class BaseView(tk.Frame):
             return font.Font(root=root, family=font_info["family"], size=font_info["size"], weight=font_info.get("weight", "normal"))
         except:
             return font.Font(root=root, family=font_info["fallback_family"], size=font_info["size"], weight=font_info.get("weight", "normal"))
-

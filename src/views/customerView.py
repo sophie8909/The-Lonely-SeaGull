@@ -1,15 +1,9 @@
-if __name__ == "__main__":
-    import sys
-    sys.path.append(sys.path[0] + "/../")
-
 import tkinter as tk
-from tkinter import ttk, font
 from models.language import LANGUAGE
 from views.baseView import BaseView
 from views.components.product_card import ProductCard
 from views.components.shopping_cart import ShoppingCart
 from views.components.settings import Settings
-from views.style import style
 
 class CustomerView(BaseView):
     def __init__(self, parent, current_language, current_resolution):
@@ -121,46 +115,23 @@ class CustomerView(BaseView):
         self.shopping_cart_widget = ShoppingCart(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
         self.shopping_cart_widget.pack(fill="both", expand=True, pady=10)
 
-
     def update_cart(self, current_person, person_count, shopping_cart, current_lgn):
         self.shopping_cart_widget.update_cart(current_person, person_count, shopping_cart, current_lgn)
 
-
-    # def add_person(self, remove_command=None):
-    #     self.shopping_cart_widget.add_person(remove_command)
-
-    # def add_item(self, item_name, price, amount=1):
-    #     self.shopping_cart_widget.add_item(item_name, price, amount)
-    
-    # def set_person(self, current_person):
-    #     self.shopping_cart_widget.set_person(current_person)
-
-    # def remove_person(self, i):
-    #     self.shopping_cart_widget.remove_person(i)
-
-
-    def display_menu_item(self, item, row, col):
-        """Display a menu item in the product grid"""
-        item_frame = tk.Frame(self, relief=tk.RAISED, borderwidth=1)
-        item_frame.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
-
-        item_label = tk.Label(item_frame, text=item["name"])
-        item_label.pack()
-
-        item_price = tk.Label(item_frame, text=item["price"])
-        item_price.pack()
-
-        item_button = tk.Button(item_frame, text="Add to Cart")
-        item_button.pack()
-
-
-    # def update_language(self):
-    #     """Update UI text based on selected language"""
-    #     self.add_friends_btn.config(text=LANGUAGE[self.current_language]["add friends"])
-    #     self.confirm_btn.config(text=LANGUAGE[self.current_language]["confirm"])
-    #     self.undo_btn.config(text=LANGUAGE[self.current_language]["undo"])
-    #     self.redo_btn.config(text=LANGUAGE[self.current_language]["redo"])
-
+    def update_customer_language(self, current_lgn):
+        """Update UI text based on selected language"""
+        self.settings_widget.language_label.config(text=LANGUAGE[current_lgn]["language"])
+        self.settings_widget.res_label.config(text=LANGUAGE[current_lgn]["resolution"])
+        self.settings_widget.logout_button.config(text=LANGUAGE[current_lgn]["logout"])
+        self.detail_label.config(text=LANGUAGE[current_lgn]["information"])
+        self.food_button.config(text=LANGUAGE[current_lgn]["food"])
+        self.beverages_button.config(text=LANGUAGE[current_lgn]["beverages"])
+        self.search_entry_name.set(LANGUAGE[current_lgn]["search"])
+        self.shopping_cart_widget.add_friends_btn.config(text=LANGUAGE[current_lgn]["add friends"])
+        self.shopping_cart_widget.confirm_btn.config(text=LANGUAGE[current_lgn]["confirm"])
+        self.shopping_cart_widget.undo_btn.config(text=LANGUAGE[current_lgn]["undo"])
+        self.shopping_cart_widget.redo_btn.config(text=LANGUAGE[current_lgn]["redo"])
+        self.shopping_cart_widget.total_text_label.config(text=LANGUAGE[current_lgn]["total"])
 
     def update_menu(self, products, add_to_cart_callback=None):
         for widget in self.product_frame.winfo_children():
@@ -182,7 +153,6 @@ class CustomerView(BaseView):
             if col >= self.product_card_col_num:
                 col = 0
                 row += 1
-
 
     def update_filter(self, filter_data, current_lgn):
         """Update the filter buttons based on the filter data"""
@@ -221,7 +191,6 @@ class CustomerView(BaseView):
             if col >= self.filter_col_num:
                 col = 0
                 row += 1
-
 
 
 if __name__ == "__main__":

@@ -1,6 +1,3 @@
-if __name__ == "__main__":
-    import sys
-    sys.path.append(sys.path[0]+"/../..")
 import tkinter as tk
 from tkinter import ttk
 from models.language import LANGUAGE
@@ -73,7 +70,6 @@ class ItemInfo(tk.Frame):
         # ---------------- Update Button ----------------
         self.update_btn = tk.Button(info_frame, text=LANGUAGE[self.current_language]["update"], font=("Arial", 12))
 
-
     def on_filter_selected(self, event=None):
         """Handle dynamic field creation based on selected tag"""
         # Clear old fields
@@ -127,7 +123,6 @@ class ItemInfo(tk.Frame):
             entry.delete(0, tk.END)
             entry.insert(0, product.get(key, ""))
 
-
     def get_price(self):
         return self.price_entry.get()
 
@@ -151,7 +146,6 @@ class ItemInfo(tk.Frame):
             self.item_name_entry.pack_forget()
             self.item_label.pack(expand=True, fill='both', anchor='center')
             # keep price and stock entry visible for review and edit anytime
-
 
     def get_product(self):
         """Collect all data from user input and return as dictionary"""
@@ -182,7 +176,7 @@ class OwnerPanel(BaseView):
 
         self.current_language = current_language
         
-         # User Info and Panic Button in Horizontal Layout
+        # User Info and Panic Button in Horizontal Layout
         user_panic_frame = tk.Frame(self)
         user_panic_frame.pack(fill='x', pady=5)
         
@@ -201,10 +195,7 @@ class OwnerPanel(BaseView):
         self.item = ItemInfo(self.item_info_frame, self.current_language, self.current_resolution)
         self.item.pack(side='left', expand=True, fill='both')
 
-        # test
-        # for i in range(2):
-        #     self._add_table(i+1, [{'item': 'item1', 'price': 10, 'comment': 'comment1'}, {'item': 'item2', 'price': 20, 'comment': 'comment2'}], 30)
-        
+
         # Frame for holding 4 action buttons at corners
         self.button_frame = tk.Frame(self)
         self.button_frame.pack(side="bottom", fill="both", expand=True)
@@ -255,8 +246,6 @@ class OwnerPanel(BaseView):
         )
         self.order_refill_button.grid(row=1, column=1, sticky="nsew", padx=5, pady=5)
 
-
-
     def update(self, tables):
         """
         Update the table data
@@ -273,7 +262,6 @@ class OwnerPanel(BaseView):
     
     # pop_up_window with confirm button
     def pop_up_window(self, title, message, confirm_text, confirm_command):
-    
         pop_up = tk.Toplevel()
         pop_up.title(title)
         pop_up.geometry("400x300")
@@ -290,7 +278,6 @@ class OwnerPanel(BaseView):
         pop_up.geometry("%dx%d+%d+%d" % (pop_up_width, pop_up_height, x, y))
 
 
-
         message_label = tk.Label(pop_up, text=message, font=self.default_font)
         message_label.pack(pady=10)
 
@@ -304,7 +291,6 @@ class OwnerPanel(BaseView):
 
         confirm_button.config(command=lambda: [confirm_command(), pop_up.destroy()])
         
-
 
 # Example usage
 if __name__ == "__main__":

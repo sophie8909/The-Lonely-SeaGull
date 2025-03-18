@@ -1,5 +1,6 @@
 # Controller.py
 import tkinter as tk
+
 from models.language import LANGUAGE
 from controllers.base import BaseController
 from controllers.custormerController import CustomerController
@@ -13,8 +14,8 @@ class MainController(BaseController):
     def __init__(self, tk_root, current_language, current_resolution):
         super().__init__(tk_root, current_language, current_resolution)
 
-        self.customer_controller = CustomerController(tk_root, self, current_language, current_resolution)
         self.login_controller = LoginController(tk_root, self, current_language, current_resolution)
+        self.customer_controller = CustomerController(tk_root, self, current_language, current_resolution)
         self.vip_controller = VIPController(tk_root, self, current_language, current_resolution)
         self.bartender_controller = BartenderController(tk_root, self, current_language, current_resolution)
         self.owner_controller = OwnerController(tk_root, self, current_language, current_resolution)
@@ -24,7 +25,6 @@ class MainController(BaseController):
         self.current_controller.hide_login_widgets()
 
         self.current_user = None
-
 
     def switch_controller(self, new_controller):
         print("Switching controller")
@@ -56,7 +56,7 @@ class MainController(BaseController):
                 self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.DISABLED
                 self.current_controller.frame.add_to_balance_button["state"] = tk.NORMAL
         elif self.current_controller == self.bartender_controller:
-            self.current_controller.create_bartender_widgets(self.current_language, self.current_resolution)
+            self.current_controller.create_bartender_widgets(self.current_language, self.current_resolution, self.current_controller)
             self.current_controller.hide_widgets()
         elif self.current_controller == self.owner_controller:
             self.current_controller.create_owner_widgets(self.current_language, self.current_resolution)
@@ -106,42 +106,22 @@ class MainController(BaseController):
     def update_language(self, event):
         self.current_language = self.current_controller.frame.settings_widget.login_combo.get()
 
-        self.current_controller.frame.settings_widget.language_label.config(text=LANGUAGE[self.current_language]["language"])
-        self.current_controller.frame.settings_widget.res_label.config(text=LANGUAGE[self.current_language]["resolution"])
-        self.current_controller.frame.settings_widget.logout_button.config(text=LANGUAGE[self.current_language]["logout"])
-
         if self.current_controller == self.login_controller:
-            self.current_controller.frame.username_label.config(text=LANGUAGE[self.current_language]["username"])
-            self.current_controller.frame.password_label.config(text=LANGUAGE[self.current_language]["password"])
-            self.current_controller.frame.login_button.config(text=LANGUAGE[self.current_language]["login"])
-            self.current_controller.frame.guest_button.config(text=LANGUAGE[self.current_language]["guest_btn"])
-            self.current_controller.frame.login_welcome_label.config(text=LANGUAGE[self.current_language]["login_welcome"])
+            self.current_controller.frame.update_login_language(self.current_language)
         elif self.current_controller == self.customer_controller:
-            self.common_widgets()
+            self.current_controller.frame.update_customer_language(self.current_language)
         elif self.current_controller == self.vip_controller:
-            self.common_widgets()
-            self.current_controller.frame.welcome_label.config(text=LANGUAGE[self.current_language]["welcome"])
-            self.current_controller.frame.vip_balance_label.config(text=LANGUAGE[self.current_language]["account balance"])
-            self.current_controller.frame.add_to_balance_button.config(text=LANGUAGE[self.current_language]["add to balance"])
+            self.current_controller.frame.update_vip_language(self.current_language)
         elif self.current_controller == self.bartender_controller:
-            self.current_controller.frame.detail_label.config(text=LANGUAGE[self.current_language]["information"])
-            self.current_controller.frame.food_button.config(text=LANGUAGE[self.current_language]["food"])
-            self.current_controller.frame.beverages_button.config(text=LANGUAGE[self.current_language]["beverages"])
-            self.current_controller.frame.search_entry_name.set(LANGUAGE[self.current_language]["search"])
+            self.current_controller.frame.update_bartender_language(self.current_language)
+        elif self.current_controller == self.owner_controller:
+            self.current_controller.frame.update_owner_language(self.current_language)
 
         return self.current_language
 
-    def common_widgets(self):
-        self.current_controller.frame.detail_label.config(text=LANGUAGE[self.current_language]["information"])
-        self.current_controller.frame.shopping_cart_widget.add_friends_btn.config(text=LANGUAGE[self.current_language]["add friends"])
-        self.current_controller.frame.shopping_cart_widget.confirm_btn.config(text=LANGUAGE[self.current_language]["confirm"])
-        self.current_controller.frame.shopping_cart_widget.undo_btn.config(text=LANGUAGE[self.current_language]["undo"])
-        self.current_controller.frame.shopping_cart_widget.redo_btn.config(text=LANGUAGE[self.current_language]["redo"])
-        self.current_controller.frame.shopping_cart_widget.total_text_label.config(text=LANGUAGE[self.current_language]["total"])
-        self.current_controller.frame.food_button.config(text=LANGUAGE[self.current_language]["food"])
-        self.current_controller.frame.beverages_button.config(text=LANGUAGE[self.current_language]["beverages"])
-        self.current_controller.frame.search_entry_name.set(LANGUAGE[self.current_language]["search"])
-
+    def logout_button_click(self, event):
+        print("Successfully logged out")
+        self.switch_controller(self.login_controller)
 
 
 if __name__ == "__main__":

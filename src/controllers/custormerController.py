@@ -1,11 +1,3 @@
-from models.language import LANGUAGE
-
-if __name__ == "__main__":
-    import sys
-
-    sys.path.append(sys.path[0] + "/../")
-
-
 from dataclasses import dataclass
 from typing import List
 from copy import deepcopy
@@ -15,6 +7,7 @@ from views.customerView import CustomerView
 
 from models.menu import menu
 from models.filters import allergens_dict, beverage_filter_data
+from models.language import LANGUAGE
 
 
 @dataclass
@@ -40,6 +33,7 @@ class CustomerController(BaseController):
         self.data = CustomerControllerData(person_count=1, current_person=0, shopping_cart=[[]])
         self.undo_stack: List[CustomerControllerData] = []
         self.redo_stack: List[CustomerControllerData] = []
+        self.order_history = []
 
         self.main_controller = main_controller
         self.current_language = current_language
@@ -49,7 +43,6 @@ class CustomerController(BaseController):
         self.beverage_filter_data = beverage_filter_data
 
         self.current_menu = LANGUAGE[self.current_language]["beverages"]
-
 
     def customer_view_setup(self):
         self.frame.shopping_cart_widget.set_on_drop(self.add_cart_item)
@@ -67,7 +60,7 @@ class CustomerController(BaseController):
         self.tk_root.bind('<Control-z>', lambda event: self.undo())
         self.tk_root.bind('<Control-y>', lambda event: self.redo())
         self.tk_root.bind("<Return>", lambda event: self.search_product())
-        self.frame.settings_widget.logout_button.bind("<Button-1>", self.logout_button_click)
+        self.frame.settings_widget.logout_button.bind("<Button-1>", self.main_controller.logout_button_click)
         self.frame.settings_widget.login_combo.bind("<<ComboboxSelected>>", self.main_controller.update_language)
         self.frame.settings_widget.res_combo.bind("<<ComboboxSelected>>", self.main_controller.change_res)
 
@@ -75,22 +68,15 @@ class CustomerController(BaseController):
         self.load_menu()
         self.update_menu()
         self.update_cart()
-        for filter_btn in self.frame.filter_buttons:
-            filter_text = filter_btn.cget("text")  # 立即存下當前的文本
-            filter_btn.config(command=lambda text=filter_text: self.switch_filter(text))
-
-
 
     def create_customer_widgets(self, current_lng, current_res):
         self.frame = CustomerView(self.tk_root, current_lng, current_res)
         self.frame.pack(expand=True, fill='both')
         self.customer_view_setup()
 
-
     def destroy_widgets(self):
         self.frame.destroy()
         self.frame = None
-
 
     def hide_widgets(self):
         pass
@@ -120,12 +106,10 @@ class CustomerController(BaseController):
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
 
-
     def set_current_person(self, person):
         self.data.current_person = person
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
-
 
     def add_person(self):
         self.make_operation()
@@ -134,7 +118,6 @@ class CustomerController(BaseController):
         self.data.current_person = self.data.person_count - 1
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
-
 
     def remove_person(self, i):
         self.make_operation()
@@ -146,7 +129,6 @@ class CustomerController(BaseController):
             self.data.current_person -= 1
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
-
 
     def add_cart_item(self, product_widget):
         """Add an item to the shopping cart"""
@@ -164,13 +146,11 @@ class CustomerController(BaseController):
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
 
-
     def make_operation(self):
         data = deepcopy(self.data)
         self.undo_stack.append(data)
         self.redo_stack.clear()
         print(self.data)
-
 
     def undo(self):
         print("Undoing")
@@ -182,7 +162,6 @@ class CustomerController(BaseController):
         self.data = self.undo_stack.pop()
         self.update_cart()
 
-
     def redo(self):
         print("Redoing")
         print(self.redo_stack)
@@ -193,7 +172,6 @@ class CustomerController(BaseController):
         self.data = self.redo_stack.pop()
         self.update_cart()
 
-
     """Confirm the order and add it to the order history"""
     def confirm_order(self):
         # double check the order
@@ -201,7 +179,6 @@ class CustomerController(BaseController):
         self.frame.shopping_cart_widget.double_check_confirm(language_window)
         self.frame.shopping_cart_widget.confirm_yes_btn.config(command=self.confirm_order_yes)
         self.frame.shopping_cart_widget.confirm_no_btn.config(command=self.confirm_order_no)
-
 
     def confirm_order_yes(self):
         print("Confirming order")
@@ -227,19 +204,13 @@ class CustomerController(BaseController):
 
         self.frame.shopping_cart_widget.confirm_window_close()
 
-
     def confirm_order_no(self):
         print("Cancelling order")
         self.frame.shopping_cart_widget.confirm_window_close()
 
-
     def load_menu(self):
         # load the menu from the database with VIP=true
         self.menu_list = [menu_item for menu_item in menu if menu_item["VIP"] == False]
-
-
-
-
 
     def switch_filter(self, filter_text):
         print("Filtering products for", filter_text)
@@ -249,11 +220,9 @@ class CustomerController(BaseController):
             self.beverage_filter_data[filter_text]["active"] = not self.beverage_filter_data[filter_text]["active"]
         self.update_menu()
 
-
     def switch_menu(self, menu):
         self.current_menu = menu
         self.update_menu()
-
 
     def update_menu(self):
         # Filter data
@@ -293,11 +262,6 @@ class CustomerController(BaseController):
             # not to complicate the logic of having too many duplicates in filter's dictionary
             eng_filter_text = [key for key, value in LANGUAGE[language_window].items() if value == filter_text]
             filter_btn.config(command=lambda text=eng_filter_text[0]: self.switch_filter(text))
-
-
-    def logout_button_click(self, event):
-        print("Successfully logged out")
-        self.main_controller.switch_controller(self.main_controller.login_controller)
 
 
 if __name__ == "__main__":

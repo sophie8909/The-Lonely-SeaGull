@@ -109,7 +109,7 @@ class CustomerView(BaseView):
         self.settings_widget.pack(side="top", anchor="e")
         # customer info
         self.customer_info_frame = tk.Frame(self.right_frame, bg=self.background_color, padx=10, pady=10)
-        self.customer_info_frame.pack(fill="both", expand=True)
+        self.customer_info_frame.pack(fill="both", expand=False)
         
         # needs also to have the current_language as parameter
         self.shopping_cart_widget = ShoppingCart(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)

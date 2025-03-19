@@ -107,7 +107,6 @@ class OwnerView(BaseView):
         self.detail_frame = tk.Frame(self.middle_frame, bg=self.background_color, padx=10, pady=10)
         self.detail_frame.pack(side="top", fill="both", expand=True)
 
-        
 
         # left side of the main frame
         self.right_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)

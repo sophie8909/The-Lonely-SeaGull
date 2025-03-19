@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import List
 from copy import deepcopy
 
@@ -8,22 +7,7 @@ from views.customerView import CustomerView
 from models.menu import menu
 from models.filters import allergens_dict, beverage_filter_data
 from models.language import LANGUAGE
-
-
-@dataclass
-class CustomerControllerData:
-    person_count: int
-    current_person: int
-    shopping_cart: List[List[dict]]
-
-
-    def __str__(self):
-        return f"Person count: {self.person_count}, Current person: {self.current_person}, Shopping cart: {self.shopping_cart}"
-
-
-    def __repr__(self):
-        return self.__str__()
-
+from models.models import CustomerControllerData
 
 class CustomerController(BaseController):
     def __init__(self, tk_root, main_controller, current_language, current_resolution):
@@ -57,9 +41,9 @@ class CustomerController(BaseController):
         self.frame.food_button.config(command=lambda: self.switch_menu(LANGUAGE[self.current_language]["food"]))
 
         # added also key shortcuts for the undo/redo functionalities
-        # self.tk_root.bind('<Control-z>', lambda event: self.undo())
-        # self.tk_root.bind('<Control-y>', lambda event: self.redo())
-        # self.tk_root.bind("<Return>", lambda event: self.search_product())
+        self.tk_root.bind('<Control-z>', lambda event: self.undo())
+        self.tk_root.bind('<Control-y>', lambda event: self.redo())
+        self.tk_root.bind("<Return>", lambda event: self.search_product())
         self.frame.settings_widget.logout_button.bind("<Button-1>", self.main_controller.logout_button_click)
         self.frame.settings_widget.login_combo.bind("<<ComboboxSelected>>", self.main_controller.update_language)
         self.frame.settings_widget.res_combo.bind("<<ComboboxSelected>>", self.main_controller.change_res)

@@ -29,7 +29,7 @@ class VIPController(CustomerController):
     def get_vip_code(self):
         self.main_controller.current_user.balance -= 100
         self.frame.vip_balance_amount_label.config(text=self.main_controller.current_user.balance)
-        self.frame.vip_code.config(text=randint(1000, 9999))
+        self.frame.vip_code.config(text=randint(10000, 99999))
 
 if __name__ == "__main__":
     import tkinter as tk

@@ -16,7 +16,7 @@ class LoginView(BaseView):
 
         # Show background image using label
         # Read the Image - do it in the change_res method
-        self.image = Image.open("../assets/boat.jpg")
+        self.image = Image.open("./assets/boat.jpg")
         screen_width = int(parent.winfo_screenwidth())
         screen_height = int(parent.winfo_screenheight() - (0.036 * parent.winfo_screenheight()))
 

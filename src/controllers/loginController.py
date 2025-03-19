@@ -15,7 +15,7 @@ class LoginController(BaseController):
         self.tk_root.title("The Flying Dutchman Pub")
         self.tk_root.geometry(str(tk_root.winfo_screenwidth()) + "x" + str(tk_root.winfo_screenheight()-int(0.036*tk_root.winfo_screenheight())) + "+" + str(-int(0.005*tk_root.winfo_screenwidth())) + "+" + str(0))
 
-        self.users = UsersService('data/sample_users.json')
+        self.users = UsersService('models/sample_users.json')
         self.frame = None
         self.main_controller = main_controller
 

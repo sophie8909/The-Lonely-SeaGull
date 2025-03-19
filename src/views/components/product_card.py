@@ -76,21 +76,17 @@ class ProductCard(Dragable, tk.Frame):
         self.product_card.pack_propagate(True)
 
         if self.product["Tag"] == "wine":
-            image = Image.open("../assets/wine.png")
+            image = Image.open("./assets/wine.png")
         elif self.product["Tag"] == "cocktail":
-            image = Image.open("../assets/cocktail.png")
+            image = Image.open("./assets/cocktail.png")
         elif self.product["Tag"] == "food":
-            image = Image.open("../assets/food.png")
+            image = Image.open("./assets/food.png")
         else:
-            image = Image.open("../assets/beer.png")
+            image = Image.open("./assets/beer.png")
         
-        fixed_size = (100, 100)  # 你可以调整这个数值
+        fixed_size = (100, 100)
         image = image.resize(fixed_size)
-
-        # 转换为 Tkinter 可用的格式
         self.product_image = ImageTk.PhotoImage(image)
-
-
         self.product_image_label = tk.Label(self.product_card, image=self.product_image, bg=self.background_color)
         self.product_image_label.image = self.product_image
         self.product_image_label.pack(pady=0)
@@ -139,8 +135,8 @@ class ProductCard(Dragable, tk.Frame):
 
         ghost = tk.Frame(root, bg=self.background_color, width=223, height=262, bd=1, relief="solid")
         ghost.pack_propagate(False)
-        ghost_image = tk.PhotoImage(file="../assets/beer.png")
-        ghost_image = ghost_image.subsample(3)
+        ghost_image = tk.PhotoImage(file="./assets/beer.png")
+        ghost_image = ghost_image.subsample(4)
 
         ghost_image_label = tk.Label(ghost, image=ghost_image, bg=self.background_color)
         ghost_image_label.image = ghost_image

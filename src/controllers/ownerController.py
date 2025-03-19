@@ -1,6 +1,5 @@
-from dataclasses import dataclass
-from typing import List
 from controllers.base import BaseController
+from models.models import OwnerData
 from views.ownerVIew import OwnerView
 
 from models.language import LANGUAGE
@@ -8,11 +7,6 @@ from models.language import LANGUAGE
 from models.filters import allergens_dict, beverage_filter_data
 from models.menu import menu as menu_data
 
-# from models.orders import Order
-
-@dataclass
-class OwnerData:
-    cart: List[dict]
 
 class OwnerController(BaseController):
     def __init__(self, tk_root, main_controller, current_language, current_resolution):
@@ -133,7 +127,7 @@ class OwnerController(BaseController):
 
         self.frame.update_menu(products_list, language_window, self.select_item_click)
         for filter_btn in self.frame.filter_buttons:
-            filter_text = filter_btn.cget("text")  # 立即存下當前的文本
+            filter_text = filter_btn.cget("text")
             # not to complicate the logic of having too many duplicates in filter's dictionary
             eng_filter_text = [key for key, value in LANGUAGE[language_window].items() if value == filter_text]
             filter_btn.config(command=lambda text=eng_filter_text[0]: self.switch_filter(text))

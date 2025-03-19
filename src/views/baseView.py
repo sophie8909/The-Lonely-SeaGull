@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import font
-from views.style import style
+from models.style import style
 
 
 class BaseView(tk.Frame):
@@ -27,7 +27,6 @@ class BaseView(tk.Frame):
         self.light_green = style["light_green"]
         self.gray_green = style["gray_green"]
         self.light_gray_green = style["light_gray_green"]
-        
 
         # setting font
         self.default_font = self._create_font(parent, style["default_font"])

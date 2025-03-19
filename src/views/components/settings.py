@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import font, ttk
+from tkinter import ttk
 
 from models.language import LANGUAGE
 from views.baseView import BaseView
@@ -33,4 +33,3 @@ class Settings(BaseView):
 
         self.logout_button = ttk.Button(self, text=LANGUAGE[self.current_language]["logout"])
         self.logout_button.grid(row=0, column=4, padx=10, pady=10)
-

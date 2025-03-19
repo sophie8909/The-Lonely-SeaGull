@@ -1,6 +1,6 @@
-from dataclasses import dataclass, field
-from datetime import datetime
-from typing import List, Optional
+from dataclasses import dataclass
+from typing import Optional, List
+
 
 @dataclass
 class User:
@@ -15,72 +15,11 @@ class User:
     balance: float = 0.0
 
 @dataclass
-class Beer:
-    beer_id: int
-    name: str
-    producer: str
-    country: str
-    beer_type: str
-    strength: float
-    serving_size: str = "tap" # values: tap, bottle
-    price: float = 0.0
-    picture: Optional[str] = None
+class CustomerControllerData:
+    person_count: int
+    current_person: int
+    shopping_cart: List[List[dict]]
 
 @dataclass
-class Product:
-    product_id: int
-    name: str
-    price: float = 0.0
-    picture: Optional[str] = None
-
-@dataclass
-class Wine(Product):
-    year: int = 0
-    producer: str = ""
-    grape: str = ""
-    serving_size: str = "glass" # values: glass, bottle
-
-@dataclass
-class Cocktail(Product):
-    strength: float = 0.0
-    contents: List[str] = field(default_factory=list)
-
-@dataclass
-class Food(Product):
-    ingredients: List[str] = field(default_factory=list)
-
-@dataclass
-class ProductSold:
-    transaction_id: int
-    user_id: int
-    product_id: int
-    timestamp: datetime = field(default_factory=datetime.now)
-
-@dataclass
-class Payment:
-    transaction_id: int
-    user_id: int
-    admin_id: int
-    amount: float = 0.0
-    timestamp: datetime = field(default_factory=datetime.now)
-
-@dataclass
-class VipCustomer(User):
-    credit_limit: float = 0.0
-
-@dataclass
-class Order:
-    order_id: int
-    user_id: int
-    status: str = "pending"  # values: pending, completed, canceled
-    created_at: datetime = field(default_factory=datetime.now)
-    order_items: List = field(default_factory=list)
-
-@dataclass
-class OrderItem:
-    order_item_id: int
-    order_id: int
-    product_id: int
-    quantity: int = 0
-    price: float = 0.0
-
+class OwnerData:
+    cart: List[dict]

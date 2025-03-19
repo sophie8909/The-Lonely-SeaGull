@@ -112,7 +112,7 @@ class CustomerView(BaseView):
         self.customer_info_frame.pack(fill="both", expand=False)
         
         # needs also to have the current_language as parameter
-        self.shopping_cart_widget = ShoppingCart(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
+        self.shopping_cart_widget = ShoppingCart(self.right_frame, self.current_language, self.current_resolution)
         self.shopping_cart_widget.pack(fill="both", expand=True, pady=10)
 
     def update_cart(self, current_person, person_count, shopping_cart, current_lgn):

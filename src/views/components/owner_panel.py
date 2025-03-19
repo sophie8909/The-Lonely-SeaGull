@@ -77,7 +77,6 @@ class ItemInfo(tk.Frame):
         self.dynamic_entries.clear()
 
         # Define dynamic fields based on selected tag
-        # TODO - maine de schimbat si astea in language pt limba
         tag = self.filter_combobox.get()
         fields = []
         if tag == "beer":

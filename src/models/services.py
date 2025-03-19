@@ -1,16 +1,20 @@
 from typing import List, Optional
 import json
-from models.models import User, Beer, Order, Payment, VipCustomer
+
+from controllers.base import BaseController
+from models.models import User
 
 
 # In-memory store simulation
 class UsersService:
     _users: List[User] = []
     _data_path = ''
+    
     @classmethod
     def __init__(cls, file_path) -> None:
         cls._data_path = file_path
         cls.load_users()
+   
     @classmethod
     def load_users(cls) -> None:
         with open(cls._data_path, 'r') as f:
@@ -55,103 +59,16 @@ class UsersService:
                 cls._users.pop(idx)
                 return True
         return False
-
-class BeersService:
-    _beers: List[Beer] = []
-
-    @classmethod
-    def get_beers(cls) -> List[Beer]:
-        return cls._beers
+    
+class CustomerControllerDataService:
+    shopping_cart = None
+    current_person = None
+    person_count = None
 
     @classmethod
-    def add_beer(cls, beer: Beer) -> None:
-        cls._beers.append(beer)
-
+    def __str__(cls):
+        return f"Person count: {cls.person_count}, Current person: {cls.current_person}, Shopping cart: {cls.shopping_cart}"
+    
     @classmethod
-    def set_beer(cls, beer: Beer) -> bool:
-        for idx, existing in enumerate(cls._beers):
-            if existing.beer_id == beer.beer_id:
-                cls._beers[idx] = beer
-                return True
-        return False
-
-    @classmethod
-    def delete_beer(cls, beer_id: int) -> bool:
-        for idx, existing in enumerate(cls._beers):
-            if existing.beer_id == beer_id:
-                cls._beers.pop(idx)
-                return True
-        return False
-
-class OrdersService:
-    _orders: List[Order] = []
-
-    @classmethod
-    def get_orders(cls) -> List[Order]:
-        return cls._orders
-
-    @classmethod
-    def add_order(cls, order: Order) -> None:
-        cls._orders.append(order)
-
-    @classmethod
-    def update_order(cls, order: Order) -> bool:
-        for idx, existing in enumerate(cls._orders):
-            if existing.order_id == order.order_id:
-                cls._orders[idx] = order
-                return True
-        return False
-
-    @classmethod
-    def delete_order(cls, order_id: int) -> bool:
-        for idx, existing in enumerate(cls._orders):
-            if existing.order_id == order_id:
-                cls._orders.pop(idx)
-                return True
-        return False
-
-class PaymentsService:
-    _payments: List[Payment] = []
-
-    @classmethod
-    def get_payments(cls) -> List[Payment]:
-        return cls._payments
-
-    @classmethod
-    def add_payment(cls, payment: Payment) -> None:
-        cls._payments.append(payment)
-
-    @classmethod
-    def delete_payment(cls, transaction_id: int) -> bool:
-        for idx, existing in enumerate(cls._payments):
-            if existing.transaction_id == transaction_id:
-                cls._payments.pop(idx)
-                return True
-        return False
-
-class VipCustomersService:
-    _vip_customers: List[VipCustomer] = []
-
-    @classmethod
-    def get_vip_customers(cls) -> List[VipCustomer]:
-        return cls._vip_customers
-
-    @classmethod
-    def add_vip_customer(cls, vip: VipCustomer) -> None:
-        cls._vip_customers.append(vip)
-
-    @classmethod
-    def set_vip_customer(cls, vip: VipCustomer) -> bool:
-        for idx, existing in enumerate(cls._vip_customers):
-            if existing.user_id == vip.user_id:
-                cls._vip_customers[idx] = vip
-                return True
-        return False
-
-    @classmethod
-    def delete_vip_customer(cls, user_id: int) -> bool:
-        for idx, existing in enumerate(cls._vip_customers):
-            if existing.user_id == user_id:
-                cls._vip_customers.pop(idx)
-                return True
-        return False
+    def __repr__(cls):
+        return cls.__str__()

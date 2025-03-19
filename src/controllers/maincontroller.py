@@ -1,4 +1,3 @@
-# Controller.py
 import tkinter as tk
 
 from PIL import Image, ImageTk
@@ -90,7 +89,7 @@ class MainController(BaseController):
 
         if self.current_controller == self.login_controller:
             # Show background image using label
-            self.image = Image.open("../assets/boat.jpg")
+            self.image = Image.open("./assets/boat.jpg")
             # Resize the image using resize() method
             self.resize_image = self.image.resize((w, h))
             self.img = ImageTk.PhotoImage(self.resize_image)

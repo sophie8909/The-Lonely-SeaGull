@@ -3,6 +3,7 @@ from tkinter import ttk
 from models.language import LANGUAGE
 from views.baseView import BaseView
 
+
 # Class to create a toast notification
 # credit to this git repo https://github.com/ritik48/popup-notification-tkinter/blob/main/notification.py
 class Notification(tk.Frame):
@@ -210,8 +211,9 @@ class BartenderPanel(BaseView):
 
     def update_table(self, tables, language, current_table=0):
         """
-        Update the table data
-        
+        Update the table data - good example of docstring to document the code for the final
+        submission
+
         Args:
             tables (list): List of dictionaries containing table data
             e.g. [[{'item': 'item1', 'price': 10, 'comment': 'comment1'}, {'item': 'item2', 'price': 20, 'comment': 'comment2'}]]

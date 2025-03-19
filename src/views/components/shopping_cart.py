@@ -1,25 +1,16 @@
 import tkinter as tk
-from tkinter import font
-
 from models.language import LANGUAGE
-
 from views.baseView import BaseView
+
+
 class ShoppingCart(BaseView):
-    def __init__(self, master, background_color, primary_color, default_font, current_language, current_resolution):
-        tk.Frame.__init__(self, master)
-        self.background_color = background_color
-        self.primary_color = primary_color
-        self.default_font = default_font
+    def __init__(self, master, current_language, current_resolution):
+        super().__init__(master, current_language, current_resolution)
+        # self.background_color = background_color
+        # self.primary_color = primary_color
+        # self.default_font = default_font
         self.current_language = current_language
         self.current_resolution = current_resolution
-
-        # Define colors
-        # self.primary_color = "#035BAC"
-        self.light_primary = "#D5E5F5"  # Approximation of rgba(3, 91, 172, 0.27)
-        self.background_color = "#FFFFFF"
-        self.light_gray = "#D9D9D9"
-        self.dark_text = "#5A5A5A"  # Approximation of rgba(0, 0, 0, 0.65)
-        self.light_icon = "#BEBDBD"  # Approximation of rgba(151, 148, 148, 0.5)
 
         # define person x button command
         self.remove_person_command = None
@@ -27,13 +18,6 @@ class ShoppingCart(BaseView):
         # define person label click command
         self.current_person_command = None
         
-        # Try to set up fonts (if not available, fallback to system fonts)
-        try:
-            self.default_font = font.Font(family="Roboto", size=14)
-            self.header_font = font.Font(family="Roboto", size=24, weight="normal")
-        except:
-            self.default_font = font.Font(family="Arial", size=14)
-            self.header_font = font.Font(family="Arial", size=24, weight="normal")
         # Create a frame for the bottom elements
         self.bottom_frame = tk.Frame(self, bg=self.background_color)
         self.bottom_frame.pack(fill="x", pady=2, side="bottom")

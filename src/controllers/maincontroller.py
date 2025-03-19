@@ -88,14 +88,15 @@ class MainController(BaseController):
         print("x:", x)
         print("y:", y)
 
-        self.image = Image.open("../assets/boat.jpg")
-        # Resize the image using resize() method
-        self.resize_image = self.image.resize((w, h))
-        self.img = ImageTk.PhotoImage(self.resize_image)
-        self.current_controller.frame.login_background_label.configure(image=self.img)
-
+        if self.current_controller == self.login_controller:
+            # Show background image using label
+            self.image = Image.open("../assets/boat.jpg")
+            # Resize the image using resize() method
+            self.resize_image = self.image.resize((w, h))
+            self.img = ImageTk.PhotoImage(self.resize_image)
+            self.current_controller.frame.login_background_label.configure(image=self.img)
         # disable the buttons if they are not at the correct tablet, depending on the view
-        if self.current_controller == self.customer_controller:
+        elif self.current_controller == self.customer_controller:
             if self.current_resolution == 1:
                 self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.DISABLED
             else:

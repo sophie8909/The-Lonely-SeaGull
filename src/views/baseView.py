@@ -22,6 +22,12 @@ class BaseView(tk.Frame):
         self.light_green_frame = style["light_green_frame"]
         self.light_green_label = style["light_green_label"]
         self.green_white = style["green_white"]
+        self.dark_green = style["dark_green"]
+        self.green = style["green"]
+        self.light_green = style["light_green"]
+        self.gray_green = style["gray_green"]
+        self.light_gray_green = style["light_gray_green"]
+        
 
         # setting font
         self.default_font = self._create_font(parent, style["default_font"])

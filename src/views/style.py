@@ -22,5 +22,10 @@ style = {
         "size": 24,
         "weight": "normal",
         "fallback_family": "Arial"
-    }
+    },
+    "dark_green": "#316064",
+    "green": "#4B908E",
+    "light_green": "#73C0B0",
+    "gray_green": "#B8D7D5",
+    "light_gray_green": "#E5E5E9",
 }

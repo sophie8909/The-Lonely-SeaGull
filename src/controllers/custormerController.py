@@ -57,9 +57,9 @@ class CustomerController(BaseController):
         self.frame.food_button.config(command=lambda: self.switch_menu(LANGUAGE[self.current_language]["food"]))
 
         # added also key shortcuts for the undo/redo functionalities
-        self.tk_root.bind('<Control-z>', lambda event: self.undo())
-        self.tk_root.bind('<Control-y>', lambda event: self.redo())
-        self.tk_root.bind("<Return>", lambda event: self.search_product())
+        # self.tk_root.bind('<Control-z>', lambda event: self.undo())
+        # self.tk_root.bind('<Control-y>', lambda event: self.redo())
+        # self.tk_root.bind("<Return>", lambda event: self.search_product())
         self.frame.settings_widget.logout_button.bind("<Button-1>", self.main_controller.logout_button_click)
         self.frame.settings_widget.login_combo.bind("<<ComboboxSelected>>", self.main_controller.update_language)
         self.frame.settings_widget.res_combo.bind("<<ComboboxSelected>>", self.main_controller.change_res)

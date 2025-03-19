@@ -49,7 +49,7 @@ class TableFrame(tk.Frame):
     def __init__(self, parent, table_number, language, table_data=[], total=0, value_changed_command=None, remove_command=None, focus_command=None, **kwargs):
         super().__init__(parent, bg='lightgray', **kwargs)
 
-        tk.Label(self, text=f"{LANGUAGE[language]["table"]} {table_number}", font=("Arial", 10, "bold"), bg='lightgray').pack(anchor='w', pady=5)
+        tk.Label(self, text=f"{LANGUAGE[language]['table']} {table_number}", font=("Arial", 10, "bold"), bg='lightgray').pack(anchor='w', pady=5)
         
         # Items, Prices, Comments Headers
         headers_frame = tk.Frame(self, bg='lightgray')
@@ -102,7 +102,7 @@ class TableFrame(tk.Frame):
         self.bind("<Button-1>", lambda event, table_id=table_number-1: focus_command(table_id))
         
         # Total Payment
-        self.total = tk.Label(self, text=f"{LANGUAGE[language]["total"]}: {total:.2f} SEK", bg='lightgray')
+        self.total = tk.Label(self, text=f"{LANGUAGE[language]['total']}: {total:.2f} SEK", bg='lightgray')
         self.total.pack(anchor='w', pady=5)
 
     def get_values(self):
@@ -118,7 +118,7 @@ class TableFrame(tk.Frame):
             item[4].delete(0, tk.END)
             item[4].insert(0, table_data[i]['comment'])
 
-        self.total.config(text=f"{LANGUAGE[language]["total"]}: {total:.2f} SEK")
+        self.total.config(text=f"{LANGUAGE[language]['total']}: {total:.2f} SEK")
 
 
 class BartenderPanel(BaseView):

@@ -1,7 +1,7 @@
 
 #TODO - maine de adaugat culori si schimbat la niste frame-uri si butoane
 style = {
-    "primary_color": "#035BAC",
+    "primary_color": "#316064",
     "light_primary": "#D5E5F5",  # Approximation of rgba(3, 91, 172, 0.27)
     "background_color": "#FFFFFF",
     "light_gray": "#D9D9D9",

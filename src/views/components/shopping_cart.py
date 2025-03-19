@@ -3,7 +3,8 @@ from tkinter import font
 
 from models.language import LANGUAGE
 
-class ShoppingCart(tk.Frame):
+from views.baseView import BaseView
+class ShoppingCart(BaseView):
     def __init__(self, master, background_color, primary_color, default_font, current_language, current_resolution):
         tk.Frame.__init__(self, master)
         self.background_color = background_color
@@ -13,7 +14,7 @@ class ShoppingCart(tk.Frame):
         self.current_resolution = current_resolution
 
         # Define colors
-        self.primary_color = "#035BAC"
+        # self.primary_color = "#035BAC"
         self.light_primary = "#D5E5F5"  # Approximation of rgba(3, 91, 172, 0.27)
         self.background_color = "#FFFFFF"
         self.light_gray = "#D9D9D9"

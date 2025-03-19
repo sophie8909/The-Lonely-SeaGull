@@ -21,7 +21,10 @@ class ItemInfo(tk.Frame):
         self.item_label = tk.Label(name_frame, text="", font=("Arial", 12))
         self.item_label.pack(expand=True, fill='both', anchor='center')
 
-        # Product name entry (edit mode)
+        # Product name and name entry (edit mode)
+        self.item_name_label = tk.Label(name_frame, text=LANGUAGE[self.current_language]["name"], font=("Arial", 12))
+        self.item_name_label.pack(side='left', anchor='w', padx=5)
+
         self.item_name_entry = tk.Entry(name_frame, font=("Arial", 12))
 
         # ---------------- Filter/Category Frame ----------------
@@ -34,14 +37,12 @@ class ItemInfo(tk.Frame):
 
         # Filter dropdown for selecting type (beer, wine, cocktail, food)
         self.filter_combobox = ttk.Combobox(self.filter_frame, values=["beer", "wine", "cocktail", "food"], font=("Arial", 12))
-        self.filter_combobox.pack(side='left', anchor='e', padx=5)
+        self.filter_combobox.pack(side='left', anchor='e', padx=5, pady=5)
         self.filter_combobox.bind("<<ComboboxSelected>>", self.on_filter_selected)  # Bind event to handle filter change
 
         # ---------------- Dynamic Fields Container ----------------
         self.dynamic_frame = tk.Frame(self)
         self.dynamic_frame.pack(side='top', expand=True, fill='both', pady=5)
-
-
 
         # ---------------- Price and Stock Section ----------------
         info_frame = tk.Frame(self)
@@ -50,7 +51,7 @@ class ItemInfo(tk.Frame):
         # Price field (Entry only)
         self.price_frame = tk.Frame(info_frame)
         self.price_frame.pack(side='top', expand=True, fill='both')
-        self.price_label = tk.Label(self.price_frame, text=LANGUAGE[self.current_language]["price"], font=("Arial", 12))
+        self.price_label = tk.Label(self.price_frame, text=LANGUAGE[self.current_language]["Price"], font=("Arial", 12))
         self.price_label.pack(side='left', anchor='w', padx=5)
         self.price_entry = tk.Entry(self.price_frame, font=("Arial", 12))  # Direct input
         self.price_entry.pack(side='left', anchor='e', padx=5)
@@ -65,8 +66,6 @@ class ItemInfo(tk.Frame):
         self.stock_entry = tk.Entry(stock_frame, font=("Arial", 12))  # Direct input
         self.stock_entry.pack(side='left', anchor='e', padx=5)
 
-
-
         # ---------------- Update Button ----------------
         self.update_btn = tk.Button(info_frame, text=LANGUAGE[self.current_language]["update"], font=("Arial", 12))
 
@@ -78,6 +77,7 @@ class ItemInfo(tk.Frame):
         self.dynamic_entries.clear()
 
         # Define dynamic fields based on selected tag
+        # TODO - maine de schimbat si astea in language pt limba
         tag = self.filter_combobox.get()
         fields = []
         if tag == "beer":

@@ -85,23 +85,9 @@ class CustomerController(BaseController):
         print("Searching for product")
         search_term = self.frame.search_entry.get()
         products_list = [product for product in self.menu_list if search_term.lower() in product["Name"].lower() and not product["Hidden"] and int(product["Stock"]) > 0]
-        # if self.current_menu == LANGUAGE[self.current_language]["food"]:
-        #     products_list = [product for product in self.menu_list if search_term.lower() in product["Name"].lower()]
-        # else:
-        #     products_list = []
-        #     if self.beverage_filter_data["Beer"]["active"]:
-        #         for product in self.menu_list:
-        #             if search_term.lower() in product["Name"].lower():
-        #                 products_list.append(product)
-        #     if self.beverage_filter_data["Wine"]["active"]:
-        #         for product in self.menu_list:
-        #             if search_term.lower() in product["Name"].lower():
-        #                 products_list.append(product)
-        #     if self.beverage_filter_data["Cocktail"]["active"]:
-        #         for product in self.menu_list:
-        #             if search_term.lower() in product["Name"].lower():
-        #                 products_list.append(product)
-        self.frame.update_menu(products_list, self.add_cart_item)
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
+
+        self.frame.update_menu(products_list, language_window, self.add_cart_item)
 
     def update_cart(self):
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
@@ -257,7 +243,7 @@ class CustomerController(BaseController):
                     if product["Tag"] == "cocktail" and not product["Hidden"] and int(product["Stock"]) > 0:
                         products_list.append(product)
 
-        self.frame.update_menu(products_list, self.add_cart_item)
+        self.frame.update_menu(products_list, language_window, self.add_cart_item)
         for filter_btn in self.frame.filter_buttons:
             filter_text = filter_btn.cget("text")
             # not to complicate the logic of having too many duplicates in filter's dictionary

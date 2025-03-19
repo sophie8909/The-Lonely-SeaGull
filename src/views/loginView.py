@@ -12,13 +12,13 @@ class LoginView(BaseView):
         super().__init__(parent, current_language, current_resolution)
 
         style = ttk.Style()
-        style.configure("BTN.TButton", background="white", foreground=self.primary_color, font=self.default_font, relief="flat")
+        style.configure("BTN.TButton", background=self.light_green_label, foreground=self.green_button, font=self.default_font, relief="flat")
 
         # Show background image using label
-        # Read the Image
-        self.image = Image.open("../assets/boat.png")
-        screen_width = parent.winfo_screenwidth()
-        screen_height = parent.winfo_screenheight()
+        # Read the Image - do it in the change_res method
+        self.image = Image.open("../assets/boat.jpg")
+        screen_width = int(parent.winfo_screenwidth())
+        screen_height = int(parent.winfo_screenheight() - (0.036 * parent.winfo_screenheight()))
 
         # Resize the image using resize() method
         self.resize_image = self.image.resize((screen_width, screen_height))
@@ -28,7 +28,7 @@ class LoginView(BaseView):
         self.login_background_label.place(x=-2, y=-2)
 
         # Create a frame for the login form
-        self.frame = tk.Frame(self, bg=self.light_gray)
+        self.frame = tk.Frame(self, bg=self.light_green_frame)
         self.frame.place(relx=0.5, rely=0.5, anchor="center")
 
         # Welcome message label
@@ -36,13 +36,13 @@ class LoginView(BaseView):
         self.login_welcome_label.grid(row=0, column=0, columnspan=2,padx=10, pady=10, sticky=tk.E+tk.W)
 
         # Username label and entry
-        self.username_label = tk.Label(self.frame, text=LANGUAGE[self.current_language]["username"], bg=self.primary_color, font=self.default_font, fg="white")
+        self.username_label = tk.Label(self.frame, text=LANGUAGE[self.current_language]["username"], bg=self.green_white, fg=self.dark_text, font=self.default_font)
         self.username_label.grid(row=1, column=0, padx=10, pady=10, sticky="e")
         self.username_entry = ttk.Entry(self.frame, width=25, font=self.default_font)
         self.username_entry.grid(row=1, column=1, padx=10, pady=10)
 
         # Password label and entry
-        self.password_label = tk.Label(self.frame, text=LANGUAGE[self.current_language]["password"], bg=self.primary_color, font=self.default_font, fg="white")
+        self.password_label = tk.Label(self.frame, text=LANGUAGE[self.current_language]["password"], bg=self.green_white, font=self.default_font, fg=self.dark_text)
         self.password_label.grid(row=2, column=0, padx=10, pady=10, sticky="e")
         self.password_entry = ttk.Entry(self.frame, width=25, show="*", font=self.default_font)
         self.password_entry.grid(row=2, column=1, padx=10, pady=10)
@@ -59,7 +59,7 @@ class LoginView(BaseView):
         self.guest_button.pack(side="right")
 
         # Added the view for language and display size settings
-        self.settings_widget = Settings(self, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
+        self.settings_widget = Settings(self, self.light_green_frame, self.primary_color, self.default_font, self.current_language, self.current_resolution)
         self.settings_widget.pack(side="top", anchor="e")
 
     def update_login_language(self, current_lgn):

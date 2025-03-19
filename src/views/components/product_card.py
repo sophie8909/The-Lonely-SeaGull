@@ -1,5 +1,7 @@
 import tkinter as tk
 
+from models.language import LANGUAGE
+
 
 class Dragable:
     _drag_threshold = 20
@@ -69,15 +71,12 @@ class ProductCard(Dragable, tk.Frame):
         self.click_callback = click_callback
         self.current_language = current_language
 
-        
-
-
         self.product_card = tk.Frame(self.product_frame, bg=self.background_color, width=223, height=262, bd=1, relief="solid")
-        self.product_card.grid(row=row, column=col, padx=10, pady=10)
-        self.product_card.pack_propagate(False)
+        self.product_card.grid(row=row, column=col, padx=7, pady=7)
+        self.product_card.pack_propagate(True)
 
         self.product_image = tk.PhotoImage(file="../assets/beer.png")
-        self.product_image = self.product_image.subsample(3)
+        self.product_image = self.product_image.subsample(4)
         self.product_image_label = tk.Label(self.product_card, image=self.product_image, bg=self.background_color)
         self.product_image_label.image = self.product_image
         self.product_image_label.pack(pady=0)
@@ -116,7 +115,7 @@ class ProductCard(Dragable, tk.Frame):
 
     def info_click(self, event):
         print(self.product)
-        self.show_item_detail(self.product)
+        self.show_item_detail(self.product, self.current_language)
 
     def create_ghost_card(self):
         root = self.master
@@ -141,7 +140,7 @@ class ProductCard(Dragable, tk.Frame):
 
         return ghost
 
-    def show_item_detail(self, item_info):
+    def show_item_detail(self, item_info, language):
         # clear the detail frame
         for widget in self.detail_frame.winfo_children():
             widget.destroy()
@@ -153,18 +152,29 @@ class ProductCard(Dragable, tk.Frame):
         item_price.pack()
         
         for info in item_info:
-            if info not in ["Name", "Price", "VIP", "Stock"]:
+            if info not in ["Name", "Price", "VIP", "Stock", "Hidden"]:
                 if info == "Allergens":
                     allergens_label = tk.Label(self.detail_frame, 
-                                               text=f"{info}: {', '.join(item_info[info])}", 
+                                               text=f"{LANGUAGE[language][info]}: {', '.join(item_info[info])}",
                                                font=self.default_font, 
                                                anchor="w",
                                                bg=self.background_color)
                     allergens_label.pack()
-                else:
+                elif info == "Ingredients" or info == "Contents/Recipe":
+                    separate_info = ""
+                    for one_info in item_info[info]:
+                        separate_info += '\n' + str(one_info)
+
                     info_label = tk.Label(self.detail_frame, 
-                                          text=f"{info}: {item_info[info]}", 
+                                          text=f"{LANGUAGE[language][info]}: {separate_info}",
                                           font=self.default_font, 
+                                          anchor="w",
+                                          bg=self.background_color)
+                    info_label.pack()
+                else:
+                    info_label = tk.Label(self.detail_frame,
+                                          text=f"{LANGUAGE[language][info]}: {item_info[info]}",
+                                          font=self.default_font,
                                           anchor="w",
                                           bg=self.background_color)
                     info_label.pack()

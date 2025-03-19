@@ -1,7 +1,7 @@
 menu = [
     {
         "Name": "Wagyu Beef Sliders",
-        "Ingredients": "Wagyu Beef, Brioche Bun, Truffle Mayo, Arugula, Caramelized Onion",
+        "Ingredients": "Wagyu Beef, Brioche Bun, Truffle Mayo, Arugula, Caramelized Onion".split(),
         "Price": "250 SEK",
         "Allergens": ["Gluten", "Egg", "Lactose"],
         "VIP": True,
@@ -11,7 +11,7 @@ menu = [
     },
     {
         "Name": "Lobster Mac & Cheese",
-        "Ingredients": "Pasta, Lobster, Cheddar, Gruyère, Parmesan, Cream, Garlic, Herbs",
+        "Ingredients": "Pasta, Lobster, Cheddar, Gruyère, Parmesan, Cream, Garlic, Herbs".split(),
         "Price": "275 SEK",
         "Allergens": ["Gluten", "Lactose"],
         "VIP": True,
@@ -21,7 +21,7 @@ menu = [
     },
     {
         "Name": "Black Truffle Risotto",
-        "Ingredients": "Arborio Rice, Black Truffle, Parmesan, Butter, White wine",
+        "Ingredients": "Arborio Rice, Black Truffle, Parmesan, Butter, White wine".split(),
         "Price": "260 SEK",
         "Allergens": ["Lactose"],
         "VIP": True,
@@ -31,7 +31,7 @@ menu = [
     },
     {
         "Name": "Seared Tuna Tataki",
-        "Ingredients": "Tuna, Soy Sauce, Ginger, Sesame Seeds, Scallions",
+        "Ingredients": "Tuna, Soy Sauce, Ginger, Sesame Seeds, Scallions".split(),
         "Price": "240 SEK",
         "Allergens": ["Fish", "Sesame", "Soy"],
         "VIP": True,
@@ -41,7 +41,7 @@ menu = [
     },
     {
         "Name": "Foie Gras Crostini",
-        "Ingredients": "Foie Gras, Toasted Bread, Fig Jam, Microgreens",
+        "Ingredients": "Foie Gras, Toasted Bread, Fig Jam, Microgreens".split(),
         "Price": "280 SEK",
         "Allergens": ["Gluten"],
         "VIP": True,
@@ -212,7 +212,7 @@ menu = [
     {
         "Name": "The Billionaire",
         "Strength": "Strong",
-        "Contents/Recipe": "Bourbon, Absinthe, Lemon Juice, Grenadine",
+        "Contents/Recipe": "Bourbon, Absinthe, Lemon Juice, Grenadine".split(),
         "Serving size": "Glass",
         "Price": "350 SEK",
         "Allergens": ["None"],
@@ -226,7 +226,7 @@ menu = [
     {
         "Name": "Gold Fashioned",
         "Strength": "Strong",
-        "Contents/Recipe": "Gold-infused Whiskey, Maple Syrup, Angostura Bitters",
+        "Contents/Recipe": "Gold-infused Whiskey, Maple Syrup, Angostura Bitters".split(),
         "Serving size": "Glass",
         "Price": "400 SEK",
         "Allergens": ["None"],
@@ -240,7 +240,7 @@ menu = [
     {
         "Name": "Truffle Martini",
         "Strength": "Strong",
-        "Contents/Recipe": "Truffle-infused Vodka, Dry Vermouth",
+        "Contents/Recipe": "Truffle-infused Vodka, Dry Vermouth".split(),
         "Serving size": "Glass",
         "Price": "450 SEK",
         "Allergens": ["None"],
@@ -254,7 +254,7 @@ menu = [
     {
         "Name": "Royal Negroni",
         "Strength": "Strong",
-        "Contents/Recipe": "Premium Gin, Campari, Vermouth Rosso, Gold Flakes",
+        "Contents/Recipe": "Premium Gin, Campari, Vermouth Rosso, Gold Flakes".split(),
         "Serving size": "Glass",
         "Price": "380 SEK",
         "Allergens": ["None"],
@@ -268,7 +268,7 @@ menu = [
     {
         "Name": "Vintage Sidecar",
         "Strength": "Strong",
-        "Contents/Recipe": "Vintage Cognac, Cointreau, Lemon Juice",
+        "Contents/Recipe": "Vintage Cognac, Cointreau, Lemon Juice".split(),
         "Serving size": "Glass",
         "Price": "420 SEK",
         "Allergens": ["None"],
@@ -442,7 +442,7 @@ menu = [
     {
         "Name": "Margarita",
         "Strength": "Strong",
-        "Contents/Recipe": "Tequila, Triple Sec, Lime Juice, Salt",
+        "Contents/Recipe": "Tequila, Triple Sec, Lime Juice, Salt".split(),
         "Serving size": "Glass",
         "Price": "120 SEK",
         "Allergens": ["None"],
@@ -456,7 +456,7 @@ menu = [
     {
         "Name": "Mojito",
         "Strength": "Medium",
-        "Contents/Recipe": "White Rum, Lime, Mint, Sugar, Soda Water",
+        "Contents/Recipe": "White Rum, Lime, Mint, Sugar, Soda Water".split(),
         "Serving size": "Glass",
         "Price": "110 SEK",
         "Allergens": ["None"],
@@ -470,7 +470,7 @@ menu = [
     {
         "Name": "Old Fashioned",
         "Strength": "Strong",
-        "Contents/Recipe": "Bourbon, Sugar, Angostura Bitters, Orange Peel",
+        "Contents/Recipe": "Bourbon, Sugar, Angostura Bitters, Orange Peel".split(),
         "Serving size": "Glass",
         "Price": "130 SEK",
         "Allergens": ["None"],
@@ -484,7 +484,7 @@ menu = [
     {
         "Name": "Negroni",
         "Strength": "Strong",
-        "Contents/Recipe": "Gin, Campari, Sweet Vermouth",
+        "Contents/Recipe": "Gin, Campari, Sweet Vermouth".split(),
         "Serving size": "Glass",
         "Price": "125 SEK",
         "Allergens": ["None"],
@@ -498,7 +498,7 @@ menu = [
     {
         "Name": "Piña Colada",
         "Strength": "Medium",
-        "Contents/Recipe": "White Rum, Coconut Cream, Pineapple Juice",
+        "Contents/Recipe": "White Rum, Coconut Cream, Pineapple Juice".split(),
         "Serving size": "Glass",
         "Price": "115 SEK",
         "Allergens": ["Coconut"],
@@ -511,7 +511,7 @@ menu = [
     },
     {
         "Name": "Buffalo Wings",
-        "Ingredients": "Chicken Wings, Hot Sauce, Butter, Vinegar, Garlic, Celery, Blue Cheese Dressing",
+        "Ingredients": "Chicken Wings, Hot Sauce, Butter, Vinegar, Garlic, Celery, Blue Cheese Dressing".split(),
         "Price": "125 SEK",
         "Allergens": ["Lactose"],
         "VIP": False,
@@ -521,7 +521,7 @@ menu = [
     },
     {
         "Name": "Nachos with Cheese & Jalapeños",
-        "Ingredients": "Corn Chips, Cheddar Cheese, Jalapeños, Sour Cream, Salsa, Guacamole",
+        "Ingredients": "Corn Chips, Cheddar Cheese, Jalapeños, Sour Cream, Salsa, Guacamole".split(),
         "Price": "110 SEK",
         "Allergens": ["Lactose"],
         "VIP": False,
@@ -531,7 +531,7 @@ menu = [
     },
     {
         "Name": "Sliders (Mini Burgers)",
-        "Ingredients": "Beef Patty, Cheddar Cheese, Burger Bun, Lettuce, Tomato, Pickles, Mayo, Ketchup, Mustard",
+        "Ingredients": "Beef Patty, Cheddar Cheese, Burger Bun, Lettuce, Tomato, Pickles, Mayo, Ketchup, Mustard".split(),
         "Price": "140 SEK",
         "Allergens": ["Gluten", "Lactose", "Egg"],
         "VIP": False,
@@ -541,7 +541,7 @@ menu = [
     },
     {
         "Name": "Fish & Chips",
-        "Ingredients": "Cod Fillet, Batter, French Fries, Tartar Sauce, Lemon, Salt, Vinegar",
+        "Ingredients": "Cod Fillet, Batter, French Fries, Tartar Sauce, Lemon, Salt, Vinegar".split(),
         "Price": "155 SEK",
         "Allergens": ["Gluten", "Fish", "Egg"],
         "VIP": False,
@@ -551,7 +551,7 @@ menu = [
     },
     {
         "Name": "Mozzarella Sticks",
-        "Ingredients": "Mozzarella Cheese, Bread Crumbs, Egg, Flour, Marinara Sauce",
+        "Ingredients": "Mozzarella Cheese, Bread Crumbs, Egg, Flour, Marinara Sauce".split(),
         "Price": "120 SEK",
         "Allergens": ["Gluten", "Lactose", "Egg"],
         "VIP": False,
@@ -561,7 +561,7 @@ menu = [
     },
     {
         "Name": "Loaded Potato Skins",
-        "Ingredients": "Potato Skins, Cheddar Cheese, Bacon, Sour Cream, Green Onions",
+        "Ingredients": "Potato Skins, Cheddar Cheese, Bacon, Sour Cream, Green Onions".split(),
         "Price": "130 SEK",
         "Allergens": ["Lactose"],
         "VIP": False,
@@ -571,7 +571,7 @@ menu = [
     },
     {
         "Name": "Onion Rings",
-        "Ingredients": "Onion, Flour, Bread Crumbs, Egg, Milk, Salt, Pepper",
+        "Ingredients": "Onion, Flour, Bread Crumbs, Egg, Milk, Salt, Pepper".split(),
         "Price": "95 SEK",
         "Allergens": ["Gluten", "Lactose", "Egg"],
         "VIP": False,
@@ -581,7 +581,7 @@ menu = [
     },
     {
         "Name": "BBQ Pulled Pork Sandwich",
-        "Ingredients": "Pulled Pork, BBQ Sauce, Burger Bun, Coleslaw (Cabbage, Carrot, Mayo, Vinegar)",
+        "Ingredients": "Pulled Pork, BBQ Sauce, Burger Bun, Coleslaw (Cabbage, Carrot, Mayo, Vinegar)".split(),
         "Price": "145 SEK",
         "Allergens": ["Gluten", "Egg"],
         "VIP": False,
@@ -591,7 +591,7 @@ menu = [
     },
     {
         "Name": "Garlic Parmesan Fries",
-        "Ingredients": "French Fries, Garlic, Parmesan Cheese, Olive Oil, Salt, Pepper",
+        "Ingredients": "French Fries, Garlic, Parmesan Cheese, Olive Oil, Salt, Pepper".split(),
         "Price": "85 SEK",
         "Allergens": ["Lactose"],
         "VIP": False,
@@ -601,7 +601,7 @@ menu = [
     },
     {
         "Name": "Jalapeño Poppers",
-        "Ingredients": "Jalapeños, Cream Cheese, Bread Crumbs, Egg, Flour",
+        "Ingredients": "Jalapeños, Cream Cheese, Bread Crumbs, Egg, Flour".split(),
         "Price": "115 SEK",
         "Allergens": ["Gluten", "Lactose", "Egg"],
         "VIP": False,

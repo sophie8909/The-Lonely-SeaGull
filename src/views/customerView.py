@@ -133,7 +133,7 @@ class CustomerView(BaseView):
         self.shopping_cart_widget.redo_btn.config(text=LANGUAGE[current_lgn]["redo"])
         self.shopping_cart_widget.total_text_label.config(text=LANGUAGE[current_lgn]["total"])
 
-    def update_menu(self, products, add_to_cart_callback=None):
+    def update_menu(self, products, language, add_to_cart_callback=None):
         for widget in self.product_frame.winfo_children():
             widget.destroy()
 
@@ -146,7 +146,7 @@ class CustomerView(BaseView):
             product_widget = ProductCard(self.product_frame, row, col,
                                          self.background_color, self.primary_color, self.default_font,
                                          product, self.detail_frame,
-                                         self.current_language,
+                                         language,
                                          click_callback=add_to_cart_callback)
             self.products_widget.append(product_widget)
             col += 1

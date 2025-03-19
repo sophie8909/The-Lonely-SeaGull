@@ -137,6 +137,7 @@ class BartenderView(BaseView):
         self.bartender_panel.panic_button.config(text=LANGUAGE[current_lgn]["panic"])
         self.bartender_panel.single_payment_button.config(text=LANGUAGE[current_lgn]["single payment"])
         self.bartender_panel.group_payment_button.config(text=LANGUAGE[current_lgn]["group payment"])
+        self.bartender_panel.group_payment_button.config(text=LANGUAGE[current_lgn]["group payment"])
 
     def update_menu(self, products, current_lgn, select_item_callback=None):
         for widget in self.product_frame.winfo_children():

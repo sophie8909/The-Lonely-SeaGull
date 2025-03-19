@@ -15,24 +15,8 @@ class Settings(BaseView):
         self.current_language = current_language
         self.current_resolution = current_resolution
 
-        # Define colors
-        self.primary_color = "#035BAC"
-        self.light_primary = "#D5E5F5"  # Approximation of rgba(3, 91, 172, 0.27)
-        self.background_color = "#FFFFFF"
-        self.light_gray = "#D9D9D9"
-        self.dark_text = "#5A5A5A"  # Approximation of rgba(0, 0, 0, 0.65)
-        self.light_icon = "#BEBDBD"  # Approximation of rgba(151, 148, 148, 0.5)
-
-        # Try to set up fonts (if not available, fallback to system fonts)
-        try:
-            self.default_font = font.Font(family="Roboto", size=14)
-            self.header_font = font.Font(family="Roboto", size=24, weight="normal")
-        except:
-            self.default_font = font.Font(family="Arial", size=14)
-            self.header_font = font.Font(family="Arial", size=24, weight="normal")
-
         # Combo box for selecting different system language
-        self.language_label = tk.Label(self, text=LANGUAGE[self.current_language]["language"], bg="#d3d3d3")
+        self.language_label = tk.Label(self, text=LANGUAGE[self.current_language]["language"], bg=self.background_color)
         self.language_label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
 
         self.login_combo = ttk.Combobox(self, state="readonly", values=["English", "Română", "中文"], height=2, width=8)
@@ -40,7 +24,7 @@ class Settings(BaseView):
         self.login_combo.current(int(LANGUAGE[self.current_language]["index"]))
 
         # Combo box for different display resolution sizes
-        self.res_label = tk.Label(self, text=LANGUAGE[self.current_language]["resolution"], bg="#d3d3d3")
+        self.res_label = tk.Label(self, text=LANGUAGE[self.current_language]["resolution"], bg=self.background_color)
         self.res_label.grid(row=0, column=2, padx=10, pady=10, sticky="e")
 
         self.res_combo = ttk.Combobox(self, state="readonly", values=["27\"", "9\""], height=2, width=3)

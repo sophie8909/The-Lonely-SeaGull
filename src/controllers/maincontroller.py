@@ -1,7 +1,8 @@
 # Controller.py
 import tkinter as tk
 
-from models.language import LANGUAGE
+from PIL import Image, ImageTk
+
 from controllers.base import BaseController
 from controllers.custormerController import CustomerController
 from controllers.loginController import LoginController
@@ -86,6 +87,12 @@ class MainController(BaseController):
         print("screen_height:", h)
         print("x:", x)
         print("y:", y)
+
+        self.image = Image.open("../assets/boat.jpg")
+        # Resize the image using resize() method
+        self.resize_image = self.image.resize((w, h))
+        self.img = ImageTk.PhotoImage(self.resize_image)
+        self.current_controller.frame.login_background_label.configure(image=self.img)
 
         # disable the buttons if they are not at the correct tablet, depending on the view
         if self.current_controller == self.customer_controller:

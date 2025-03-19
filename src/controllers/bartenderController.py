@@ -50,7 +50,9 @@ class BartenderController(BaseController):
 
         self.load_menu()
         self.update_menu()
-        self.frame.bartender_panel.update_table(self.table_data)
+
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
+        self.frame.bartender_panel.update_table(self.table_data, language_window)
 
     def create_bartender_widgets(self, current_language, current_resolution, current_controller):
         print("Create bartender widgets")
@@ -71,16 +73,19 @@ class BartenderController(BaseController):
         self.menu_list = menu_data
 
     def table_data_changed(self, event):
+        language_window = self.main_controller.update_language(lambda e: self.main_controller.update_language)
         self.table_data = self.frame.bartender_panel.get_values()
         print("Table data changed", self.table_data)
-        self.frame.bartender_panel.update_value(self.table_data)
+        self.frame.bartender_panel.update_value(self.table_data, language_window)
 
     def item_removed(self, table_id, item_id):
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         self.table_data[table_id].pop(item_id)
-        self.frame.bartender_panel.update_table(self.table_data)
+        self.frame.bartender_panel.update_table(self.table_data, language_window)
 
     # when click show item detail on the right side and can modify the information
     def add_cart_item(self, product_card):
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         print("Add to cart", product_card.product["Name"])
         table_id = self.frame.bartender_panel.current_table
         item_name = product_card.product["Name"]
@@ -89,18 +94,20 @@ class BartenderController(BaseController):
         item_reason = "Normal"
         item_comment = ""
         self.table_data[table_id].append({"item": item_name, "amount": item_amount, "price": item_price, "reason": item_reason, "comment": item_comment})
-        self.frame.bartender_panel.update_table(self.table_data, table_id)
+        self.frame.bartender_panel.update_table(self.table_data, language_window, table_id)
 
     def single_payment(self):
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         table_id = self.frame.bartender_panel.current_table
-        msg = LANGUAGE[self.current_language]["total"] + " " + str(sum([item["price"] for item in self.table_data[table_id]])) + " SEK"
-        messagebox.showinfo(LANGUAGE[self.current_language]["checkout"], msg)
+        msg = LANGUAGE[language_window]["total"] + " " + str(sum([item["price"] for item in self.table_data[table_id]])) + " SEK"
+        messagebox.showinfo(LANGUAGE[language_window]["checkout"], msg)
 
     def group_payment(self):
+        language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         table_id = self.frame.bartender_panel.current_table
         total_amount = sum(item["price"] for item in self.table_data[table_id])
-        people_count = askinteger("Group Payment", f"{LANGUAGE[self.current_language]['enter number of people']}:", parent=self.tk_root, minvalue=1)
-        messagebox.showinfo(LANGUAGE[self.current_language]["checkout"], f"{LANGUAGE[self.current_language]['total']}: {total_amount:.2f} SEK\n{LANGUAGE[self.current_language]['each pay']}: {total_amount/people_count:.2f} SEK")
+        people_count = askinteger("Group Payment", f"{LANGUAGE[language_window]['enter number of people']}:", parent=self.tk_root, minvalue=1)
+        messagebox.showinfo(LANGUAGE[language_window]["checkout"], f"{LANGUAGE[language_window]['total']}: {total_amount:.2f} SEK\n{LANGUAGE[language_window]['each pay']}: {total_amount/people_count:.2f} SEK")
 
     def search_product(self):
         search_text = self.frame.search_entry.get()
@@ -110,7 +117,7 @@ class BartenderController(BaseController):
         else:
             products_list = [product for product in self.menu_list if search_text.lower() in product["Name"].lower()]
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
-        self.frame.update_menu(products_list, language_window, self.select_item_click)
+        self.frame.update_menu(products_list, language_window, self.add_cart_item)
 
     def switch_filter(self, filter_text):
         print("Filtering products for", filter_text)

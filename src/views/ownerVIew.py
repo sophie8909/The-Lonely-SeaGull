@@ -134,6 +134,11 @@ class OwnerView(BaseView):
         self.owner_panel.remove_menu_item_button.config(text=LANGUAGE[current_lgn]["remove item from menu"])
         self.owner_panel.hide_menu_item_button.config(text=LANGUAGE[current_lgn]["hide item"])
         self.owner_panel.order_refill_button.config(text=LANGUAGE[current_lgn]["order refill"])
+        self.owner_panel.item.item_name_label.config(text=LANGUAGE[current_lgn]["name"])
+        self.owner_panel.item.filter_label.config(text=LANGUAGE[current_lgn]["filter"])
+        self.owner_panel.item.price_label.config(text=LANGUAGE[current_lgn]["price"])
+        self.owner_panel.item.stock_label.config(text=LANGUAGE[current_lgn]["stock"])
+        self.owner_panel.item.update_btn.config(text=LANGUAGE[current_lgn]["update"])
 
     def update_menu(self, products, current_lgn, select_item_callback=None):
         for widget in self.product_frame.winfo_children():

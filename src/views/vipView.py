@@ -53,3 +53,5 @@ class VIPView(CustomerView):
         self.welcome_label.config(text=LANGUAGE[current_lgn]["welcome"])
         self.vip_balance_label.config(text=LANGUAGE[current_lgn]["account balance"])
         self.add_to_balance_button.config(text=LANGUAGE[current_lgn]["add to balance"])
+        self.vip_code_label.config(text=LANGUAGE[current_lgn]["vip code"])
+        self.get_vip_code_button.config(text=LANGUAGE[current_lgn]["get vip code"])

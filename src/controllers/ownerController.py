@@ -53,8 +53,6 @@ class OwnerController(BaseController):
 
         self.owner_view_setup()
 
-    def hide_widgets(self):
-        pass
 
     def destroy_widgets(self):
         self.frame.destroy()

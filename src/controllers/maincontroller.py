@@ -39,7 +39,7 @@ class MainController(BaseController):
             self.current_controller.hide_login_widgets()
         elif self.current_controller == self.customer_controller:
             self.current_controller.create_customer_widgets(self.current_language, self.current_resolution)
-            self.current_controller.hide_widgets()
+
             # should maintain the same button status, even if we switch between the views
             if self.current_resolution == 1:
                 self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.DISABLED
@@ -47,7 +47,6 @@ class MainController(BaseController):
                 self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.NORMAL
         elif self.current_controller == self.vip_controller:
             self.current_controller.create_vip_widgets(self.current_language, self.current_resolution)
-            self.current_controller.hide_widgets()
             # should maintain the same button status, even if we switch between the views
             if self.current_resolution == 1:
                 self.current_controller.frame.shopping_cart_widget.confirm_btn["state"] = tk.NORMAL
@@ -57,10 +56,8 @@ class MainController(BaseController):
                 self.current_controller.frame.add_to_balance_button["state"] = tk.NORMAL
         elif self.current_controller == self.bartender_controller:
             self.current_controller.create_bartender_widgets(self.current_language, self.current_resolution, self.current_controller)
-            self.current_controller.hide_widgets()
         elif self.current_controller == self.owner_controller:
             self.current_controller.create_owner_widgets(self.current_language, self.current_resolution)
-            self.current_controller.hide_widgets()
 
     # Method used to handle different display size setting
     def change_res(self, event):

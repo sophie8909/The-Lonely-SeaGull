@@ -7,15 +7,22 @@ UU Spring 2025 UIP1
 ## 📌 Project Dependencies & Setup
 
 - **Languages / Technologies Used:**
-  - Python
+  - Python with tkinter
+  
+    
+  
 - **Framework/Structure:**
+  
   - Follows the **MVC** pattern
+  
 - **Start File:**
   - `main.py` (located at src/)
+  
 - **How to Run:**
   1. Clone the repo:  
      `git clone https://github.com/sophie8909/The-Lonely-SeaGull.git`
-  2. run `python main.py`
+  2. install dependencies packages with run `pip install -r requirements.txt`
+  3. run `python main.py`
 
 ---
 

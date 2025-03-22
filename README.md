@@ -35,12 +35,12 @@ Chatbot usage has been limited to support and understanding, **not to generate f
 ### ⏱ Time Reporting
 
 #### Group Name: The-Lonely-SeaGull
-_Group total estimated time spent:_ **xx hours**
+_Group total estimated time spent:_ **138 hr**
 
 | Member           | Github Username | Tasks Contributed                                                | Time (hrs) |
 |------------------|-|-----------------------------------------------------------------|------------|
 | Ting-Hsuan Lien | Sophie8909 | View programming, Controller programming (owner, VIP), Git management   | 34        |
-| Jung Shiao | kizato1018 | Controller programming, drag-and-drop, undo-redo | 23        |
+| Jung Shiao | kizato1018 | Programming, drag-and-drop, undo-redo | 23        |
 | Darius Loga | aDrius19 | UI design, multi-language control | 69        |
 |Yuxi Liu||UI design|12|
 

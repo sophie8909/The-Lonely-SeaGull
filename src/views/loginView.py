@@ -1,29 +1,60 @@
+# =============================================================================
+# loginView.py
+# =============================================================================
+# @AUTHOR: Ting-Hsuan Lien, Jung Shiao, Darius Loga, Yuxie Liu
+# @VERSION: X.0
+# @DATE: latest edit - 23.03.2025
+#
+# @PURPOSE: The login view with all the widgets for the whole system
+# =======================================================
+
+# Import the necessary libraries
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 
+# Local imports
 from models.language import LANGUAGE
 from views.baseView import BaseView
 from views.components.settings import Settings
 
 
 class LoginView(BaseView):
-    def __init__(self, parent, current_language, current_resolution):
-        super().__init__(parent, current_language, current_resolution)
+    """ The login view class
 
+        Here are all the widgets that are going to be available for the login view
+
+        Attributes:
+            BaseView: the inherited class BaseView
+    """
+
+    def __init__(self, parent, current_language, current_resolution):
+        """ Initial method
+
+            Args:
+                parent: used to get the tk window/frame
+                current_language: used to get the current language of the system
+                current_resolution: used to get the current resolution of the window
+        """
+
+        super().__init__(parent, current_language, current_resolution) # inherit from BaseView
+
+        # trying to use the style functionality from tkinter, working only for ttk components
         style = ttk.Style()
         style.configure("BTN.TButton", background=self.light_green_label, foreground=self.green_button, font=self.default_font, relief="flat")
 
-        # Show background image using label
-        # Read the Image - do it in the change_res method
+        # Load an image to be used as background
+        # Did it also in the change_res method from MainController
+        # resolution not being direct proportional to the screen display
         self.image = Image.open("./assets/boat.jpg")
         screen_width = int(parent.winfo_screenwidth())
         screen_height = int(parent.winfo_screenheight() - (0.036 * parent.winfo_screenheight()))
 
         # Resize the image using resize() method
         self.resize_image = self.image.resize((screen_width, screen_height))
-
         self.img = ImageTk.PhotoImage(self.resize_image)
+
+        # Setting the background image to the window frame
         self.login_background_label = tk.Label(self, image=self.img)
         self.login_background_label.place(x=-2, y=-2)
 
@@ -47,7 +78,7 @@ class LoginView(BaseView):
         self.password_entry = ttk.Entry(self.frame, width=25, show="*", font=self.default_font)
         self.password_entry.grid(row=2, column=1, padx=10, pady=10)
 
-        # Buttons
+        # Frame for some buttons
         self.btn_frame = tk.Frame(self.frame, bg=self.primary_color)
         self.btn_frame.grid(row=3, column=0, columnspan=3, pady=10)
 
@@ -59,11 +90,16 @@ class LoginView(BaseView):
         self.guest_button.pack(side="right")
 
         # Added the view for language and display size settings
-        self.settings_widget = Settings(self, self.dark_green, self.primary_color, self.default_font, self.current_language, self.current_resolution)
+        self.settings_widget = Settings(self, self.current_language, self.current_resolution)
         self.settings_widget.pack(side="top", anchor="e")
 
     def update_login_language(self, current_lgn):
-        """Update UI text based on selected language"""
+        """ Update UI text based on selected language
+
+            Args:
+                current_lgn: current language of the system
+        """
+
         self.settings_widget.language_label.config(text=LANGUAGE[current_lgn]["language"])
         self.settings_widget.res_label.config(text=LANGUAGE[current_lgn]["resolution"])
         self.settings_widget.logout_button.config(text=LANGUAGE[current_lgn]["logout"])

@@ -17,7 +17,18 @@ UU Spring 2025 UIP1
      `git clone https://github.com/sophie8909/The-Lonely-SeaGull.git`
   2. install dependencies packages with run `pip install -r requirements.txt`
   3. run `python main.py`
-
+- **User credentials used to login:**
+  1. For customer user: 
+     1. **no login**
+  2. For VIP user:
+     1. username: **user**
+     2. password: **pw**
+  3. For bartender/waiter user:
+     1. username: **waiter**
+     2. password: **pw**
+  4. For owner user:
+     1. username: **owner**
+     2. password: **pw**
 ---
 
 ### 🧠 Use of Chatbots (e.g., ChatGPT)
@@ -54,5 +65,5 @@ _Group total estimated time spent:_ **138 hr**
 - Owner login and manager stock
 - Undo/Redo for adding/removing orders and people
 - Drag and drop ordering with fallback buttons
-- Multilingual interface (3 languages: English, Chinese, Română)
+- Multilingual interface (3 languages: English, Chinese, Romanian)
 - Works on both 9" and 27" screens (resizable layout)

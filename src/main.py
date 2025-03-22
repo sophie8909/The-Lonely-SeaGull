@@ -12,7 +12,7 @@
 import tkinter as tk
 
 # Local imports
-from controllers.maincontroller import MainController
+from controllers.mainController import MainController
 
 def main():
     """ Function to start the whole application logic """

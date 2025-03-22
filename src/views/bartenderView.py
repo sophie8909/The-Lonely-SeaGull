@@ -1,4 +1,17 @@
+# =============================================================================
+# bartenderView.py
+# =============================================================================
+# @AUTHOR: Ting-Hsuan Lien, Jung Shiao, Darius Loga, Yuxie Liu
+# @VERSION: X.0
+# @DATE: latest edit - 23.03.2025
+#
+# @PURPOSE: The bartender view with all the widgets for the whole system
+# =======================================================
+
+# Import the necessary libraries
 import tkinter as tk
+
+# Local imports
 from views.components.product_card_manager import ProductCardManager
 from views.components.bartender_panel import BartenderPanel
 from views.components.settings import Settings
@@ -7,10 +20,28 @@ from models.language import LANGUAGE
 
 
 class BartenderView(BaseView):
+    """ The bartender view class
+
+        Here are all the widgets that are going to be available for the bartender view
+
+        Attributes:
+            BaseView: the inherited class BaseView
+    """
+
     def __init__(self, parent, current_language, current_resolution, controller):
-        super().__init__(parent, current_language, current_resolution)
-        self.controller = controller  
-        self.create_widgets()
+        """ Initial method
+
+            Args:
+                parent: used to get the tk window/frame
+                current_language: used to get the current language of the system
+                current_resolution: used to get the current resolution of the window
+                controller: used to get the bartender controller
+        """
+
+        super().__init__(parent, current_language, current_resolution) # inherit from BaseView
+        self.controller = controller
+
+        self.create_widgets() # separate method to call here to add all the necessary widgets
 
     def create_widgets(self):
         """Create all widgets for bartender view"""
@@ -23,8 +54,8 @@ class BartenderView(BaseView):
         self.content_frame = tk.Frame(self.main_frame, bg=self.background_color)
         self.content_frame.pack(side="left", fill="both", expand=True)
 
-
-        # --- Search Box ---
+        # Create search bar
+        # Constructor used for the search entry widget
         self.search_entry_name = tk.StringVar()
         self.search_frame = tk.Frame(self.content_frame, bg=self.background_color, height=45)
         self.search_frame.pack(fill="x", pady=10)
@@ -40,11 +71,11 @@ class BartenderView(BaseView):
                                        font=self.default_font, activebackground="#034d91")
         self.search_button.pack(side="right", ipady=6)
 
-        # switch menu button food and beer
+        # Switch menu button food and beer
         self.switch_menu_frame = tk.Frame(self.content_frame, bg=self.background_color)
         self.switch_menu_frame.pack(fill="x", pady=10)
 
-        # two buttons split the frame in half
+        # Two buttons split the frame in half
         self.beverages_button = tk.Button(self.switch_menu_frame, text=LANGUAGE[self.current_language]["beverages"], bg=self.primary_color, fg="white", bd=1,
                                         font=self.default_font, activebackground="#034d91")
         self.beverages_button.pack(side="left", expand=True, fill="both", ipady=6)
@@ -56,7 +87,6 @@ class BartenderView(BaseView):
         self.filter_frame = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
         self.filter_frame.pack(fill="x", pady=10)
 
-
         # --- Product grid with scrollbar ---
         # Create a frame to hold canvas and scrollbar
         self.product_frame_container = tk.Frame(self.content_frame, bg=self.content_frame["bg"])
@@ -66,7 +96,7 @@ class BartenderView(BaseView):
         self.product_canvas = tk.Canvas(self.product_frame_container, bg=self.content_frame["bg"], highlightthickness=0)
         self.product_canvas.pack(side="left", fill="both", expand=True)
 
-        # set the number of columns in the product grid
+        # Set the number of columns in the product grid
         self.product_card_col_num = 2
         self.filter_col_num = 4
 
@@ -96,20 +126,18 @@ class BartenderView(BaseView):
         self.product_canvas.bind_all("<Button-5>", lambda e: self.product_canvas.yview_scroll(1, "units"))   # For Linux
         # --- End of product grid with scrollbar ---
 
-
-        # middle frame
+        # Middle frame
         self.middle_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=25, pady=10)
         self.middle_frame.pack(side="left", fill="both", expand=True)
 
         self.detail_label = tk.Label(self.middle_frame, text=LANGUAGE[self.current_language]["information"], font=self.header_font, bg=self.primary_color, fg="white")
         self.detail_label.pack(side="top", fill="both")
 
-        # detail info frame
+        # Detail info frame
         self.detail_frame = tk.Frame(self.middle_frame, bg=self.background_color, padx=10, pady=10)
         self.detail_frame.pack(side="top", fill="both", expand=True)
 
-
-        # right side of the main frame
+        # Right side of the main frame
         self.right_frame = tk.Frame(self.main_frame, bg=self.background_color, padx=10, pady=10)
         self.right_frame.pack(side="right", fill="y", expand=False)
 
@@ -117,11 +145,17 @@ class BartenderView(BaseView):
         self.settings_widget = Settings(self.right_frame, self.current_language, self.current_resolution)
         self.settings_widget.pack(side="top", anchor="e")
 
+        # Bartender specific component
         self.bartender_panel = BartenderPanel(self.right_frame, self.current_language, self.current_resolution)
         self.bartender_panel.pack(fill="both", expand=True)
 
     def update_bartender_language(self, current_lgn):
-        """Update UI text based on selected language"""
+        """ Update UI text based on selected language
+
+            Args:
+                current_lgn: current language of the system
+        """
+
         self.settings_widget.language_label.config(text=LANGUAGE[current_lgn]["language"])
         self.settings_widget.res_label.config(text=LANGUAGE[current_lgn]["resolution"])
         self.settings_widget.logout_button.config(text=LANGUAGE[current_lgn]["logout"])
@@ -137,45 +171,61 @@ class BartenderView(BaseView):
         self.bartender_panel.group_payment_button.config(text=LANGUAGE[current_lgn]["group payment"])
 
     def update_menu(self, products, current_lgn, select_item_callback=None):
-        """Update the product grid based on the products data"""
+        """ Update the product grid based on the products data
+
+            Args:
+                products: all the possible products
+                current_lgn: current language
+                select_item_callback: callback function that will be called when cart is added
+        """
+
         # Clear existing product items
         for widget in self.product_frame.winfo_children():
             widget.destroy()
 
+        # List of product widgets
         self.products_widget=[]
+
         # Create a grid of product items
         row = 0
         col = 0
 
-        # Create product cards
+        # Create the product card for each of the items in the menu in a grid style
         for product in products:
             product_widget = ProductCardManager(self.product_frame, row, col,
                                          self.background_color, self.primary_color, self.default_font,
                                          product, self.detail_frame,
                                          current_lgn,
                                          click_callback=select_item_callback)
+
             self.products_widget.append(product_widget)
             col += 1
+
+            # Switch to a new row
             if col >= self.product_card_col_num:
                 col = 0
                 row += 1
 
     def update_filter(self, filter_data, current_lgn):
         """Update the filter buttons based on the filter data
-        Args:
-            filter_data (dict): Filter data dictionary
-            current_lgn (str): Current language
+
+            Args:
+                filter_data: filter data
+                current_lgn: current language of the system
         """
+
         # Clear existing filter buttons
         for widget in self.filter_frame.winfo_children():
             widget.destroy()
 
-        # Filter buttons
+        # List of filter buttons
         self.filter_buttons = []
+
+        # Create a grid of filter buttons
         row = 0
         col = 0
 
-        # Create filter buttons
+        # Creating the filter label and buttons in a grid style
         for filter_name in list(filter_data):
             btn_frame = tk.Frame(self.filter_frame)
             btn_frame.grid(row=row, column=col, sticky="n", padx=5)
@@ -199,9 +249,11 @@ class BartenderView(BaseView):
                                       bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
                                       padx=10, pady=5, font=self.default_font)
             filter_button.pack(side="left")
+
             self.filter_buttons.append(filter_button)
             col += 1
 
+            # Switch to a new row
             if col >= self.filter_col_num:
                 col = 0
                 row += 1

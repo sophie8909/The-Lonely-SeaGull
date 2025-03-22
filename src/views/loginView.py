@@ -51,6 +51,7 @@ class LoginView(BaseView):
         self.btn_frame = tk.Frame(self.frame, bg=self.primary_color)
         self.btn_frame.grid(row=3, column=0, columnspan=3, pady=10)
 
+        # Login and Guest buttons
         self.login_button = ttk.Button(self.btn_frame, text=LANGUAGE[self.current_language]["login"], style="BTN.TButton")
         self.login_button.pack(side="left")
 
@@ -58,7 +59,7 @@ class LoginView(BaseView):
         self.guest_button.pack(side="right")
 
         # Added the view for language and display size settings
-        self.settings_widget = Settings(self, self.current_language, self.current_resolution)
+        self.settings_widget = Settings(self, self.dark_green, self.primary_color, self.default_font, self.current_language, self.current_resolution)
         self.settings_widget.pack(side="top", anchor="e")
 
     def update_login_language(self, current_lgn):

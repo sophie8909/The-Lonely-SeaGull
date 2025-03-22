@@ -56,7 +56,7 @@ class ProductCardManager(ProductCard):
                                   fg=primary_color)
         self.num_label.pack(side="left", fill="both", expand=True)
         # Label to display the "items left" text
-        self.left_num_label = tk.Label(self.left_num_frame, 
+        self.left_num_label = tk.Label(self.left_num_frame,
                                        text=LANGUAGE[self.current_language]["items left"], 
                                        font=default_font, 
                                        bg=background_color, 

@@ -29,6 +29,7 @@ class CustomerController(BaseController):
         self.current_menu = LANGUAGE[self.current_language]["beverages"]
 
     def customer_view_setup(self):
+        """ Setup the customer view """
         self.frame.shopping_cart_widget.set_on_drop(self.add_cart_item)
         self.frame.shopping_cart_widget.set_current_person_command(self.set_current_person)
         self.frame.shopping_cart_widget.set_remove_person_command(self.remove_person)
@@ -62,8 +63,6 @@ class CustomerController(BaseController):
         self.frame.destroy()
         self.frame = None
 
-    def hide_widgets(self):
-        pass
 
     def search_product(self):
         print("Searching for product")

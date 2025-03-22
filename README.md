@@ -8,16 +8,10 @@ UU Spring 2025 UIP1
 
 - **Languages / Technologies Used:**
   - Python with tkinter
-  
-    
-  
 - **Framework/Structure:**
-  
   - Follows the **MVC** pattern
-  
 - **Start File:**
   - `main.py` (located at src/)
-  
 - **How to Run:**
   1. Clone the repo:  
      `git clone https://github.com/sophie8909/The-Lonely-SeaGull.git`
@@ -45,10 +39,10 @@ _Group total estimated time spent:_ **xx hours**
 
 | Member           | Github Username | Tasks Contributed                                                | Time (hrs) |
 |------------------|-|-----------------------------------------------------------------|------------|
-| Ting-Hsuan Lien | Sophie8909 | View programming, Controller programming (owner, VIP), Git management   | xx         |
-| Jung Shiao | kizato1018 | Controller programming, drag-and-drop, undo-redo | xx         |
-| Darius Loga | aDrius19 | UI design, multi-language control | xx         |
-|Yuxi Liu||UI design||
+| Ting-Hsuan Lien | Sophie8909 | View programming, Controller programming (owner, VIP), Git management   | 34        |
+| Jung Shiao | kizato1018 | Controller programming, drag-and-drop, undo-redo | 23        |
+| Darius Loga | aDrius19 | UI design, multi-language control | 69        |
+|Yuxi Liu||UI design|12|
 
 ---
 

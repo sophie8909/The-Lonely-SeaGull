@@ -1,7 +1,6 @@
-from typing import List, Optional
 import json
+from typing import List, Optional
 
-from controllers.base import BaseController
 from models.models import User
 
 

@@ -1,3 +1,13 @@
+# =============================================================================
+# menu.py
+# =============================================================================
+# @AUTHOR: Ting-Hsuan Lien, Yuxie Liu
+# @VERSION: X.0
+# @DATE: latest edit - 23.03.2025
+#
+# @PURPOSE: List to store all the items from the menu (beverages from all
+# three types, foods)
+# =======================================================
 menu = [
     {
         "Name": "Wagyu Beef Sliders",

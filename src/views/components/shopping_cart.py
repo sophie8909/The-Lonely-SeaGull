@@ -6,9 +6,7 @@ from views.baseView import BaseView
 class ShoppingCart(BaseView):
     def __init__(self, master, current_language, current_resolution):
         super().__init__(master, current_language, current_resolution)
-        # self.background_color = background_color
-        # self.primary_color = primary_color
-        # self.default_font = default_font
+
         self.current_language = current_language
         self.current_resolution = current_resolution
 

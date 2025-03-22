@@ -1,3 +1,13 @@
+# =============================================================================
+# language.py
+# =============================================================================
+# @AUTHOR: Ting-Hsuan Lien, Yuxie Liu, Jung Shiao, Darius Loga
+# @VERSION: X.0
+# @DATE: latest edit - 23.03.2025
+#
+# @PURPOSE: Dictionary to change between different language available for the
+# application
+# =======================================================
 LANGUAGE = {
     "English": {
         "index": "0",

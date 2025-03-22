@@ -114,7 +114,7 @@ class BartenderView(BaseView):
         self.right_frame.pack(side="right", fill="y", expand=False)
 
         # Added the view for language and display size settings
-        self.settings_widget = Settings(self.right_frame, self.background_color, self.primary_color, self.default_font, self.current_language, self.current_resolution)
+        self.settings_widget = Settings(self.right_frame, self.current_language, self.current_resolution)
         self.settings_widget.pack(side="top", anchor="e")
 
         self.bartender_panel = BartenderPanel(self.right_frame, self.current_language, self.current_resolution)

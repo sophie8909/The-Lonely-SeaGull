@@ -245,22 +245,19 @@ class OwnerPanel(BaseView):
         )
         self.order_refill_button.grid(row=1, column=1, sticky="nsew", padx=5, pady=5)
 
-    def update(self, tables):
-        """
-        Update the table data
-        
-        Args:
-            tables (list): List of dictionaries containing table data
-            e.g. [{'data': [{'item': 'item1', 'price': 10, 'comment': 'comment1'}, {'item': 'item2', 'price': 20, 'comment': 'comment2'}], 'total': 30}]
-        """
-        self._clear_tables()
-        for i, table in enumerate(tables):
-            data = table['data']
-            total = table['total']
-            self._add_table(i+1, data, total)
     
     # pop_up_window with confirm button
-    def pop_up_window(self, title, message, confirm_text, confirm_command):
+    def pop_up_window(self, title: str, message: str, confirm_text: str, confirm_command: callable):
+        """Create a pop-up window with a message and a confirm button"""
+        """
+        Args:
+        title (str): Title of the pop-up window
+        message (str): Message to display in the pop-up window
+        confirm_text (str): Text to display on the confirm button
+        confirm_command (function): Function to execute when the confirm button is clicked
+        """
+
+        # Create a new pop-up window
         pop_up = tk.Toplevel()
         pop_up.title(title)
         pop_up.geometry("400x300")
@@ -276,7 +273,7 @@ class OwnerPanel(BaseView):
         y = (screen_height/2) - (pop_up_height/2)
         pop_up.geometry("%dx%d+%d+%d" % (pop_up_width, pop_up_height, x, y))
 
-
+        # Add message to the pop_up window
         message_label = tk.Label(pop_up, text=message, font=self.default_font)
         message_label.pack(pady=10)
 
@@ -288,6 +285,7 @@ class OwnerPanel(BaseView):
                                    fg="white")
         confirm_button.pack(side='bottom', anchor='center', pady=10)
 
+        # Bind the confirm button to the confirm_command
         confirm_button.config(command=lambda: [confirm_command(), pop_up.destroy()])
         
 
@@ -295,8 +293,11 @@ class OwnerPanel(BaseView):
 if __name__ == "__main__":
     
     root = tk.Tk()
-    root.title("Bartender Panel")
-    panel = OwnerPanel(root, "English", 1)
-    panel.pack(fill='both', expand=True, padx=10, pady=10)
-    panel.update([{'data': [{'item': 'item1', 'price': 10, 'comment': 'comment1'}, {'item': 'item2', 'price': 20, 'comment': 'comment2'}], 'total': 30}])
+    root.title("Owner Panel")
+    root.geometry("800x600")
+    root.resizable(False, False)
+
+    owner_panel = OwnerPanel(root, "en", "800x600")
+    owner_panel.pack(fill='both', expand=True)
+
     root.mainloop()

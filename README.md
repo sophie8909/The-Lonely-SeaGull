@@ -42,7 +42,7 @@ _Group total estimated time spent:_ **138 hr**
 | Ting-Hsuan Lien | Sophie8909 | View programming, Controller programming (owner, VIP), Git management   | 34        |
 | Jung Shiao | kizato1018 | Programming, drag-and-drop, undo-redo | 23        |
 | Darius Loga | aDrius19 | UI design, multi-language control | 69        |
-|Yuxi Liu||UI design|12|
+|Yuxi Liu| atlas061 |UI design|26|
 
 ---
 

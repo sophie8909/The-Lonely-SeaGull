@@ -137,6 +137,8 @@ class BartenderView(BaseView):
         self.bartender_panel.group_payment_button.config(text=LANGUAGE[current_lgn]["group payment"])
 
     def update_menu(self, products, current_lgn, select_item_callback=None):
+        """Update the product grid based on the products data"""
+        # Clear existing product items
         for widget in self.product_frame.winfo_children():
             widget.destroy()
 
@@ -145,6 +147,7 @@ class BartenderView(BaseView):
         row = 0
         col = 0
 
+        # Create product cards
         for product in products:
             product_widget = ProductCardManager(self.product_frame, row, col,
                                          self.background_color, self.primary_color, self.default_font,
@@ -158,7 +161,11 @@ class BartenderView(BaseView):
                 row += 1
 
     def update_filter(self, filter_data, current_lgn):
-        """Update the filter buttons based on the filter data"""
+        """Update the filter buttons based on the filter data
+        Args:
+            filter_data (dict): Filter data dictionary
+            current_lgn (str): Current language
+        """
         # Clear existing filter buttons
         for widget in self.filter_frame.winfo_children():
             widget.destroy()
@@ -168,10 +175,12 @@ class BartenderView(BaseView):
         row = 0
         col = 0
 
+        # Create filter buttons
         for filter_name in list(filter_data):
             btn_frame = tk.Frame(self.filter_frame)
             btn_frame.grid(row=row, column=col, sticky="n", padx=5)
             
+            # Set button colors based on active state
             if filter_data[filter_name]["active"]:
                 btn_bg = self.light_primary
                 btn_fg = self.primary_color
@@ -181,9 +190,11 @@ class BartenderView(BaseView):
                 btn_fg = self.dark_text
                 icon_color = self.light_icon
 
+            # Create icon label
             icon_label = tk.Label(btn_frame, text=filter_data[filter_name]["icon"], fg=icon_color, bg=btn_bg)
             icon_label.pack(side="left", padx=2)
 
+            # Create filter button
             filter_button = tk.Button(btn_frame, text=LANGUAGE[current_lgn][filter_name],
                                       bg=btn_bg, fg=btn_fg, bd=1, relief="solid",
                                       padx=10, pady=5, font=self.default_font)

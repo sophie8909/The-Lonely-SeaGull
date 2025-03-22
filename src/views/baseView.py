@@ -4,6 +4,9 @@ from models.style import style
 
 
 class BaseView(tk.Frame):
+    """ Base class for all views in the application
+    This class contains the default font and color settings for the application
+    """
     def __init__(self, parent, current_language, current_resolution, *args, **kwargs):
         super().__init__(parent, bg=style["background_color"], *args, **kwargs)
 

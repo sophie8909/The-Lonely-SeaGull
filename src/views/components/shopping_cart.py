@@ -75,6 +75,13 @@ class ShoppingCart(BaseView):
         self.total_price_label.pack(fill="x", pady=0, side="right", anchor="center")
 
     def _add_person(self, person_frame, person_id, current_lgn, total=0):
+        """ Add a person to the cart 
+        Args:
+        person_frame: tk.Frame: The frame to add the person to
+        person_id: int: The id of the person
+        current_lgn: str: The current language
+        total: float: The total amount of the person's cart
+        """
         person_container = tk.Frame(person_frame, bg=self.light_gray, pady=5, padx=10)
         person_container.pack(fill="x", pady=10)
 
@@ -96,6 +103,12 @@ class ShoppingCart(BaseView):
         self.person_top.append(person_container)
 
     def _add_item(self, item_name, price, amount=1):
+        """ Add an item to the cart
+        Args:
+        item_name: str: The name of the item
+        price: float: The price of the item
+        amount: int: The amount of the item
+        """
         item_frame = tk.Frame(self.items_frame, bg=self.background_color, pady=0, padx=0)
         item_frame.pack(fill="x", side="top")
         item_name_label = tk.Label(item_frame, text=item_name, bg=self.background_color, font=("Inter", 12))

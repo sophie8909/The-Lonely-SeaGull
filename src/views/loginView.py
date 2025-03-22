@@ -51,7 +51,7 @@ class LoginView(BaseView):
         self.btn_frame = tk.Frame(self.frame, bg=self.primary_color)
         self.btn_frame.grid(row=3, column=0, columnspan=3, pady=10)
 
-        # 用 tk.Button 替代 ttk.Button 來方便設計樣式
+        # Login and Guest buttons
         self.login_button = ttk.Button(self.btn_frame, text=LANGUAGE[self.current_language]["login"], style="BTN.TButton")
         self.login_button.pack(side="left")
 

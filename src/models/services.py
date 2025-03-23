@@ -1,14 +1,30 @@
+# =============================================================================
+# services.py
+# =============================================================================
+# @AUTHOR: Ting-Hsuan Lien, Jung Shiao
+# @VERSION: X.0
+# @DATE: latest edit - 23.03.2025
+#
+# @PURPOSE: Services used for the Users, CustomerData and OwnerData
+# =======================================================
+
+# Import the necessary libraries
 import json
 from typing import List, Optional
 
+# Local libraries
 from models.models import User
 
 
 # In-memory store simulation
 class UsersService:
+    """ CRUD operations for users, only get_user method
+        is used in the project
+    """
+
     _users: List[User] = []
     _data_path = ''
-    
+
     @classmethod
     def __init__(cls, file_path) -> None:
         cls._data_path = file_path
@@ -60,6 +76,8 @@ class UsersService:
         return False
     
 class CustomerControllerDataService:
+    """ Methods to return a print in the console with some details about the customer data """
+
     shopping_cart = None
     current_person = None
     person_count = None

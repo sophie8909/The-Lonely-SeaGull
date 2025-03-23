@@ -1,18 +1,47 @@
+# =============================================================================
+# ownerController.py
+# =============================================================================
+# @AUTHOR: Ting-Hsuan Lien, Jung Shiao
+# @VERSION: X.0
+# @DATE: latest edit - 23.03.2025
+#
+# @PURPOSE: Controller for the owner user view and model
+# =======================================================
+
+# Import the necessary libraries
+
+# Local imports
 from controllers.base import BaseController
 from models.models import OwnerData
 from views.ownerVIew import OwnerView
-
 from models.language import LANGUAGE
-
 from models.filters import allergens_dict, beverage_filter_data
 from models.menu import menu as menu_data
 
 
 class OwnerController(BaseController):
+    """ The owner controller class
+
+        Specific methods available for the owner user controller.
+
+        Attributes:
+            BaseController: the inherited class BaseController
+    """
+
     def __init__(self, tk_root, main_controller, current_language, current_resolution):
-        super().__init__(tk_root, current_language, current_resolution)
+        """ Initial method
+
+            Args:
+                tk_root: used to get the root tk window
+                main_controller: used to get the main controller
+                current_language: used to get the current language of the system
+                current_resolution: used to get the current resolution of the window
+        """
+
+        super().__init__(tk_root, current_language, current_resolution) # inherit from BaseController
 
         self.frame = None
+        # Constructor that interacts with the Owner data model
         self.data = OwnerData(cart=[])
         self.tk_root = tk_root
 
@@ -25,6 +54,8 @@ class OwnerController(BaseController):
         self.current_menu = LANGUAGE[self.current_language]["beverages"]
 
     def owner_view_setup(self):
+        """ Set up the owner view """
+
         # Left side
         self.frame.search_button.config(command=self.search_product)
         self.frame.beverages_button.config(command=lambda: self.switch_menu(LANGUAGE[self.current_language]["beverages"]))
@@ -47,12 +78,12 @@ class OwnerController(BaseController):
         self.update_menu()
 
     def create_owner_widgets(self, current_language, current_resolution):
+        """ Create owner widgets """
         print("Create owner widgets")
         self.frame = OwnerView(self.tk_root, current_language, current_resolution)
         self.frame.pack(fill="both", expand=True)
 
         self.owner_view_setup()
-
 
     def destroy_widgets(self):
         self.frame.destroy()
@@ -61,8 +92,8 @@ class OwnerController(BaseController):
     def load_menu(self):
         self.menu_list = menu_data
 
-    # when click show item detail on the right side and can modify the information
     def select_item_click(self, product_card):
+        """ When click show item detail on the right side and can modify the information """
         product = product_card.product
         self.frame.owner_panel.item.update(product)
         self.frame.owner_panel.item.set_add_active(True)
@@ -126,7 +157,7 @@ class OwnerController(BaseController):
         self.frame.update_menu(products_list, language_window, self.select_item_click)
         for filter_btn in self.frame.filter_buttons:
             filter_text = filter_btn.cget("text")
-            # not to complicate the logic of having too many duplicates in filter's dictionary
+            # works the same as language_window value but update the filter's button text
             eng_filter_text = [key for key, value in LANGUAGE[language_window].items() if value == filter_text]
             filter_btn.config(command=lambda text=eng_filter_text[0]: self.switch_filter(text))
 
@@ -161,11 +192,14 @@ class OwnerController(BaseController):
         self.update_menu()
 
     def add_item_to_menu_click(self):
+        """ Add item functionality """
         self.frame.owner_panel.item.product = None
         self.frame.owner_panel.item.set_add_active(True)
 
     def remove_item_from_menu_click(self):
+        """ Remove item functionality """
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
+        # Pop-up window to doubly confirm the deletion of an item
         self.frame.owner_panel.pop_up_window(
             title=LANGUAGE[language_window]["remove_item"],
             message="{}\n{}".format(self.frame.owner_panel.item.product["Name"], LANGUAGE[language_window]["remove_item_message"]),
@@ -174,20 +208,23 @@ class OwnerController(BaseController):
         )
 
     def remove_item(self):
+        """ Remove item click functionality """
         product = self.frame.owner_panel.item.product
         if product in self.menu_list:
-            self.menu_list.remove(product)
-        self.frame.owner_panel.item.update(None)
+            self.menu_list.remove(product) # remove from the menu list model
+        self.frame.owner_panel.item.update(None) # no update to items
         self.update_menu()
 
     def hide_item_click(self):
+        """ Hide item click functionality """
         product = self.frame.owner_panel.item.product
-        product["Hidden"] = not product["Hidden"]
+        product["Hidden"] = not product["Hidden"] # bool value to have the item hidden or not
         self.update_menu()
-        self.frame.owner_panel.item.update(product)
+        self.frame.owner_panel.item.update(product) # update in the menu and the product itself
 
     def order_refill_click(self):
+        """ Order refill click functionality """
         product = self.frame.owner_panel.item.product
-        product["Stock"] = str(int(product["Stock"])+10)
+        product["Stock"] = str(int(product["Stock"])+10) # increase the value in the item's model
         self.update_menu()
-        self.frame.owner_panel.item.update(product)
+        self.frame.owner_panel.item.update(product) # update in the menu and the product itself

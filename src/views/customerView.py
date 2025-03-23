@@ -101,7 +101,7 @@ class CustomerView(BaseView):
         # Inner frame to hold actual product widgets
         self.product_frame = tk.Frame(self.product_canvas, bg=self.content_frame["bg"])
 
-        # Create window inside canvas to hold the product frame
+        # Create a window inside canvas to hold the product frame
         self.product_canvas.create_window((0, 0), window=self.product_frame, anchor="nw")
 
         # Make sure canvas scrolls properly when frame content changes

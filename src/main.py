@@ -15,7 +15,7 @@ import tkinter as tk
 from controllers.mainController import MainController
 
 def main():
-    """ Function to start the whole application logic """
+    """ Function to start the whole application logic in a loop """
 
     root = tk.Tk()
     MainController(root, current_language="English", current_resolution=0)

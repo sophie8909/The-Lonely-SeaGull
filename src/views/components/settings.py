@@ -6,7 +6,7 @@
 # @DATE: latest edit - 23.03.2025
 #
 # @PURPOSE: Frame for the settings of the whole application (change language and
-# application display view)
+# the application display view)
 # =======================================================
 
 # Import the necessary libraries

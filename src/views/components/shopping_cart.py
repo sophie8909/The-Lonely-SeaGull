@@ -1,11 +1,40 @@
+# =============================================================================
+# shopping_cart.py
+# =============================================================================
+# @AUTHOR: Ting-Hsuan Lien, Jung Shiao
+# @VERSION: X.0
+# @DATE: latest edit - 23.03.2025
+#
+# @PURPOSE: The component for the CustomerView, VIPView
+# =======================================================
+
+# Import the necessary libraries
 import tkinter as tk
+
+# Local imports
 from models.language import LANGUAGE
 from views.baseView import BaseView
 
 
 class ShoppingCart(BaseView):
+    """ The shopping cart component view class
+
+        Here are all the widgets that are going to be available for the shopping card component view
+
+        Attributes:
+            BaseView: the inherited class BaseView
+    """
+
     def __init__(self, master, current_language, current_resolution):
-        super().__init__(master, current_language, current_resolution)
+        """ Initial method
+
+            Args:
+                master: used to get the tk window/frame
+                current_language: used to get the current language of the system
+                current_resolution: used to get the current resolution of the window
+        """
+
+        super().__init__(master, current_language, current_resolution) # inherit from BaseView
 
         self.current_language = current_language
         self.current_resolution = current_resolution
@@ -47,11 +76,12 @@ class ShoppingCart(BaseView):
                                bg=self.light_gray, font=("Inter", 12))
         self.redo_btn.pack(side="right", padx=5)
         
-        # Add friends button (second from bottom)
+        # Add friends' button (second from bottom)
         self.add_friends_btn = tk.Button(self.bottom_frame, text=LANGUAGE[self.current_language]["add friends"],
                                        bg=self.primary_color, fg="white", font=self.header_font,
                                        bd=0, padx=16, pady=10)
         self.add_friends_btn.pack(fill="x", pady=10)
+
         # Confirm button (third from bottom)
         self.payment_frame = tk.Frame(self.bottom_frame, bg=self.background_color)
         self.payment_frame.pack(fill="x", pady=10)
@@ -61,7 +91,7 @@ class ShoppingCart(BaseView):
                                    bd=0, padx=16, pady=10)
         self.confirm_btn.pack(fill="x", pady=10, side="top")
 
-        # total
+        # Total frame, label plus the price label
         self.total_frame = tk.Frame(self.payment_frame, bg=self.background_color)
         self.total_frame.pack(fill="x", pady=10, side="bottom")
 
@@ -83,7 +113,7 @@ class ShoppingCart(BaseView):
         person_container = tk.Frame(person_frame, bg=self.light_gray, pady=5, padx=10)
         person_container.pack(fill="x", pady=10)
 
-        # it has to be the current_lgn parameter in order to dynamically change the "Person" word
+        # it has to be the current_lgn parameter to dynamically change the "Person" word
         # throughout the language changes
         self.person_label = tk.Label(person_container, text=LANGUAGE[current_lgn]["person"], bg=self.light_gray, font=("Inter", 12))
         self.person_label.pack(side="left")
@@ -153,9 +183,10 @@ class ShoppingCart(BaseView):
         self.items_frame.on_drop = on_drop
         self.person_frame_bottom.on_drop = on_drop
 
-    # pop up window for confirm order
     def double_check_confirm(self, language):
-        # pop up window in center for double-check the order
+        """ Pop up a window for confirmation order """
+
+        # pop up a centered window for double-check the order
         self.confirm_window = tk.Toplevel(self)
         self.confirm_window.title("Confirm Order")
         self.confirm_window.geometry("300x200")
@@ -180,6 +211,7 @@ class ShoppingCart(BaseView):
         self.confirm_no_btn.pack(side="right", padx=20)
 
     def confirm_window_close(self):
+        """ Destroy the widget for the confirmation window """
         self.confirm_window.destroy()
 
     def prevent_closing(self):

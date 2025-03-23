@@ -1,19 +1,48 @@
+# =============================================================================
+# bartenderController.py
+# =============================================================================
+# @AUTHOR: Ting-Hsuan Lien, Jung Shiao
+# @VERSION: X.0
+# @DATE: latest edit - 23.03.2025
+#
+# @PURPOSE: Controller for the customer user view and model
+# =======================================================
+
+# Import the necessary libraries
 from typing import List
 from copy import deepcopy
 
+# Local imports
 from controllers.base import BaseController
 from views.customerView import CustomerView
-
 from models.menu import menu
 from models.filters import allergens_dict, beverage_filter_data
 from models.language import LANGUAGE
 from models.models import CustomerControllerData
 
 class CustomerController(BaseController):
+    """ The bartender controller class
+
+        Specific methods available for the customer user controller.
+    
+        Attributes:
+            BaseController: the inherited class BaseController
+    """
+    
     def __init__(self, tk_root, main_controller, current_language, current_resolution):
-        super().__init__(tk_root, current_language, current_resolution)
+        """ Initial method
+
+           Args:
+               tk_root: used to get the root tk window
+               main_controller: used to get the main controller
+               current_language: used to get the current language of the system
+               current_resolution: used to get the current resolution of the window
+       """
+        
+        super().__init__(tk_root, current_language, current_resolution) # inherit from BaseController
 
         self.frame = None
+        # Constructor that interacts with the Customer data model
         self.data = CustomerControllerData(person_count=1, current_person=0, shopping_cart=[[]])
         self.undo_stack: List[CustomerControllerData] = []
         self.redo_stack: List[CustomerControllerData] = []
@@ -29,7 +58,8 @@ class CustomerController(BaseController):
         self.current_menu = LANGUAGE[self.current_language]["beverages"]
 
     def customer_view_setup(self):
-        """ Setup the customer view """
+        """ Set up the customer view """
+
         self.frame.shopping_cart_widget.set_on_drop(self.add_cart_item)
         self.frame.shopping_cart_widget.set_current_person_command(self.set_current_person)
         self.frame.shopping_cart_widget.set_remove_person_command(self.remove_person)
@@ -55,16 +85,19 @@ class CustomerController(BaseController):
         self.update_cart()
 
     def create_customer_widgets(self, current_lng, current_res):
+        """ Create custom widgets """
         self.frame = CustomerView(self.tk_root, current_lng, current_res)
         self.frame.pack(expand=True, fill='both')
+
         self.customer_view_setup()
 
     def destroy_widgets(self):
+        """ Destroy all widgets """
         self.frame.destroy()
         self.frame = None
 
-
     def search_product(self):
+        """ Search for a product """
         print("Searching for product")
         search_term = self.frame.search_entry.get()
         products_list = [product for product in self.menu_list if search_term.lower() in product["Name"].lower() and not product["Hidden"] and int(product["Stock"]) > 0]
@@ -73,39 +106,49 @@ class CustomerController(BaseController):
         self.frame.update_menu(products_list, language_window, self.add_cart_item)
 
     def update_cart(self):
+        """ Update the cart visually """
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
 
     def set_current_person(self, person):
+        """ Set the current person """
         self.data.current_person = person
+        
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
 
     def add_person(self):
+        """ Add person to the cart """
         self.make_operation()
         self.data.person_count += 1
         self.data.shopping_cart.append([])
         self.data.current_person = self.data.person_count - 1
+        
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
 
     def remove_person(self, i):
+        """ Remove the person from the cart"""
         self.make_operation()
         self.data.person_count -= 1
         self.data.shopping_cart.pop(i)
+        
         if self.data.person_count == 0:
             self.add_person()
         elif self.data.current_person == self.data.person_count:
             self.data.current_person -= 1
+            
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
 
     def add_cart_item(self, product_widget):
         """Add an item to the shopping cart"""
         self.make_operation()
+        
         item_name = product_widget.product_name.cget("text")
         item_price = product_widget.product_price.cget("text").split(" ")[0]
         print(f"Adding {item_name} to the Person {self.data.current_person}'s cart")
+        
         item_list = [item["name"] for item in self.data.shopping_cart[self.data.current_person]]
         if item_name in item_list:
             self.data.shopping_cart[self.data.current_person][item_list.index(item_name)]["amount"] += 1
@@ -113,38 +156,47 @@ class CustomerController(BaseController):
             self.data.shopping_cart[self.data.current_person].append({  "name": item_name,
                                                                         "price": float(item_price),
                                                                         "amount": 1})
+            
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         self.frame.update_cart(self.data.current_person, self.data.person_count, self.data.shopping_cart, language_window)
 
     def make_operation(self):
-        data = deepcopy(self.data)
-        self.undo_stack.append(data)
-        self.redo_stack.clear()
+        """ When you do/make an operation/event - DO functionality """
+        data = deepcopy(self.data) # create a full copy of the whole data
+        self.undo_stack.append(data) # put it in the undo stack
+        self.redo_stack.clear() # clear the redo stack
         print(self.data)
 
     def undo(self):
+        """ UNDO functionality """
         print("Undoing")
         print(self.undo_stack)
+        # Return nothing if the stack is empty
         if len(self.undo_stack) == 0:
             return
-        data = deepcopy(self.data)
-        self.redo_stack.append(data)
-        self.data = self.undo_stack.pop()
-        self.update_cart()
+
+        data = deepcopy(self.data) # create a full copy of the whole data
+        self.redo_stack.append(data) # add it to the redo stack
+        self.data = self.undo_stack.pop() # pop the first item from the undo stack
+        self.update_cart() # update the cart visually
 
     def redo(self):
+        """ REDO functionality """
         print("Redoing")
         print(self.redo_stack)
+        # Return nothing if the stack is empty
         if len(self.redo_stack) == 0:
             return
-        data = deepcopy(self.data)
-        self.undo_stack.append(data)
-        self.data = self.redo_stack.pop()
-        self.update_cart()
 
-    """Confirm the order and add it to the order history"""
+        data = deepcopy(self.data) # create a full copy of the whole data
+        self.undo_stack.append(data) # add it to the undo stack
+        self.data = self.redo_stack.pop() # pop the first item from the redo stack
+        self.update_cart() # update the cart visually
+
     def confirm_order(self):
-        # double check the order
+        """Confirm the order and add it to the order history"""
+
+        # double-check the order with a confirmation pop-up window
         language_window = self.main_controller.update_language(lambda event: self.main_controller.update_language)
         self.frame.shopping_cart_widget.double_check_confirm(language_window)
         self.frame.shopping_cart_widget.confirm_yes_btn.config(command=self.confirm_order_yes)
@@ -153,6 +205,7 @@ class CustomerController(BaseController):
     def confirm_order_yes(self):
         print("Confirming order")
         order = []
+        
         # Add all items in the shopping cart to the order
         for person in self.data.shopping_cart:
             order.append(person)
@@ -175,6 +228,7 @@ class CustomerController(BaseController):
         self.frame.shopping_cart_widget.confirm_window_close()
 
     def confirm_order_no(self):
+        """ Unconfirmed the order and close the window """
         print("Cancelling order")
         self.frame.shopping_cart_widget.confirm_window_close()
 
@@ -183,7 +237,9 @@ class CustomerController(BaseController):
         self.menu_list = [menu_item for menu_item in menu if menu_item["VIP"] == False]
 
     def switch_filter(self, filter_text):
+        """ Switch between the filters, making them active or not and update menu"""
         print("Filtering products for", filter_text)
+        
         if self.current_menu == LANGUAGE[self.current_language]["food"]:
             self.allergens_dict[filter_text]["active"] = not self.allergens_dict[filter_text]["active"]
         else:
@@ -191,6 +247,7 @@ class CustomerController(BaseController):
         self.update_menu()
 
     def switch_menu(self, menu):
+        """ Switch between the beverages and food menus"""
         self.current_menu = menu
         self.update_menu()
 
@@ -229,11 +286,11 @@ class CustomerController(BaseController):
         self.frame.update_menu(products_list, language_window, self.add_cart_item)
         for filter_btn in self.frame.filter_buttons:
             filter_text = filter_btn.cget("text")
-            # not to complicate the logic of having too many duplicates in filter's dictionary
+            # works the same as language_window value but update the filter's button text
             eng_filter_text = [key for key, value in LANGUAGE[language_window].items() if value == filter_text]
             filter_btn.config(command=lambda text=eng_filter_text[0]: self.switch_filter(text))
 
-
+# Main function that can be used to run this .py file individually to test some functionalities
 if __name__ == "__main__":
     import tkinter as tk
 

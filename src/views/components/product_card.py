@@ -1,25 +1,47 @@
-import tkinter as tk
+# =============================================================================
+# product_card.py
+# =============================================================================
+# @AUTHOR: Ting-Hsuan Lien, Jung Shiao
+# @VERSION: X.0
+# @DATE: latest edit - 23.03.2025
+#
+# @PURPOSE: The component for all the views that uses a menu frame
+# =======================================================
 
-from models.language import LANGUAGE
+# Import the necessary libraries
+import tkinter as tk
 from PIL import Image, ImageTk
 
-class Dragable:
-    _drag_threshold = 20
+# Local imports
+from models.language import LANGUAGE
+
+
+class Draggable:
+    """ Class to make the product card a draggable for the drag and drop functionality """
+    _drag_threshold = 20 # threshold for dragging event
 
     def __init__(self, widget):
+        """ Initial method
+
+            Args:
+                widget: which widget to drag
+        """
+
         self.widget = widget
         self.widgets = []
-        self.ghost = None
+        self.ghost = None # display also a ghost card to see some info of that draggable object
         self._drag_data = {"x": 0, "y": 0}
 
     def set_anchor_widget(self, widget):
+        """ Set anchor widget """
         self.anchor_widget = widget
 
     def add_draggable(self, widgets):
         """ Make the widgets draggable
         Args:
-            widgets: list of tk.Widget
+            widgets: which widget to drag
         """
+
         # Bind events to the widgets
         for widget in widgets:
             widget.bind("<Button-1>", self.start_drag)
@@ -32,6 +54,7 @@ class Dragable:
         Args:
             event: tk.Event
         """
+
         self._drag_data["x"] = event.x_root
         self._drag_data["y"] = event.y_root
 
@@ -45,6 +68,7 @@ class Dragable:
         Args:
             event: tk.Event
         """
+
         # If the ghost card is created, move it
         if self.ghost:
             dx = event.x_root - self._drag_data["x"]
@@ -60,6 +84,7 @@ class Dragable:
         Args:
             event: tk.Event
         """
+
         # If the ghost card is created, destroy it
         if self.ghost:
             self.ghost.destroy()
@@ -74,12 +99,36 @@ class Dragable:
             below_widget.on_drop(self.widget)
 
 
-class ProductCard(Dragable, tk.Frame):
-    drag_threshold = 20
+class ProductCard(Draggable, tk.Frame):
+    """ The product card frame component view class
+
+        Here are all the widgets and functionalities that are going to be available
+        for the product card component view
+
+        Attributes:
+            Draggable: the inherited class Draggable
+            tk.Frame: the inherited class tk.Frame
+    """
 
     def __init__(self, master, row, col, background_color, primary_color, default_font, product, detail_frame, current_language, click_callback=None):
-        tk.Frame.__init__(self, master)
-        Dragable.__init__(self, self)
+        """ Initial method
+
+            Args:
+                master: used to get the tk window/frame
+                row: row number
+                col: column number
+                background_color: background color
+                primary_color: primary color
+                default_font: default font
+                product: product card
+                detail_frame: detail frame
+                current_language: used to get the current language of the system
+                click_callback: used to get the click callback functionality
+        """
+
+        tk.Frame.__init__(self, master) # inherit from tk.Frame
+        Draggable.__init__(self, self) # inherit from Draggable
+
         self.product_frame = master
         self.background_color = background_color
         self.primary_color = primary_color
@@ -98,6 +147,7 @@ class ProductCard(Dragable, tk.Frame):
         self.product_card.pack_propagate(True)
 
         # Create the product card content
+        # Image added to the label
         if self.product["Tag"] == "wine":
             image = Image.open("./assets/wine.png")
         elif self.product["Tag"] == "cocktail":
@@ -108,12 +158,13 @@ class ProductCard(Dragable, tk.Frame):
             image = Image.open("./assets/beer.png")
         
         fixed_size = (100, 100)
-        image = image.resize(fixed_size)
+        image = image.resize(fixed_size) # resize the image to fit the product card
         self.product_image = ImageTk.PhotoImage(image)
         self.product_image_label = tk.Label(self.product_card, image=self.product_image, bg=self.background_color)
         self.product_image_label.image = self.product_image
         self.product_image_label.pack(pady=0)
 
+        # Product name label
         self.product_name = tk.Label(self.product_card, text=self.product['Name'], bg=self.background_color, font=self.default_font)
         self.product_name.pack(pady=(30, 5))
 
@@ -121,11 +172,12 @@ class ProductCard(Dragable, tk.Frame):
         price_info_frame = tk.Frame(self.product_card, bg=self.background_color)
         price_info_frame.pack(pady=5)
 
-        # info button
+        # Info button
         self.info_btn = tk.Button(price_info_frame, text="ℹ️", bg=self.primary_color, fg="white", width=2, height=2)
         self.info_btn.pack(side="left", padx=(10, 0))
         self.info_btn.bind("<Button-1>", self.info_click)
-        # price
+
+        # Price label
         self.product_price = tk.Label(price_info_frame, text=self.product['Price'], bg=self.background_color, font=self.default_font)
         self.product_price.pack(side="left")
 
@@ -134,49 +186,73 @@ class ProductCard(Dragable, tk.Frame):
             self.product_vip_label = tk.Label(price_info_frame, text="VIP", bg=self.primary_color, fg="white", font=self.default_font)
             self.product_vip_label.pack(side="left", anchor="w", padx=(10, 0))
 
-        # Add draggable
+        # Add draggable event
         self.add_draggable([self.product_card, self.product_image_label, self.product_name, self.product_price])
 
-        # add to cart
+        # Add to cart button
         self.add_to_cart_btn = tk.Button(price_info_frame, text="+", bg=self.primary_color, fg="white", padx=10, pady=5)
         self.add_to_cart_btn.pack(side="right")
-        self.add_to_cart_btn.bind("<Button-1>", self.add_to_cart_click)  # 綁定事件
+        self.add_to_cart_btn.bind("<Button-1>", self.add_to_cart_click)  # bind the mouse click to add to cart event
 
         self.set_anchor_widget(self.product_card)
 
-    def add_to_cart_click(self, event):
+    def add_to_cart_click(self, event=None):
+        """ Add to cart button click functionality
+        Args:
+            event: not used, but to be here to bind the functionality to a widget
+        """
         if self.click_callback:
             self.click_callback(self)
 
-    def info_click(self, event):
+    def info_click(self, event=None):
         """ Show the detail of the product
         Args:
-            event: tk.Event
+            event: not used, but to be here to bind the functionality to a widget
         """
         print(self.product)
         self.show_item_detail(self.product, self.current_language)
 
-    # method used to handle the drop event
     def create_ghost_card(self):
+        """ Method used to handle the drop event and create the ghost card
+        Returns:
+            Returns the ghost card
+        """
         root = self.master
 
         while not isinstance(root, tk.Tk):
+            # While not an instance of the class tk.Tk
             root = root.master
 
+        # Ghost frame
         ghost = tk.Frame(root, bg=self.background_color, width=223, height=262, bd=1, relief="solid")
         ghost.pack_propagate(False)
-        ghost_image = tk.PhotoImage(file="./assets/beer.png")
-        ghost_image = ghost_image.subsample(4)
 
-        ghost_image_label = tk.Label(ghost, image=ghost_image, bg=self.background_color)
-        ghost_image_label.image = ghost_image
+        # Creation of the ghost images for the ghost card also depending on the tag
+        if self.product["Tag"] == "wine":
+            ghost_image = Image.open("./assets/wine.png")
+        elif self.product["Tag"] == "cocktail":
+            ghost_image = Image.open("./assets/cocktail.png")
+        elif self.product["Tag"] == "food":
+            ghost_image = Image.open("./assets/food.png")
+        else:
+            ghost_image = Image.open("./assets/beer.png")
+
+        fixed_size = (100, 100)
+        ghost_image = ghost_image.resize(fixed_size)  # resize the image to fit the product card
+        ghost_final_image = ImageTk.PhotoImage(ghost_image)
+
+        # Ghost label containing the above-created ghost images
+        ghost_image_label = tk.Label(ghost, image=ghost_final_image, bg=self.background_color)
+        ghost_image_label.image = ghost_final_image
         ghost_image_label.pack(pady=0)
+
+        # Ghost item name label
         ghost_name = tk.Label(ghost, text=self.product["Name"], bg=self.background_color, font=self.default_font)
         ghost_name.pack(pady=(30,5))
+
+        # Ghost item price label
         ghost_price = tk.Label(ghost, text=self.product["Price"], bg=self.background_color, font=self.default_font)
         ghost_price.pack(pady=5)
-        ghost_button = tk.Button(ghost, text="Add to Cart", bg=self.primary_color, fg="white", padx=10, pady=5)
-        ghost_button.pack(pady=20)
 
         return ghost
 
@@ -186,24 +262,24 @@ class ProductCard(Dragable, tk.Frame):
             item_info: dict, the information of the product
             language: str, the current language
         """
-        # clear the detail frame
+
+        # Clear the detail frame
         for widget in self.detail_frame.winfo_children():
             widget.destroy()
 
-
-        # create the detail info
-        # item name
+        # Create the detail info
+        # Item name
         item_label = tk.Label(self.detail_frame, text=item_info["Name"], font=self.default_font, bg=self.background_color)
         item_label.pack()
         
-        # item price
+        # Item price
         item_price = tk.Label(self.detail_frame, text=item_info["Price"], font=self.default_font, bg=self.background_color)
         item_price.pack()
         
-        # item info
+        # Item info
         for info in item_info:
             if info not in ["Name", "Price", "VIP", "Stock", "Hidden"]:
-                # if the info is allergens, ingredients or contents/recipe, show them in a separate way
+                # If the info is allergens, ingredients or contents/recipe, show them in a separate way
                 if info == "Allergens":
                     allergens_label = tk.Label(self.detail_frame, 
                                                text=f"{LANGUAGE[language][info]}: {', '.join(item_info[info])}",
@@ -230,7 +306,7 @@ class ProductCard(Dragable, tk.Frame):
                                           bg=self.background_color)
                     info_label.pack()
 
-
+# Example usage
 if __name__ == "__main__":
     from views.components.shopping_cart import ShoppingCart
     

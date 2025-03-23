@@ -1,11 +1,11 @@
 # =============================================================================
 # loginController.py
 # =============================================================================
-# @AUTHOR: Ting-Hsuan Lien, Jung Shiao
+# @AUTHOR: Ting-Hsuan Lien, Jung Shiao, Darius Loga
 # @VERSION: X.0
 # @DATE: latest edit - 23.03.2025
 #
-# @PURPOSE: Controller the whole application
+# @PURPOSE: Controller for the login view and model
 # =======================================================
 
 # Import the necessary libraries
@@ -39,7 +39,7 @@ class LoginController(BaseController):
 
         super().__init__(tk_root, current_language, current_resolution) # inherit from BaseController
 
-        # The geometry values might vary for different display sizes, but for a 15.6 inches
+        # The geometry values might vary for different display sizes, but for a 15.6-inches
         # display should be on a perfect fullscreen, resolution not being direct proportional
         # to the screen display
         self.tk_root.title("The Flying Dutchman Pub")
@@ -65,7 +65,7 @@ class LoginController(BaseController):
         self.frame = LoginView(self.tk_root, current_language, current_resolution)
         self.frame.pack(expand=True, fill='both')
 
-        self.set_up_bind() # handling the binding of widgets that have key assignment
+        self.login_view_setup() # handling the binding of widgets that have key assignment
 
     def hide_login_widgets(self):
         """ Hide the logout button from the view """
@@ -76,7 +76,7 @@ class LoginController(BaseController):
         self.frame.destroy()
         self.frame = None
 
-    def set_up_bind(self):
+    def login_view_setup(self):
         """ Binding of widgets that have key assignment """
         self.frame.login_button.bind("<Button-1>", self.login_button_click)
         self.frame.username_entry.bind("<Return>", self.login_button_click)
@@ -89,7 +89,7 @@ class LoginController(BaseController):
         """ Login button functionality
 
             Args:
-                event: not used, but to be here in order to bind the functionality to a widget
+                event: not used, but to be here to bind the functionality to a widget
         """
         print("Login button clicked")
 
@@ -118,7 +118,7 @@ class LoginController(BaseController):
         """ Normal customer button functionality
 
             Args:
-                event: not used, but to be here in order to bind the functionality to a widget
+                event: not used, but to be here to bind the functionality to a widget
         """
         print("Continue as a guest button")
 

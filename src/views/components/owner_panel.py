@@ -1,17 +1,48 @@
+# =============================================================================
+# owner_panel.py
+# =============================================================================
+# @AUTHOR: Ting-Hsuan Lien, Jung Shiao
+# @VERSION: X.0
+# @DATE: latest edit - 23.03.2025
+#
+# @PURPOSE: The component for the OwnerView
+# =======================================================
+
+# Import the necessary libraries
 import tkinter as tk
 from tkinter import ttk
+
+# Local imports
 from models.language import LANGUAGE
 from views.baseView import BaseView
 
+
 class ItemInfo(tk.Frame):
+    """ The item info frame component view class
+
+        Here are all the widgets that are going to be available for the item info frame component view
+
+        Attributes:
+            tk.Frame: the inherited class tk.Frame
+    """
+
     def __init__(self, parent, current_language, current_resolution):
-        super().__init__(parent)
+        """ Initial method
+
+            Args:
+                parent: used to get the tk window/frame
+                current_language: used to get the current language of the system
+                current_resolution: used to get the current resolution of the window
+        """
+
+        super().__init__(parent) # inherit from tk.Frame
         self.current_language = current_language
         self.current_resolution = current_resolution
         self.dynamic_entries = {}  # Dictionary to hold dynamically created input fields
-        self.create_widgets()
+        self.create_widgets() # separate method to create the widgets
 
     def create_widgets(self):
+        """ Create the necessary widgets """
 
         # ---------------- Name Frame ----------------
         name_frame = tk.Frame(self)
@@ -71,6 +102,7 @@ class ItemInfo(tk.Frame):
 
     def on_filter_selected(self, event=None):
         """Handle dynamic field creation based on selected tag"""
+
         # Clear old fields
         for widget in self.dynamic_frame.winfo_children():
             widget.destroy()
@@ -99,7 +131,10 @@ class ItemInfo(tk.Frame):
             self.dynamic_entries[field] = entry  # Save entry for future use
 
     def update(self, product):
-        """Fill the widget with product data (for edit/view mode)"""
+        """Fill the widget with product data (for edit/view mode)
+        Args:
+            product: the product/item info
+        """
         if product is None:
             self.item_label.config(text="")
             self.filter_combobox.set("")
@@ -123,16 +158,20 @@ class ItemInfo(tk.Frame):
             entry.insert(0, product.get(key, ""))
 
     def get_price(self):
+        """ Get the current price """
         return self.price_entry.get()
 
     def get_stock(self):
+        """ Get the current stock """
         return self.stock_entry.get()
 
     def get_tag(self):
+        """ Get the current tag """
         return self.filter_combobox.get()
 
     def set_add_active(self, active):
         """Toggle between add/edit mode and view mode"""
+
         if active:
             # Show input fields for editing
             self.item_name_entry.pack(expand=True, fill='both', anchor='center')
@@ -148,6 +187,7 @@ class ItemInfo(tk.Frame):
 
     def get_product(self):
         """Collect all data from user input and return as dictionary"""
+
         tag = self.filter_combobox.get()
         product = {
             "Name": self.item_name_entry.get(),
@@ -157,6 +197,7 @@ class ItemInfo(tk.Frame):
             "Hidden": False,
             "Tag": tag
         }
+
         # Add dynamic fields data
         for field, entry in self.dynamic_entries.items():
             if field == "Allergens":
@@ -170,20 +211,40 @@ class ItemInfo(tk.Frame):
 
 
 class OwnerPanel(BaseView):
+    """ The owner panel frame component view class
+
+        Here are all the widgets that are going to be available for the owner panel frame component view
+
+        Attributes:
+            BaseView: the inherited class BaseView
+    """
+
     def __init__(self, parent, current_language, current_resolution):
-        super().__init__(parent, current_language, current_resolution)
+        """ Initial method
+
+            Args:
+                parent: used to get the tk window/frame
+                current_language: used to get the current language of the system
+                current_resolution: used to get the current resolution of the window
+        """
+
+        super().__init__(parent, current_language, current_resolution) # inherit from BaseView
 
         self.current_language = current_language
         
-        # User Info and Panic Button in Horizontal Layout
-        user_panic_frame = tk.Frame(self)
-        user_panic_frame.pack(fill='x', pady=5)
+        # User Info in Horizontal Layout
+        user_frame = tk.Frame(self)
+        user_frame.pack(fill='x', pady=5)
         
-        # name frame
-        self.name_frame = tk.Frame(user_panic_frame, bg=self.background_color)
+        # Name frame
+        self.name_frame = tk.Frame(user_frame, bg=self.background_color)
         self.name_frame.pack(side="left",fill="both", expand=True, padx=10)
+
+        # Welcome message label
         self.welcome_label = tk.Label(self.name_frame, text=LANGUAGE[self.current_language]["welcome"], font=self.default_font, bg=self.background_color)
         self.welcome_label.pack(side="left", anchor="e")
+
+        # Username naming label
         self.name_label = tk.Label(self.name_frame, font=self.default_font, bg=self.background_color)
         self.name_label.pack(side="left", anchor="e")
 
@@ -193,7 +254,6 @@ class OwnerPanel(BaseView):
 
         self.item = ItemInfo(self.item_info_frame, self.current_language, self.current_resolution)
         self.item.pack(side='left', expand=True, fill='both')
-
 
         # Frame for holding 4 action buttons at corners
         self.button_frame = tk.Frame(self)
@@ -205,7 +265,7 @@ class OwnerPanel(BaseView):
         self.button_frame.rowconfigure(0, weight=1)
         self.button_frame.rowconfigure(1, weight=1)
 
-        # Button at top-left (Add item to the menu)
+        # Button at the top-left upper view (Add item to the menu)
         self.add_menu_item_button = tk.Button(
             self.button_frame,
             text=LANGUAGE[self.current_language]["add item to the menu"],
@@ -215,7 +275,7 @@ class OwnerPanel(BaseView):
         )
         self.add_menu_item_button.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
 
-        # Button at top-right (Remove item from the menu)
+        # Button at the top-right upper view (Remove item from the menu)
         self.remove_menu_item_button = tk.Button(
             self.button_frame,
             text=LANGUAGE[self.current_language]["remove item from menu"],
@@ -225,7 +285,7 @@ class OwnerPanel(BaseView):
         )
         self.remove_menu_item_button.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
 
-        # Button at bottom-left (Hide item)
+        # Button at the bottom-left bottom view (Hide item)
         self.hide_menu_item_button = tk.Button(
             self.button_frame,
             text=LANGUAGE[self.current_language]["hide item"],
@@ -235,7 +295,7 @@ class OwnerPanel(BaseView):
         )
         self.hide_menu_item_button.grid(row=1, column=0, sticky="nsew", padx=5, pady=5)
 
-        # Button at bottom-right (Order refill)
+        # Button at the bottom-right bottom view (Order refill)
         self.order_refill_button = tk.Button(
             self.button_frame,
             text=LANGUAGE[self.current_language]["order refill"],
@@ -245,11 +305,9 @@ class OwnerPanel(BaseView):
         )
         self.order_refill_button.grid(row=1, column=1, sticky="nsew", padx=5, pady=5)
 
-    
-    # pop_up_window with confirm button
+
     def pop_up_window(self, title: str, message: str, confirm_text: str, confirm_command: callable):
-        """Create a pop-up window with a message and a confirm button"""
-        """
+        """Create a pop-up window with a message and a confirm button
         Args:
         title (str): Title of the pop-up window
         message (str): Message to display in the pop-up window
@@ -273,7 +331,7 @@ class OwnerPanel(BaseView):
         y = (screen_height/2) - (pop_up_height/2)
         pop_up.geometry("%dx%d+%d+%d" % (pop_up_width, pop_up_height, x, y))
 
-        # Add message to the pop_up window
+        # Add a message to the pop_up window
         message_label = tk.Label(pop_up, text=message, font=self.default_font)
         message_label.pack(pady=10)
 
@@ -285,10 +343,9 @@ class OwnerPanel(BaseView):
                                    fg="white")
         confirm_button.pack(side='bottom', anchor='center', pady=10)
 
-        # Bind the confirm button to the confirm_command
+        # Bind the confirmation button to the confirm_command
         confirm_button.config(command=lambda: [confirm_command(), pop_up.destroy()])
         
-
 # Example usage
 if __name__ == "__main__":
     

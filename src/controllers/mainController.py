@@ -5,7 +5,7 @@
 # @VERSION: X.0
 # @DATE: latest edit - 23.03.2025
 #
-# @PURPOSE: Controller the whole application
+# @PURPOSE: Controller for the whole application
 # =======================================================
 
 # Import the necessary libraries
@@ -124,7 +124,7 @@ class MainController(BaseController):
             y = int((screen_height / 2) - (h / 2))
             self.current_resolution = 1
 
-        # set the root window using the above computed values
+        # set the root window using the above-computed values
         self.tk_root.geometry(str(w) + "x" + str(h) + "+" + str(x) + "+" + str(y))
         print("screen_width:", w)
         print("screen_height:", h)
@@ -132,7 +132,7 @@ class MainController(BaseController):
         print("y:", y)
 
         if self.current_controller == self.login_controller:
-            # Load an image to be used as background
+            # Load an image to be used as a background
             self.image = Image.open("./assets/boat.jpg")
             # Resize the image using resize() method and configure when there is a change
             # in resolution
@@ -159,7 +159,7 @@ class MainController(BaseController):
             belonging to different views (login, guest, vip, bartender, owner)
 
             Args:
-                event: not used, but to be here in order to bind the functionality to a widget
+                event: not used, but to be here to bind the functionality to a widget
             Returns:
                 Return the current_language to be used in different controllers to change the language
                 if the logic does not permit to use .config() function of different widgets from the
@@ -188,7 +188,7 @@ class MainController(BaseController):
         """ Method to go back to the login view, used in all other views except the login part
 
             Args:
-                event: not used, but to be here in order to bind the functionality to a widget
+                event: not used, but to be here to bind the functionality to a widget
         """
 
         print("Successfully logged out")

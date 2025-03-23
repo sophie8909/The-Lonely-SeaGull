@@ -1,7 +1,7 @@
 # =============================================================================
 # product_card_manager.py
 # =============================================================================
-# @AUTHOR: Ting-Hsuan Lien, Jung Shiao, Yuxie Liu
+# @AUTHOR: Ting-Hsuan Lien, Jung Shiao
 # @VERSION: X.0
 # @DATE: latest edit - 23.03.2025
 #
@@ -71,7 +71,7 @@ class ProductCardManager(ProductCard):
         # Bind to click a button to add items to cart (using the modified view of the product card)
         self.add_to_cart_btn.bind("<Button-1>", self.select_item_click)
         
-        # if an item has the hidden tag, add a label to show it is hidden
+        # if an item has the hidden tag true, add a label to show it is hidden
         if product["Hidden"]: 
             self.hidden_label = tk.Label(self.product_card, 
                                          text=LANGUAGE[self.current_language]["hide item"], 
@@ -86,7 +86,7 @@ class ProductCardManager(ProductCard):
             Callback to a click event to add this item also to the shopping cart/list
 
             Args:
-                event: not used, but to be here in order to bind the functionality to a widget
+                event: not used, but to be here to bind the functionality to a widget
         """
 
         if self.click_callback:
